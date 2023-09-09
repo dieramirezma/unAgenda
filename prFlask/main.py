@@ -59,7 +59,7 @@ def login():
 @app.route('/register', methods=["GET", "POST"])
 def register():
     if request.method == 'POST' and 'txtEmail' in request.form and 'txtPassword' in request.form:
-        # Obtener el correo y la contraseña proporcionados por el usuario
+        # Obtener el nombre, correo y contraseña proporcionados por el usuario
         _correo = request.form['txtEmail']
         _contraseña = request.form['txtPassword']
         _nombre = request.form['txtNombre']
