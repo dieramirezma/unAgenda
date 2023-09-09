@@ -23,7 +23,7 @@ app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 ```
 
 ```bash
-git clone <repo-url>
+gh repo clone dieramirezma/Agenda-Ingesoft
 ```
 
 ```bash
