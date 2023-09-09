@@ -1,9 +1,9 @@
-## unAgenda-Ingesoft
+## unAgenda - Ingesoft
 Proyecto junto con actividades a realizar; Ingeniería de Software, Universidad Nacional de Colombia. Desarrollado por:
 Iván Rengifo, John  Cortés, Sergio Perez, Juan Medina, Diego Maldonado, Anderson Chila & Andrés Hernández
 
 
-## Instalación
+# Instalación
 Asegurarse de contar con v3.9 -> en adelante de Python. Importar la Base de Datos en algún gestor (recomentable MySQL Workbench), y que los datos para conexión sean los mismos:
 
 ```python
