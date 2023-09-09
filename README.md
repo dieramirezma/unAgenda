@@ -1,14 +1,6 @@
 ## unAgenda-Ingesoft
-Proyecto junto con actividades a realizar; Ingeniería de Software, Universidad Nacional de Colombia
-
-Desarrollado por:
-- Iván Felipe Ayala Rengifo
-- John Andrés Rua Cortés
-- Sergio Alejandro Nova Perez
-- Juan Sebastian Gordillo Medina
-- Diego Nicolas Ramirez Maldonado
-- Anderson David Morales Chila
-- Andrés Hernández
+Proyecto junto con actividades a realizar; Ingeniería de Software, Universidad Nacional de Colombia. Desarrollado por:
+Iván Rengifo, John  Cortés, Sergio Perez, Juan Medina, Diego Maldonado, Anderson Chila & Andrés Hernández
 
 
 ## Instalación
@@ -34,7 +26,5 @@ pip install -r requirements.txt
 ```bash
 python main.py
 ```
-
-## Visualización
-Ir a `http://127.0.0.1:5000`
+E ir finalmente a `http://127.0.0.1:5000`
 
