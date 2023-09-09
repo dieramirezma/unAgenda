@@ -22,20 +22,15 @@ app.config['MYSQL_DB'] = 'prFlask'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 ```
 
-## Clonación del repositorio localmente
-
 ```bash
 git clone <repo-url>
 ```
-
-## Modulos requeridos para ejecución
 
 ```bash
 pip install -r requirements.txt
 ```
 
-## Lanzamiento
-
+# Lanzamiento
 ```bash
 python main.py
 ```
