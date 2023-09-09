@@ -18,6 +18,8 @@ app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 gh repo clone dieramirezma/Agenda-Ingesoft
 ```
 
+Instalación de modulos requeridos para la ejecución apropiada del código
+
 ```bash
 pip install -r requirements.txt
 ```
