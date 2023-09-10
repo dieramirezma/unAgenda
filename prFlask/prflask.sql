@@ -52,3 +52,13 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2023-09-09 15:24:54
+
+-- para crear notas en el bloc (en proceso)
+CREATE TABLE notas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    contenido TEXT
+);
+INSERT INTO notas (contenido) VALUES ('Esta es mi primera nota.');
+INSERT INTO notas (contenido) VALUES ('Esta es mi segunda nota.');
+
+SELECT * FROM notas;
