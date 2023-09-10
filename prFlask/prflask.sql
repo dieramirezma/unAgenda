@@ -55,10 +55,13 @@ UNLOCK TABLES;
 
 -- para crear notas en el bloc (en proceso)
 CREATE TABLE notas (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    contenido TEXT
+    idNota INT AUTO_INCREMENT PRIMARY KEY,
+    idUsuario INT,
+    contenido TEXT,
+    FOREIGN KEY (idUsuario) REFERENCES usuarios(idUsuario)
 );
-INSERT INTO notas (contenido) VALUES ('Esta es mi primera nota.');
-INSERT INTO notas (contenido) VALUES ('Esta es mi segunda nota.');
+);
+INSERT INTO notas (idUsuario, contenido) VALUES (1, 'Esta es la nota del usuario 1.');
+
 
 SELECT * FROM notas;
