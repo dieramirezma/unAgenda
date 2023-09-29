@@ -6,7 +6,7 @@
     <title>unAgenda - Horario</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&display=swap" rel="stylesheet">
-    <link rel = "stylesheet" href = "scheduleStyle.css">
+    <link rel = "stylesheet" href = "{{url_for('static', filename='styles/scheduleStyle.css')}}">
 </head>
 
 <body>
@@ -18,25 +18,25 @@
         <div class = "menuSideBar"> <!-- MENU LATERAL -->
 
             <br>
-            <a href = "admin.html">
-                <img id = "unAgendaLabel" src = "src/unAgenda1.png" width="100"/>
+            <a href = "admin">
+                <img id = "unAgendaLabel" src = "{{url_for('static', filename='img/unAgenda1.png')}}" width="100"/>
             </a>
 
             <br><br>
 
-            <a href = "admin.html">
+            <a href = "admin">
                 <div class = "selectedIndexBox">
-                    <img class = "iconMenu" src = "src/mainmenumini.png" width="100"/>
+                    <img class = "iconMenu" src = "{{url_for('static', filename='img/mainmenumini.png')}}" width="100"/>
                 </div>
             </a>
-            <a href = "schedule.html">
+            <a href = "schedule">
                 <div class = "selectedIndexBox">
-                    <img class = "iconMenu" src = "src/scheduleindexmini.png" width="100"/>
+                    <img class = "iconMenu" src = "{{url_for('static', filename='img/scheduleindexmini.png')}}" width="100"/>
                 </div>
             </a>
-            <a href = "index.html">
+            <a href = "/">
                 <div class = "selectedIndexBox">
-                    <img class = "iconMenu" src = "src/calculatorindexmini.png" width="100"/>
+                    <img class = "iconMenu" src = "{{url_for('static', filename='img/calculatorindexmini.png')}}" width="100"/>
                 </div>
             </a>
 

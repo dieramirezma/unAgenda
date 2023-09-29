@@ -8,7 +8,7 @@ app = Flask(__name__, template_folder='templates')
 # Configuración de la conexión a la base de datos MySQL
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'root'
+app.config['MYSQL_PASSWORD'] = '22446688Rengifo'
 app.config['MYSQL_DB'] = 'prFlask'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -24,6 +24,11 @@ def homepage():
 @app.route('/admin')
 def admin():
     return render_template('admin.html')
+
+# Definición de la ruta para la página de horario
+@app.route('/schedule')
+def schedule():
+    return render_template('schedule.html')
 
 # Ruta para el proceso de inicio de sesión
 @app.route('/loginAccess', methods=["GET", "POST"])

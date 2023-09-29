@@ -6,7 +6,7 @@
     <title>unAgenda</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&display=swap" rel="stylesheet">
-    <link rel = "stylesheet" href = "{{url_for('static', filename='menustyle.css')}}">
+    <link rel = "stylesheet" href = "{{url_for('static', filename='styles/menustyle.css')}}">
 
 
 
@@ -20,25 +20,25 @@
 
         <div class = "menuSideBar"> <!-- MENU LATERAL -->
 
-            <a href = "admin.html">
-                <img id = "unAgendaLabel" src = "{{url_for('static', filename='unAgenda2.png')}}" width="400"/>
+            <a href = "admin">
+                <img id = "unAgendaLabel" src = "{{url_for('static', filename='img/unAgenda2.png')}}" width="400"/>
             </a>
 
             <br><br>
 
-            <a href = "admin.html">
+            <a href = "admin">
                 <div class = "selectedIndexBox">
-                    <img class = "iconMenu" src = "{{url_for('static', filename='mainmenu.png')}}" width="300"/>
+                    <img class = "iconMenu" src = "{{url_for('static', filename='img/mainmenu.png')}}" width="300"/>
                 </div>
             </a>
-            <a href = "schedule.html">
+            <a href = "schedule">
                 <div class = "selectedIndexBox">
-                    <img class = "iconMenu" src = "{{url_for('static', filename='scheduleindex.png')}}" width="300"/>
+                    <img class = "iconMenu" src = "{{url_for('static', filename='img/scheduleindex.png')}}" width="300"/>
                 </div>
             </a>
-            <a href = "index.html">
+            <a href = "/">
                 <div class = "selectedIndexBox">
-                    <img class = "iconMenu" src = "{{url_for('static', filename='calculatorindex.png')}}" width="300"/>
+                    <img class = "iconMenu" src = "{{url_for('static', filename='img/calculatorindex.png')}}" width="300"/>
                 </div>
             </a>
 
@@ -59,7 +59,7 @@
             <div class = "buttonCalendar">
 
                 <br>
-                <img id = "calendarImage" src = "{{url_for('static', filename='calendar.jpg')}}"/>
+                <img id = "calendarImage" src = "{{url_for('static', filename='img/calendar.jpg')}}"/>
                 <br><br>
                 <p>GESTIONAR HORARIO</p>
                 <br><br>
@@ -69,7 +69,7 @@
             <div class = "buttonCalculator">
 
                 <br>
-                <img id = "calendarImage" src = "{{url_for('static', filename='calculator.jpg')}}"/>
+                <img id = "calendarImage" src = "{{url_for('static', filename='img/calculator.jpg')}}"/>
                 <br><br>
                 <p>CALCULADORA DE PROMEDIOS</p>
                 <br>
