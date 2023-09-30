@@ -8,7 +8,7 @@ app = Flask(__name__, template_folder='templates')
 # Configuración de la conexión a la base de datos MySQL
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = '22446688Rengifo'
+app.config['MYSQL_PASSWORD'] = 'db12dieramirezma'
 app.config['MYSQL_DB'] = 'prFlask'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -55,7 +55,7 @@ def login():
             session['idUsuario'] = account['idUsuario']
             
             # Redirigir al usuario a la página de administrador
-            return render_template('admin.html')
+            return redirect('/admin')
         else:
             # Si no se encuentra un usuario, redirigir de nuevo a la página de inicio
             return render_template('index.html')

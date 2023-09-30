@@ -36,7 +36,7 @@
                     <img class = "iconMenu" src = "{{url_for('static', filename='img/scheduleindex.png')}}" width="300"/>
                 </div>
             </a>
-            <a href = "/">
+            <a href = "/admin">
                 <div class = "selectedIndexBox">
                     <img class = "iconMenu" src = "{{url_for('static', filename='img/calculatorindex.png')}}" width="300"/>
                 </div>
@@ -55,24 +55,26 @@
         <div class = "buttonsArea">
 
             <br>
-
-            <div class = "buttonCalendar">
-
-                <br>
-                <img id = "calendarImage" src = "{{url_for('static', filename='img/calendar.jpg')}}"/>
-                <br><br>
-                <p>GESTIONAR HORARIO</p>
-                <br><br>
-
-            </div>
+            <a href="schedule" style="color: black;">
+                <div class = "buttonCalendar">
+                    <br>
+                    <img id = "calendarImage" src = "{{url_for('static', filename='img/calendar.jpg')}}"/>
+                    <br><br>
+                    <p>GESTIONAR HORARIO</p>
+                    <br><br>
+    
+                </div>
+            </a>
 
             <div class = "buttonCalculator">
+                <a href="admin">
 
-                <br>
-                <img id = "calendarImage" src = "{{url_for('static', filename='img/calculator.jpg')}}"/>
-                <br><br>
-                <p>CALCULADORA DE PROMEDIOS</p>
-                <br>
+                    <br>
+                    <img id = "calendarImage" src = "{{url_for('static', filename='img/calculator.jpg')}}"/>
+                    <br><br>
+                    <p>CALCULADORA DE PROMEDIOS</p>
+                    <br>
+                </a>
 
             </div>
 
