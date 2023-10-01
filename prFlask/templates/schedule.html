@@ -10,12 +10,11 @@
 </head>
 
 <body>
-    
-    <div class="header"> <!-- Contiene a todo el código, dado que es el header el que contiene el fondo de pantalla. Si se coloca alguna división después de esta, aparecerá -->
-                         <!-- debajo del fondo, lo cual obviamente no queremos.                                                                                              -->
-        
 
-        <div class = "menuSideBar"> <!-- MENU LATERAL -->
+    <div class = "mainContainer">   <!-- Contiene a todo el código, dado que es el header el que contiene el fondo de pantalla. Si se coloca alguna división después de esta, aparecerá -->
+                                    <!-- debajo del fondo, lo cual obviamente no queremos.                                                                                              -->
+
+        <div class = "sideMenuContainer"> <!-- MENU LATERAL -->
 
             <br>
             <a href = "admin">
@@ -25,201 +24,198 @@
             <br><br>
 
             <a href = "admin">
-                <div class = "selectedIndexBox">
-                    <img class = "iconMenu" src = "{{url_for('static', filename='img/mainmenumini.png')}}" width="100"/>
+                <div class = "iconBox">
+                    <img class = "iconImage" src = "{{url_for('static', filename='img/mainmenumini.png')}}" width="100"/>
                 </div>
             </a>
             <a href = "schedule">
-                <div class = "selectedIndexBox">
-                    <img class = "iconMenu" src = "{{url_for('static', filename='img/scheduleindexmini.png')}}" width="100"/>
+                <div class = "iconBox">
+                    <img class = "iconImage" src = "{{url_for('static', filename='img/scheduleindexmini.png')}}" width="100"/>
                 </div>
             </a>
             <a href = "/">
-                <div class = "selectedIndexBox">
-                    <img class = "iconMenu" src = "{{url_for('static', filename='img/calculatorindexmini.png')}}" width="100"/>
+                <div class = "iconBox">
+                    <img class = "iconImage" src = "{{url_for('static', filename='img/calculatorindexmini.png')}}" width="100"/>
                 </div>
             </a>
 
         </div>
+        <div class = "contentContainer">
 
-        <div class = "buttonDeleteEvent">
+            <div class = "titleContainer">
 
-            <p>-<br><br>Eliminar Evento</p>
-            <br><br>
+                <br><br>
+                <h1 id = "instrucionLabel1">Tu Horario de la Semana</h1>
+                <br><br>
+                <h3 id ="instructionLabel2">Revisa tus eventos semanales programados o<br> añade alguno nuevo: </h3>
+                <br><br>
+
+            </div>
+            <div class = "buttonsContainer">
+
+                <div class = "button">
+                    <img id = "addButtonImage" src = "{{url_for('static', filename='img/icons/add_event.png')}}" width="100">
+                </div>
+                <div class = "button">
+                    <img id = "removeButtonImage" src = "{{url_for('static', filename='img/icons/elim_event.png')}}" width="100">
+                </div>
+                <div class = "button2">
+                    <img id = "searchButtonImage" src = "{{url_for('static', filename='img/icons/search.png')}}" width="100">
+                </div>
+                <div class = "button2">
+                    <img id = "captureButtonImage" src = "{{url_for('static', filename='img/icons/capture.png')}}" width="100">
+                </div>
+                
+            </div>
+            <div class = "scheduleContainer">
+
+                <table id = "schedule">
+                    <tr>
+                        <th class = "scheduleHeader">Hora:</th>
+                        <th class = "scheduleHeader">LUNES</th>
+                        <th class = "scheduleHeader">MARTES</th>
+                        <th class = "scheduleHeader">MIÉRCOLES</th>
+                        <th class = "scheduleHeader">JUEVES</th>
+                        <th class = "scheduleHeader">VIERNES</th>
+                        <th class = "scheduleHeader">SÁBADO</th>
+                        <th class = "scheduleHeader">DOMINGO</th>
+                    </tr>
+                    <tr>
+                        <td class = "scheduleBody1">7:00 - 8:00</th>
+                        <td class = "scheduleBody1"></th>
+                        <td class = "scheduleBody1"></th>
+                        <td class = "scheduleBody1"></th>
+                        <td class = "scheduleBody1"></th>
+                        <td class = "scheduleBody1"></th>
+                        <td class = "scheduleBody1"></th>
+                        <td class = "scheduleBody1"></th>
+                    </tr>
+                    <tr>
+                        <td class = "scheduleBody2">8:00 - 9:00</th>
+                        <td class = "scheduleBody2"></th>
+                        <td class = "scheduleBody2"></th>
+                        <td class = "scheduleBody2"></th>
+                        <td class = "scheduleBody2"></th>
+                        <td class = "scheduleBody2"></th>
+                        <td class = "scheduleBody2"></th>
+                        <td class = "scheduleBody2"></th>
+                    </tr>
+                    <tr>
+                        <td class = "scheduleBody1">9:00 - 10:00</th>
+                        <td class = "scheduleBody1"></th>
+                        <td class = "scheduleBody1"></th>
+                        <td class = "scheduleBody1"></th>
+                        <td class = "scheduleBody1"></th>
+                        <td class = "scheduleBody1"></th>
+                        <td class = "scheduleBody1"></th>
+                        <td class = "scheduleBody1"></th>
+                    </tr>
+                    <tr>
+                        <td class = "scheduleBody2">10:00 - 11:00</th>
+                        <td class = "scheduleBody2"></th>
+                        <td class = "scheduleBody2"></th>
+                        <td class = "scheduleBody2"></th>
+                        <td class = "scheduleBody2"></th>
+                        <td class = "scheduleBody2"></th>
+                        <td class = "scheduleBody2"></th>
+                        <td class = "scheduleBody2"></th>
+                    </tr>
+                    <tr>
+                        <td class = "scheduleBody1">11:00 - 12:00</th>
+                        <td class = "scheduleBody1"></th>
+                        <td class = "scheduleBody1"></th>
+                        <td class = "scheduleBody1"></th>
+                        <td class = "scheduleBody1"></th>
+                        <td class = "scheduleBody1"></th>
+                        <td class = "scheduleBody1"></th>
+                        <td class = "scheduleBody1"></th>
+                    </tr>
+                    <tr>
+                        <td class = "scheduleBody2">12:00 - 13:00</th>
+                        <td class = "scheduleBody2"></th>
+                        <td class = "scheduleBody2"></th>
+                        <td class = "scheduleBody2"></th>
+                        <td class = "scheduleBody2"></th>
+                        <td class = "scheduleBody2"></th>
+                        <td class = "scheduleBody2"></th>
+                        <td class = "scheduleBody2"></th>
+                    </tr>
+                    <tr>
+                        <td class = "scheduleBody1">13:00 - 14:00</th>
+                        <td class = "scheduleBody1"></th>
+                        <td class = "scheduleBody1"></th>
+                        <td class = "scheduleBody1"></th>
+                        <td class = "scheduleBody1"></th>
+                        <td class = "scheduleBody1"></th>
+                        <td class = "scheduleBody1"></th>
+                        <td class = "scheduleBody1"></th>
+                    </tr>
+                    <tr>
+                        <td class = "scheduleBody2">14:00 - 15:00</th>
+                        <td class = "scheduleBody2"></th>
+                        <td class = "scheduleBody2"></th>
+                        <td class = "scheduleBody2"></th>
+                        <td class = "scheduleBody2"></th>
+                        <td class = "scheduleBody2"></th>
+                        <td class = "scheduleBody2"></th>
+                        <td class = "scheduleBody2"></th>
+                    </tr>
+                    <tr>
+                        <td class = "scheduleBody1">15:00 - 16:00</th>
+                        <td class = "scheduleBody1"></th>
+                        <td class = "scheduleBody1"></th>
+                        <td class = "scheduleBody1"></th>
+                        <td class = "scheduleBody1"></th>
+                        <td class = "scheduleBody1"></th>
+                        <td class = "scheduleBody1"></th>
+                        <td class = "scheduleBody1"></th>
+                    </tr>
+                    <tr>
+                        <td class = "scheduleBody2">16:00 - 17:00</th>
+                        <td class = "scheduleBody2"></th>
+                        <td class = "scheduleBody2"></th>
+                        <td class = "scheduleBody2"></th>
+                        <td class = "scheduleBody2"></th>
+                        <td class = "scheduleBody2"></th>
+                        <td class = "scheduleBody2"></th>
+                        <td class = "scheduleBody2"></th>
+                    </tr>
+                    <tr>
+                        <td class = "scheduleBody1">17:00 - 18:00</th>
+                        <td class = "scheduleBody1"></th>
+                        <td class = "scheduleBody1"></th>
+                        <td class = "scheduleBody1"></th>
+                        <td class = "scheduleBody1"></th>
+                        <td class = "scheduleBody1"></th>
+                        <td class = "scheduleBody1"></th>
+                        <td class = "scheduleBody1"></th>
+                    </tr>
+                    <tr>
+                        <td class = "scheduleBody2">18:00 - 19:00</th>
+                        <td class = "scheduleBody2"></th>
+                        <td class = "scheduleBody2"></th>
+                        <td class = "scheduleBody2"></th>
+                        <td class = "scheduleBody2"></th>
+                        <td class = "scheduleBody2"></th>
+                        <td class = "scheduleBody2"></th>
+                        <td class = "scheduleBody2"></th>
+                    </tr>
+                    <tr>
+                        <td class = "scheduleBody1">19:00 - 20:00</th>
+                        <td class = "scheduleBody1"></th>
+                        <td class = "scheduleBody1"></th>
+                        <td class = "scheduleBody1"></th>
+                        <td class = "scheduleBody1"></th>
+                        <td class = "scheduleBody1"></th>
+                        <td class = "scheduleBody1"></th>
+                        <td class = "scheduleBody1"></th>
+                    </tr>
+                </table>
+                <br><br><br><br>
+            </div>
 
         </div>
-
-        <div class = "buttonCreateEvent">
-
-            <p>+<br>Añadir nuevo Evento</p>
-            <br><br>
-
-        </div>        
-
-        <div class = "instructionText">
-
-            <br><br>
-            <h1 id = "instrucionLabel1">Tu Horario de la Semana</h1>
-            <br><br>
-            <h3 id ="instructionLabel2">Revisa tus eventos semanales programados o<br> añade alguno nuevo: </h3>
-            <br><br>
-        </div> 
-
-
-        <div class = scheduleTable> <!-- TABLA CON EL HORARIO -->
-
-            
-            <table>
-                <tr>
-                    <th class = "scheduleHeader">Hora:</th>
-                    <th class = "scheduleHeader">LUNES</th>
-                    <th class = "scheduleHeader">MARTES</th>
-                    <th class = "scheduleHeader">MIÉRCOLES</th>
-                    <th class = "scheduleHeader">JUEVES</th>
-                    <th class = "scheduleHeader">VIERNES</th>
-                    <th class = "scheduleHeader">SÁBADO</th>
-                    <th class = "scheduleHeader">DOMINGO</th>
-                </tr>
-                <tr>
-                    <td class = "scheduleBody1">7:00 - 8:00</th>
-                    <td class = "scheduleBody1"></th>
-                    <td class = "scheduleBody1"></th>
-                    <td class = "scheduleBody1"></th>
-                    <td class = "scheduleBody1"></th>
-                    <td class = "scheduleBody1"></th>
-                    <td class = "scheduleBody1"></th>
-                    <td class = "scheduleBody1"></th>
-                </tr>
-                <tr>
-                    <td class = "scheduleBody2">8:00 - 9:00</th>
-                    <td class = "scheduleBody2"></th>
-                    <td class = "scheduleBody2"></th>
-                    <td class = "scheduleBody2"></th>
-                    <td class = "scheduleBody2"></th>
-                    <td class = "scheduleBody2"></th>
-                    <td class = "scheduleBody2"></th>
-                    <td class = "scheduleBody2"></th>
-                </tr>
-                <tr>
-                    <td class = "scheduleBody1">9:00 - 10:00</th>
-                    <td class = "scheduleBody1"></th>
-                    <td class = "scheduleBody1"></th>
-                    <td class = "scheduleBody1"></th>
-                    <td class = "scheduleBody1"></th>
-                    <td class = "scheduleBody1"></th>
-                    <td class = "scheduleBody1"></th>
-                    <td class = "scheduleBody1"></th>
-                </tr>
-                <tr>
-                    <td class = "scheduleBody2">10:00 - 11:00</th>
-                    <td class = "scheduleBody2"></th>
-                    <td class = "scheduleBody2"></th>
-                    <td class = "scheduleBody2"></th>
-                    <td class = "scheduleBody2"></th>
-                    <td class = "scheduleBody2"></th>
-                    <td class = "scheduleBody2"></th>
-                    <td class = "scheduleBody2"></th>
-                </tr>
-                <tr>
-                    <td class = "scheduleBody1">11:00 - 12:00</th>
-                    <td class = "scheduleBody1"></th>
-                    <td class = "scheduleBody1"></th>
-                    <td class = "scheduleBody1"></th>
-                    <td class = "scheduleBody1"></th>
-                    <td class = "scheduleBody1"></th>
-                    <td class = "scheduleBody1"></th>
-                    <td class = "scheduleBody1"></th>
-                </tr>
-                <tr>
-                    <td class = "scheduleBody2">12:00 - 13:00</th>
-                    <td class = "scheduleBody2"></th>
-                    <td class = "scheduleBody2"></th>
-                    <td class = "scheduleBody2"></th>
-                    <td class = "scheduleBody2"></th>
-                    <td class = "scheduleBody2"></th>
-                    <td class = "scheduleBody2"></th>
-                    <td class = "scheduleBody2"></th>
-                </tr>
-                <tr>
-                    <td class = "scheduleBody1">13:00 - 14:00</th>
-                    <td class = "scheduleBody1"></th>
-                    <td class = "scheduleBody1"></th>
-                    <td class = "scheduleBody1"></th>
-                    <td class = "scheduleBody1"></th>
-                    <td class = "scheduleBody1"></th>
-                    <td class = "scheduleBody1"></th>
-                    <td class = "scheduleBody1"></th>
-                </tr>
-                <tr>
-                    <td class = "scheduleBody2">14:00 - 15:00</th>
-                    <td class = "scheduleBody2"></th>
-                    <td class = "scheduleBody2"></th>
-                    <td class = "scheduleBody2"></th>
-                    <td class = "scheduleBody2"></th>
-                    <td class = "scheduleBody2"></th>
-                    <td class = "scheduleBody2"></th>
-                    <td class = "scheduleBody2"></th>
-                </tr>
-                <tr>
-                    <td class = "scheduleBody1">15:00 - 16:00</th>
-                    <td class = "scheduleBody1"></th>
-                    <td class = "scheduleBody1"></th>
-                    <td class = "scheduleBody1"></th>
-                    <td class = "scheduleBody1"></th>
-                    <td class = "scheduleBody1"></th>
-                    <td class = "scheduleBody1"></th>
-                    <td class = "scheduleBody1"></th>
-                </tr>
-                <tr>
-                    <td class = "scheduleBody2">16:00 - 17:00</th>
-                    <td class = "scheduleBody2"></th>
-                    <td class = "scheduleBody2"></th>
-                    <td class = "scheduleBody2"></th>
-                    <td class = "scheduleBody2"></th>
-                    <td class = "scheduleBody2"></th>
-                    <td class = "scheduleBody2"></th>
-                    <td class = "scheduleBody2"></th>
-                </tr>
-                <tr>
-                    <td class = "scheduleBody1">17:00 - 18:00</th>
-                    <td class = "scheduleBody1"></th>
-                    <td class = "scheduleBody1"></th>
-                    <td class = "scheduleBody1"></th>
-                    <td class = "scheduleBody1"></th>
-                    <td class = "scheduleBody1"></th>
-                    <td class = "scheduleBody1"></th>
-                    <td class = "scheduleBody1"></th>
-                </tr>
-                <tr>
-                    <td class = "scheduleBody2">18:00 - 19:00</th>
-                    <td class = "scheduleBody2"></th>
-                    <td class = "scheduleBody2"></th>
-                    <td class = "scheduleBody2"></th>
-                    <td class = "scheduleBody2"></th>
-                    <td class = "scheduleBody2"></th>
-                    <td class = "scheduleBody2"></th>
-                    <td class = "scheduleBody2"></th>
-                </tr>
-                <tr>
-                    <td class = "scheduleBody1">19:00 - 20:00</th>
-                    <td class = "scheduleBody1"></th>
-                    <td class = "scheduleBody1"></th>
-                    <td class = "scheduleBody1"></th>
-                    <td class = "scheduleBody1"></th>
-                    <td class = "scheduleBody1"></th>
-                    <td class = "scheduleBody1"></th>
-                    <td class = "scheduleBody1"></th>
-                </tr>
-            </table>
-            
-        </div>
-
-    
-
 
     </div>
 
-    
-
 </body>
-</html>

@@ -8,33 +8,33 @@
 
 }
 
-.header
+/* CONFIGURACIÓN DEL CONTENEDOR DE TODO */
+
+.mainContainer
 {
 
-    width: 100%;
-    height: 100vh;
-
-    max-width: 100%;
-    max-height: 100%;
-
     background-image: url(/static/img/background.png);
-    background-position: center;
     background-size: cover;
-
-    overflow: hidden;
+    height: 100vh;
+    overflow-y: hidden;
 
 }
 
-.menuSideBar
+/* CONFIGURACIÓN DEL MENÚ LATERAL Y DE SUS COMPONENTES */
+
+.sideMenuContainer
 {
 
-    background-color: #a9a9a980;
+    background-color: rgba(169, 169, 169, .5);
+
     width: 10%;
     height: 100%;
 
+    max-height: 100vh;
+
     float: left;
     text-align: center;
-
+    overflow-y: auto;
 
 }
 
@@ -42,41 +42,215 @@
 {
 
     max-width: 100%;
+    max-height: 100%;
 
-    padding-left: 0.3rem;
-    padding-right: 0.3rem;
-    padding-top: 0.3rem;
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+    padding-top: 0.25rem;
 
 }
 
-.instructionText
+.iconBox
+{
+
+    max-height: 100%;
+
+    width: 80%;
+    margin-right: 10%;
+    margin-left: 10%;
+
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    border-radius: 10px;
+
+    transition: background-color 0.3s ease;
+
+}
+
+.iconBox:hover
+{
+
+    background-color: rgba(0, 0, 0, 0.2);
+
+}
+
+.iconImage
 {
     
-    color: white;
-    width: 60%;
-    float: right;
-    margin-right: 4rem;
 
+    max-width: 100%;
+    max-height: 100%;
 
 
 }
 
-.scheduleTable
+/* CONFIGURACIÓN DEL CONTENEDOR PRINCIPAL */
+
+.contentContainer
+{
+
+    width: 90%;
+    height: 100%;
+
+    max-height: 100vh;
+
+    float: right;
+    text-align: center;
+
+}
+
+/* CONFIGURACIÓN DEL ENUNCIADO DE LA PÁGINA */
+
+.titleContainer
+{
+
+    color: white;
+    text-align: center;
+
+    max-height: 30%;
+
+    overflow: hidden;
+
+}
+
+/* CONFIGURACIÓN DE LOS BOTONES DE LA PÁGINA */
+
+.buttonsContainer
+{
+
+    height: 10%;
+    max-height: 10%;
+
+    width: 100%;
+    max-width: 100%;
+
+    text-align: center;
+    margin: 0 auto;
+
+}
+
+.button
+{
+
+
+    width: 12%;
+    height: 100%;
+
+    max-width: 15%;
+    max-height: 100%;
+
+    margin-left: 2%;
+    margin-right: 2%;
+
+    padding: 0.5rem;
+
+    border-radius: 50px;
+    transition: box-shadow 0.3s ease;
+
+    text-align: center;
+
+    float: left;
+
+}
+
+.button2
+{
+
+
+    width: 12%;
+    height: 100%;
+
+    max-width: 15%;
+    max-height: 100%;
+
+    margin-left: 2%;
+    margin-right: 2%;
+
+    padding: 0.5rem;
+
+    border-radius: 50px;
+    transition: box-shadow 0.3s ease;
+
+    text-align: center;
+
+    float: right;
+
+}
+
+.button:hover
+{
+
+    box-shadow: 0 0.2rem 0.6rem rgba(0, 0, 0, 1);
+
+}
+
+.button2:hover
+{
+
+    box-shadow: 0 0.2rem 0.6rem rgba(0, 0, 0, 1);
+
+}
+
+#addButtonImage
+{
+
+    max-height: 100%;
+    max-width: 30%;
+
+}
+
+#removeButtonImage
+{
+
+    max-height: 100%;
+    max-width: 30%;
+
+}
+
+#captureButtonImage
+{
+
+    max-height: 100%;
+    max-width: 30%;
+
+}
+
+#searchButtonImage
+{
+
+    max-height: 100%;
+    max-width: 30%;
+
+}
+
+/* CONFIGURACIÓN DE LA TABLA Y SUS PROPIEDADES */
+
+.scheduleContainer
 {
 
 
     width: 90%;
-    height: 65%;
+    height: 60%;
 
 
-    /* max-width: 100%;
-    max-height: 100%; */
+    max-width: 100%;
+    max-height: 60%;
 
     padding-top: 1rem;
     padding-left: 1.7rem;
     padding-bottom: 0.5rem;
     overflow-y: auto;
-    overflow-x: auto;
+
+    
+
+}
+
+#schedule
+{
+
+    margin: 0 auto;
 
 }
 
@@ -109,129 +283,4 @@
     color: white;
     padding: 0.5rem;
 
-}
-
-.buttonCreateEvent
-{
-
-    max-width: 100%;
-    max-height: 100%;
-
-    background-color: rgb(153, 153, 153, 0.7);
-    color: white;
-    transition: box-shadow 0.3s ease;
-
-    width: 100px;
-    height: 100px;
-    text-align: center;
-    border-radius: 10px;
-    margin-left: 2rem;
-    margin-right: 2rem;
-    margin-top: 2rem;
-
-    float: right;
-
-}
-
-.buttonDeleteEvent
-{
-
-    max-width: 100%;
-    max-height: 100%;
-
-    background-color: rgb(153, 153, 153, 0.7);
-    color: white;
-    transition: box-shadow 0.3s ease;
-
-    width: 100px;
-    height: 100px;
-    text-align: center;
-    border-radius: 10px;
-    margin-left: 2rem;
-    margin-right: 2rem;
-    margin-top: 2rem;
-
-    float: right;
-
-}
-
-.buttonCreateEvent:hover
-{
-
-    box-shadow: 0 0.2rem 0.6rem rgba(255, 255, 255, 0.3);
-
-}
-
-.buttonDeleteEvent:hover
-{
-
-    box-shadow: 0 0.2rem 0.6rem rgba(255, 255, 255, 0.3);
-
-}
-
-.selectedIndexBox
-{
-
-    max-width: 80%;
-    margin: auto;
-
-    transition: background-color 0.3s ease;
-
-    width: 300px;
-
-    padding-left: 1%;
-    padding-right: 1rem;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-    border-radius: 10px;
-
-    text-align: center;
-
-}
-
-.selectedIndexBox:hover
-{
-
-    background-color: rgba(0, 0, 0, 0.2);
-
-}
-
-/* Estilos responsive */
-
-@media (max-width: 768px) {
-    .scheduleTable {
-        width: 100%;
-        overflow-x: auto;
-    }
-
-    table {
-        border: 0;
-    }
-
-    table thead {
-        display: none;
-    }
-
-    table tr {
-        margin-bottom: 10px;
-        display: block;
-        border: 1px solid #ccc;
-    }
-
-    table td {
-        display: block;
-        text-align: right;
-        padding: 10px;
-        position: relative;
-    }
-
-    table td::before {
-        content: attr(data-label);
-        position: absolute;
-        left: 0;
-        width: 50%;
-        padding-left: 15px;
-        font-weight: bold;
-        
-    }
 }
