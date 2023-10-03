@@ -154,6 +154,7 @@ def register():
         # Establecer una sesión de usuario para el nuevo usuario registrado
         session['logueado'] = True
         session['idUsuario'] = cur.lastrowid
+        session['nombre'] = account['nombre']
 
         # Redirigir al usuario a la página de administrador
         return render_template('admin.html')
