@@ -7,6 +7,8 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&display=swap" rel="stylesheet">
     <link rel = "stylesheet" href = "{{url_for('static', filename='styles/scheduleStyle.css')}}">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
@@ -53,7 +55,7 @@
             </div>
             <div class = "buttonsContainer">
 
-                <div class = "button">
+                <div class = "button" id = "addButton" onclick="mostrarVentana()">
                     <img id = "addButtonImage" src = "{{url_for('static', filename='img/icons/add_event.png')}}" width="100">
                 </div>
                 <div class = "button">
@@ -214,8 +216,127 @@
                 <br><br><br><br>
             </div>
 
+            
+
+        </div>
+
+        <div class = "addEventWindow" id = "addEventWindow">
+
+            <div id="addEventForm">
+                <div id = "formBody">
+
+                    <form>
+
+                        <h2>Agrega un nuevo Evento:</h2>
+                        <br>
+                        <label for="nombreEvento" style="margin-bottom: 10px;">Nombre del Evento:</label>
+                        <br>
+                        <input class = "inputText" type="text" id="nombreEvento" aria-describedby="text" name="nombreEvento" required>
+                        <br><br><br>
+                        <label for="diaSemana" style="margin-bottom: 10px;">Día de la Semana:</label>
+                        <select id = "diaSemana" class = "selector">
+
+                            <option value = "Lunes" class = "opcion">Lunes</option>
+                            <option value = "Martes" class = "opcion">Martes</option>
+                            <option value = "Miércoles" class = "opcion">Miércoles</option>
+                            <option value = "Jueves" class = "opcion">Jueves</option>
+                            <option value = "Viernes" class = "opcion">Viernes</option>
+                            <option value = "Sábado" class = "opcion">Sábado</option>
+                            <option value = "Domingo" class = "opcion">Domingo</option>
+
+                        </select>
+                        <br><br>
+                        <label for="horaInicio" style="margin-bottom: 10px;">Hora de Inicio:</label>
+                        <select id = "horaInicio" class = "selector">
+
+                            <option value = "7" class = "opcion">7:00</option>
+                            <option value = "8" class = "opcion">8:00</option>
+                            <option value = "9" class = "opcion">9:00</option>
+                            <option value = "10" class = "opcion">10:00</option>
+                            <option value = "11" class = "opcion">11:00</option>
+                            <option value = "12" class = "opcion">12:00</option>
+                            <option value = "13" class = "opcion">13:00</option>
+                            <option value = "14" class = "opcion">14:00</option>
+                            <option value = "15" class = "opcion">15:00</option>
+                            <option value = "16" class = "opcion">16:00</option>
+                            <option value = "17" class = "opcion">17:00</option>
+                            <option value = "18" class = "opcion">18:00</option>
+                            <option value = "19" class = "opcion">19:00</option>
+
+                        </select>
+                        <br><br>
+                        <label for="horaFin" style="margin-bottom: 10px;">Hora de Fin:</label>
+                        <select id = "horaFin" class = "selector">
+
+                            <option value = "8" class = "opcion">8:00</option>
+                            <option value = "9" class = "opcion">9:00</option>
+                            <option value = "10" class = "opcion">10:00</option>
+                            <option value = "11" class = "opcion">11:00</option>
+                            <option value = "12" class = "opcion">12:00</option>
+                            <option value = "13" class = "opcion">13:00</option>
+                            <option value = "14" class = "opcion">14:00</option>
+                            <option value = "15" class = "opcion">15:00</option>
+                            <option value = "16" class = "opcion">16:00</option>
+                            <option value = "17" class = "opcion">17:00</option>
+                            <option value = "18" class = "opcion">18:00</option>
+                            <option value = "19" class = "opcion">19:00</option>
+                            <option value = "20" class = "opcion">20:00</option>
+
+                        </select>
+                        
+                        <br><br>
+
+
+                    </form>
+
+                </div>
+
+                <div id= "addEventWindowButtons">
+
+                    <button id = "formButtonAccept" onclick="ocultarVentana()">ACEPTAR</button>
+                    <button id = "formButtonDecline" onclick="ocultarVentana()">CANCELAR</button>
+
+                </div>
+
+            </div>
+
         </div>
 
     </div>
+
+    <!-- CÓDIGOS DE JAVASCRIPT -->
+
+
+    <!-- CÓDIGOS PARA OCULTAR LOS MENÚS EMERGENTES AUTOMÁTICAMENTE AL INICIO -->
+    <script> 
+
+        document.addEventListener('DOMContentLoaded', function() {
+        var divAgregarEvento = document.getElementById('addEventWindow');
+        divAgregarEvento.style.display = 'none'; // Esto oculta el div al cargar la página
+        });
+
+    </script>
+
+
+    <!-- CÓDIGOS PARA MOSTRAR LOS MENÚS CORRESPONDIENTES -->
+    <script>
+
+        function mostrarVentana() {
+        var ventanaEmergente = document.getElementById("addEventWindow");
+        ventanaEmergente.style.display = "flex";
+        }
+    </script>
+
+    <!-- CÓDIGOS PARA VOLVER A OCULTAR LOS MENÚS CORRESPONDIENTES-->
+
+    <script>
+
+        function ocultarVentana() {
+        var ventanaEmergente = document.getElementById("addEventWindow");
+        ventanaEmergente.style.display = "none";
+        }
+
+    </script>
+
 
 </body>
