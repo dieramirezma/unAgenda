@@ -225,7 +225,7 @@
             <div id="addEventForm">
                 <div id = "formBody">
 
-                    <form>
+                    <form action="/eventAdd" method="POST">
 
                         <h2>Agrega un nuevo Evento:</h2>
                         <br>
@@ -234,7 +234,7 @@
                         <input class = "inputText" type="text" id="nombreEvento" aria-describedby="text" name="nombreEvento" required>
                         <br><br><br>
                         <label for="diaSemana" style="margin-bottom: 10px;">Día de la Semana:</label>
-                        <select id = "diaSemana" class = "selector">
+                        <select id = "diaSemana" class = "selector" name = "diaSemanal">
 
                             <option value = "1" class = "opcion">Lunes</option>
                             <option value = "2" class = "opcion">Martes</option>
@@ -247,7 +247,7 @@
                         </select>
                         <br><br>
                         <label for="horaInicio" style="margin-bottom: 10px;">Hora de Inicio:</label>
-                        <select id = "horaInicio" class = "selector">
+                        <select id = "horaInicio" class = "selector" name = "horaInicio">
 
                             <option value = "7" class = "opcion">7:00</option>
                             <option value = "8" class = "opcion">8:00</option>
@@ -266,7 +266,7 @@
                         </select>
                         <br><br>
                         <label for="horaFin" style="margin-bottom: 10px;">Hora de Fin:</label>
-                        <select id = "horaFin" class = "selector">
+                        <select id = "horaFin" class = "selector" name = horaFin>
 
                             <option value = "8" class = "opcion">8:00</option>
                             <option value = "9" class = "opcion">9:00</option>
@@ -286,22 +286,61 @@
                         
                         <br><br>
 
+                        <div id= "addEventWindowButtons">
+
+                            <button id = "formButtonAccept" onclick="crearEvento()" type = "submit">ACEPTAR</button>
+                            <button id = "formButtonDecline" onclick="ocultarVentana()">CANCELAR</button>
+        
+                        </div>
 
                     </form>
 
                 </div>
 
-                <div id= "addEventWindowButtons">
-
-                    <button id = "formButtonAccept" onclick="crearEvento()">ACEPTAR</button>
-                    <button id = "formButtonDecline" onclick="ocultarVentana()">CANCELAR</button>
-
-                </div>
+                
 
             </div>
 
         </div>
 
     </div>
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+        let schedule = document.getElementById("schedule");
+        
+        let evento = JSON.parse('{{ eventosList | tojson | safe }}');
+        let diaSemanaList = JSON.parse('{{ diaSemanaList | tojson | safe }}');
+        let horaInicioList = JSON.parse('{{ horaInicioList | tojson | safe }}');
+        let horaFinList = JSON.parse('{{ horaFinList | tojson | safe }}');
+        
+
+        let j = 0;
+
+        while (j < evento.length)
+        {
+
+            let nombre = evento[j];
+            let dia = diaSemanaList[j];
+            const horaInicioVal = horaInicioList[j];
+            const horaFinVal = horaFinList[j];
+
+            const diferencia = horaFinVal - horaInicioVal;
+            const colorRandom = COLORES[Math.floor(Math.random() * COLORES.length)];
+
+            for (let i = 0; i < diferencia; i++) {
+            let celda = schedule.rows[horaInicioVal - 6 + i].cells[dia];
+            celda.style.backgroundColor = colorRandom;
+            celda.style.color = "black";
+            celda.textContent = nombre;
+            }
+
+            j++;
+
+        }
+        });
+    </script>
 
 </body>

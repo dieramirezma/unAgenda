@@ -86,6 +86,9 @@ function editarCelda() {
     celda.textContent = nombreEvento.value;
   }
 
+
+
+
   console.log(horaInicio.value, horaFin.value);
 }
 

@@ -8,7 +8,7 @@ app = Flask(__name__, template_folder='templates')
 # Configuración de la conexión a la base de datos MySQL
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'db12dieramirezma'
+app.config['MYSQL_PASSWORD'] = 'root'
 app.config['MYSQL_DB'] = 'prFlask'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -23,12 +23,78 @@ def homepage():
 # Definición de la ruta para la página de administrador
 @app.route('/admin')
 def admin():
-    return render_template('admin.html')
+    print (session['nombre'])
+    return render_template('admin.html', username = session['nombre'])
+    
 
 # Definición de la ruta para la página de horario
 @app.route('/schedule')
 def schedule():
-    return render_template('schedule.html')
+
+    _idUsuarioActual = session['idUsuario']
+    print(_idUsuarioActual)
+
+    cur = mysql.connection.cursor()
+
+    #Recuperar los Eventos del Usuario
+    cur.execute('SELECT evento FROM horario WHERE idUsuario = %s', (_idUsuarioActual,))
+    resultados = cur.fetchall()
+    eventos = [resultado['evento'] for resultado in resultados]
+
+    cur.execute('SELECT horaInicio FROM horario WHERE idUsuario = %s', (_idUsuarioActual,))
+    resultados = cur.fetchall()
+    horasInicio = [resultado['horaInicio'] for resultado in resultados]
+    
+    cur.execute('SELECT horaFin FROM horario WHERE idUsuario = %s', (_idUsuarioActual,))
+    resultados = cur.fetchall()
+    horasFin = [resultado['horaFin'] for resultado in resultados]
+
+    cur.execute('SELECT diaSemana FROM horario WHERE idUsuario = %s', (_idUsuarioActual,))
+    resultados = cur.fetchall()
+    diasSemana = [resultado['diaSemana'] for resultado in resultados]
+
+
+    return render_template('schedule.html', eventosList = eventos, horaInicioList = horasInicio, horaFinList = horasFin, diaSemanaList = diasSemana)
+
+@app.route('/eventAdd', methods = ["GET", "POST"])
+def addEvent():
+    # Verificar si se ha enviado un formulario POST
+    if request.method == 'POST'and 'nombreEvento' in request.form and 'diaSemanal' in request.form:
+        # Obtener el Evento, las horas de inicio y fin, y el día
+        _nombreEvento = request.form['nombreEvento']
+        _diaSemana = request.form['diaSemanal']
+        _horaInicio = request.form['horaInicio']
+        _horaFin = request.form['horaFin']
+
+        # Crear un cursor para la base de datos MySQL
+        cur = mysql.connection.cursor()
+
+        #Insertar el nuevo Evento
+        cur.execute('INSERT INTO horario (idUsuario, evento, horaInicio, horaFin, diaSemana) VALUES (%s, %s, %s, %s, %s)', (session['idUsuario'], _nombreEvento, _horaInicio, _horaFin, _diaSemana))
+        mysql.connection.commit()
+
+        #Recuperar los Eventos del Usuario
+
+        _idUsuarioActual = session['idUsuario']
+
+        cur.execute('SELECT evento FROM horario WHERE idUsuario = %s', (_idUsuarioActual,))
+        resultados = cur.fetchall()
+        eventos = [resultado['evento'] for resultado in resultados]
+
+        cur.execute('SELECT horaInicio FROM horario WHERE idUsuario = %s', (_idUsuarioActual,))
+        resultados = cur.fetchall()
+        horasInicio = [resultado['horaInicio'] for resultado in resultados]
+    
+        cur.execute('SELECT horaFin FROM horario WHERE idUsuario = %s', (_idUsuarioActual,))
+        resultados = cur.fetchall()
+        horasFin = [resultado['horaFin'] for resultado in resultados]
+
+        cur.execute('SELECT diaSemana FROM horario WHERE idUsuario = %s', (_idUsuarioActual,))
+        resultados = cur.fetchall()
+        diasSemana = [resultado['diaSemana'] for resultado in resultados]
+
+        #Recargar la Página. 
+        return render_template('schedule.html', eventosList = eventos, horaInicioList = horasInicio, horaFinList = horasFin, diaSemanaList = diasSemana)
 
 # Ruta para el proceso de inicio de sesión
 @app.route('/loginAccess', methods=["GET", "POST"])
@@ -53,9 +119,10 @@ def login():
             # Establecer una sesión de usuario marcándolo como logueado y almacenando su ID de usuario
             session['logueado'] = True
             session['idUsuario'] = account['idUsuario']
+            session['nombre'] = account['nombre']
             
             # Redirigir al usuario a la página de administrador
-            return render_template('admin.html')
+            return render_template('admin.html', username = session['nombre'])
         else:
             # Si no se encuentra un usuario, redirigir de nuevo a la página de inicio
             return render_template('index.html')

@@ -265,6 +265,9 @@
     padding-right: 2rem;
     border-radius: 5px;
 
+    width: 10rem;
+    max-width: 10rem;
+
 }
 
 .scheduleBody1
@@ -274,6 +277,9 @@
     color: white;
     padding: 0.5rem;
 
+    width: 10rem;
+    max-width: 10rem;
+
 }
 
 .scheduleBody2
@@ -282,6 +288,9 @@
     background-color:rgb(82, 82, 82);
     color: white;
     padding: 0.5rem;
+
+    width: 10rem;
+    max-width: 10rem;
 
 }
 

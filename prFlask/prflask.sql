@@ -65,3 +65,20 @@ INSERT INTO notas (idUsuario, contenido) VALUES (1, 'Esta es la nota del usuario
 
 
 SELECT * FROM notas;
+
+
+-- CREACIÓN DE LOS EVENTOS DEL HORARIO --
+DROP TABLE IF EXISTS `horario`;
+
+CREATE TABLE horario (
+    `idHorario` INT(11) NOT NULL AUTO_INCREMENT,
+    `idUsuario` INT(11) NOT NULL,
+    `evento` VARCHAR(255) NOT NULL,
+    `horaInicio` INT(5) NOT NULL,
+    `horaFin` INT(5) NOT NULL,
+    `diaSemana` VARCHAR(15) NOT NULL,
+    PRIMARY KEY (`idHorario`),
+    FOREIGN KEY (`idUsuario`) REFERENCES usuario(`idUsuario`)
+);
+
+SELECT * FROM horario;
