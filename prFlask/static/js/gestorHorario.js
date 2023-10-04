@@ -86,9 +86,6 @@ function editarCelda() {
     celda.textContent = nombreEvento.value;
   }
 
-
-
-
   console.log(horaInicio.value, horaFin.value);
 }
 
@@ -98,7 +95,9 @@ function crearEvento() {
   if (validarFormulario()) {
     editarCelda();
     ocultarVentana();
+    return true;
   }
+  return false;
 }
 
 function validarFormulario() {

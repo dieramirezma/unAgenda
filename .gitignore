@@ -1,2 +1,3 @@
 tempCodeRunnerFile.py
-.vscode
+.vscode/
+prFlask/__pycache__/

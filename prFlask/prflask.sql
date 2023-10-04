@@ -1,3 +1,4 @@
+USE prflask;
 -- MySQL dump 10.13  Distrib 8.0.13, for Win64 (x86_64)
 --
 -- Host: localhost    Database: prflask
@@ -60,7 +61,7 @@ CREATE TABLE notas (
     contenido TEXT,
     FOREIGN KEY (idUsuario) REFERENCES usuarios(idUsuario)
 );
-);
+
 INSERT INTO notas (idUsuario, contenido) VALUES (1, 'Esta es la nota del usuario 1.');
 
 
