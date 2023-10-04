@@ -9,6 +9,7 @@
     <link rel = "stylesheet" href = "{{url_for('static', filename='styles/scheduleStyle.css')}}">
 
     <script src="static/js/gestorHorario.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
     <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
 </head>
 
@@ -64,7 +65,7 @@
                 <div class = "button2">
                     <img id = "searchButtonImage" src = "{{url_for('static', filename='img/icons/search.png')}}" width="100">
                 </div>
-                <div class = "button2">
+                <div class = "button2" onclick="html2canvasFunc()">
                     <img id = "captureButtonImage" src = "{{url_for('static', filename='img/icons/capture.png')}}" width="100">
                 </div>
                 
@@ -288,7 +289,7 @@
 
                         <div id= "addEventWindowButtons">
 
-                            <button id = "formButtonAccept" onclick="crearEvento()" type = "submit">ACEPTAR</button>
+                            <button id = "formButtonAccept" type = "submit">ACEPTAR</button>
                             <button id = "formButtonDecline" onclick="ocultarVentana()">CANCELAR</button>
         
                         </div>
@@ -309,36 +310,21 @@
     <script>
         document.addEventListener("DOMContentLoaded", function () {
 
-        let schedule = document.getElementById("schedule");
+        var schedule = document.getElementById("schedule");
         
-        let evento = JSON.parse('{{ eventosList | tojson | safe }}');
-        let diaSemanaList = JSON.parse('{{ diaSemanaList | tojson | safe }}');
-        let horaInicioList = JSON.parse('{{ horaInicioList | tojson | safe }}');
-        let horaFinList = JSON.parse('{{ horaFinList | tojson | safe }}');
+        var evento = JSON.parse('{{ eventosList | tojson | safe }}');
+        var diaSemanaList = JSON.parse('{{ diaSemanaList | tojson | safe }}');
+        var horaInicioList = JSON.parse('{{ horaInicioList | tojson | safe }}');
+        var horaFinList = JSON.parse('{{ horaFinList | tojson | safe }}');
         
 
-        let j = 0;
+        var j = 0;
 
         while (j < evento.length)
-        {
-
-            let nombre = evento[j];
-            let dia = diaSemanaList[j];
-            const horaInicioVal = horaInicioList[j];
-            const horaFinVal = horaFinList[j];
-
-            const diferencia = horaFinVal - horaInicioVal;
-            const colorRandom = COLORES[Math.floor(Math.random() * COLORES.length)];
-
-            for (let i = 0; i < diferencia; i++) {
-            let celda = schedule.rows[horaInicioVal - 6 + i].cells[dia];
-            celda.style.backgroundColor = colorRandom;
-            celda.style.color = "black";
-            celda.textContent = nombre;
-            }
-
+        {   
+            editarCelda(evento, diaSemanaList, horaInicioList, horaFinList, j)
             j++;
-
+            
         }
         });
     </script>

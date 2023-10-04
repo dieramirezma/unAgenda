@@ -63,61 +63,30 @@ function ocultarVentana() {
   ventanaEmergente.style.display = "none";
 }
 
-//$ EDITAR TABLA
-
-//  Cambiar de color las celdas de la tabla
-function editarCelda() {
-  let diaSemana = document.getElementById("diaSemana");
-  let nombre;
-  let schedule = document.getElementById("schedule");
-  let dia = parseInt(diaSemana.value);
-
-  const horaInicioVal = parseInt(horaInicio.value);
-  const horaFinVal = parseInt(horaFin.value);
+function editarCelda(evento, diaSemanaList, horaInicioList, horaFinList, j) {
+  let nombre = evento[j];
+  let dia = diaSemanaList[j];
+  const horaInicioVal = horaInicioList[j];
+  const horaFinVal = horaFinList[j];
 
   const diferencia = horaFinVal - horaInicioVal;
-
   const colorRandom = COLORES[Math.floor(Math.random() * COLORES.length)];
 
   for (let i = 0; i < diferencia; i++) {
     let celda = schedule.rows[horaInicioVal - 6 + i].cells[dia];
     celda.style.backgroundColor = colorRandom;
     celda.style.color = "black";
-    celda.textContent = nombreEvento.value;
-  }
-
-  console.log(horaInicio.value, horaFin.value);
+    celda.textContent = nombre;
+  } 
 }
 
-//$ VALIDAR FORMULARIO
-
-function crearEvento() {
-  if (validarFormulario()) {
-    editarCelda();
-    ocultarVentana();
-    return true;
-  }
-  return false;
-}
-
-function validarFormulario() {
-  let nombreEvento = document.getElementById("nombreEvento").value;
-  let diaSemana = document.getElementById("diaSemana").value;
-  let horaInicio = document.getElementById("horaInicio").value;
-  let horaFin = document.getElementById("horaFin").value;
-
-  if (nombreEvento == "") {
-    alert("El nombre del evento no puede estar vacío");
-    return false;
-  } else if (diaSemana == "") {
-    alert("Debe seleccionar un día de la semana");
-    return false;
-  } else if (horaInicio == "") {
-    alert("Debe seleccionar una hora inicial");
-    return false;
-  } else if (horaFin == "") {
-    alert("Debe seleccionar una hora final");
-    return false;
-  }
-  return true;
+// % DESCARGAR HORARIO
+function html2canvasFunc() {
+  html2canvas(document.querySelector("table")).then(function (canvas) {
+    // Convertir el canvas en una imagen PNG
+    var imgData = canvas.toDataURL("image/png");
+    var img = new Image();
+    img.src = imgData;
+    document.getElementById("imagen").appendChild(img);
+  });
 }
