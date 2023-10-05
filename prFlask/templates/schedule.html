@@ -346,6 +346,7 @@
 
             var displayDiv = document.createElement("div");
             displayDiv.className = "removeBoxEventDiv";
+            displayDiv.id = "removeFullContent";
 
             var removeEventContent = document.getElementById("removeEventContent");
             removeEventContent.appendChild(displayDiv);
@@ -362,6 +363,7 @@
 
                 var dataDiv = document.createElement("div");
                 dataDiv.className = "removeBoxContentDiv";
+                
 
                 var individualEventDiv = document.createElement("div");
                 individualEventDiv.className = "individualEventDiv";
@@ -428,6 +430,29 @@
 
             }
 
+
+            var acceptButton = document.createElement("button");
+            acceptButton.className = "acceptButton";
+            acceptButton.type = "button";
+            acceptButton.textContent = "VOLVER"
+
+            var removeEventWindowDiv = document.getElementById("removeEventContent");
+            removeEventWindowDiv.appendChild(acceptButton);
+
+            acceptButton.addEventListener("click", function()
+            {
+
+                var fullDataDiv = document.getElementById("removeFullContent");
+                fullDataDiv.remove();
+
+                this.remove();
+
+                var ventanaEmergente = document.getElementById("removeEventWindow");
+                ventanaEmergente.style.display = "none";
+
+                
+
+            });
 
         }        
 

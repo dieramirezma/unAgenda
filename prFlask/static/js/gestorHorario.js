@@ -152,4 +152,8 @@ function createEventRemovalGUI(eventTitle, eventDetailsDay, evento, diaSemana, h
   eventDetailsGuion.textContent = ":00 - " + horaFinVal +":00";
 }
 
+//OCULTAR LA VENTANA
+
+
+
 

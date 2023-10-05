@@ -445,7 +445,30 @@
 
 }
 
+.acceptButton
+{
+
+    margin: 1rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+
+    border-radius: 10px;
+    background-color: rgb(163, 218, 163);
+
+    float: right;
+
+}
+
 .removeButton:hover
+{
+
+    cursor: pointer;
+
+}
+
+.acceptButton:hover
 {
 
     cursor: pointer;
