@@ -8,7 +8,7 @@ app = Flask(__name__, template_folder='templates')
 # Configuración de la conexión a la base de datos MySQL
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'db12dieramirezma'
+app.config['MYSQL_PASSWORD'] = '22446688Rengifo'
 app.config['MYSQL_DB'] = 'prFlask'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -95,6 +95,55 @@ def addEvent():
 
         #Recargar la Página. 
         return render_template('schedule.html', eventosList = eventos, horaInicioList = horasInicio, horaFinList = horasFin, diaSemanaList = diasSemana)
+    
+@app.route('/eventRemove', methods = ["GET", "POST"])
+def removeEvent():
+    eventoSTR = request.args.get('eventoSTR')
+    diaSTR = request.args.get('diaSTR')
+    horaInicioSTR = request.args.get('horaInicioSTR')
+
+    actualDay = 0
+    _idUsuarioActual = session['idUsuario']
+    
+    if diaSTR == "LUNES ":
+        actualDay = 1
+    elif diaSTR == "MARTES ":
+        actualDay = 2
+    elif diaSTR == "MIÉRCOLES ":
+        actualDay = 3
+    elif diaSTR == "JUEVES ":
+        actualDay = 4
+    elif diaSTR == "VIERNES ":
+        actualDay = 5
+    elif diaSTR == "SÁBADO ":
+        actualDay = 6
+    elif diaSTR == "DOMINGO ":
+        actualDay = 7
+
+    cur = mysql.connection.cursor()
+    cur.execute('DELETE FROM horario WHERE evento = %s AND horaInicio = %s AND diaSemana = %s AND idUsuario = %s', (eventoSTR, horaInicioSTR, actualDay, _idUsuarioActual,))
+    mysql.connection.commit()
+    
+
+    #Recuperar los Eventos del Usuario
+    cur.execute('SELECT evento FROM horario WHERE idUsuario = %s', (_idUsuarioActual,))
+    resultados = cur.fetchall()
+    eventos = [resultado['evento'] for resultado in resultados]
+
+    cur.execute('SELECT horaInicio FROM horario WHERE idUsuario = %s', (_idUsuarioActual,))
+    resultados = cur.fetchall()
+    horasInicio = [resultado['horaInicio'] for resultado in resultados]
+    
+    cur.execute('SELECT horaFin FROM horario WHERE idUsuario = %s', (_idUsuarioActual,))
+    resultados = cur.fetchall()
+    horasFin = [resultado['horaFin'] for resultado in resultados]
+
+    cur.execute('SELECT diaSemana FROM horario WHERE idUsuario = %s', (_idUsuarioActual,))
+    resultados = cur.fetchall()
+    diasSemana = [resultado['diaSemana'] for resultado in resultados]
+
+
+    return render_template('schedule.html', eventosList = eventos, horaInicioList = horasInicio, horaFinList = horasFin, diaSemanaList = diasSemana)
 
 # Ruta para el proceso de inicio de sesión
 @app.route('/loginAccess', methods=["GET", "POST"])
@@ -154,7 +203,7 @@ def register():
         # Establecer una sesión de usuario para el nuevo usuario registrado
         session['logueado'] = True
         session['idUsuario'] = cur.lastrowid
-        session['nombre'] = account['nombre']
+        session['nombre'] = existing_user['nombre']
 
         # Redirigir al usuario a la página de administrador
         return render_template('admin.html')

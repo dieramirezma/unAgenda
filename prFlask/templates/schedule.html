@@ -10,7 +10,7 @@
 
     <script src="static/js/gestorHorario.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
-    <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
@@ -59,7 +59,7 @@
                 <div class = "button" id = "addButton" onclick="mostrarVentana()">
                     <img id = "addButtonImage" src = "{{url_for('static', filename='img/icons/add_event.png')}}" width="100">
                 </div>
-                <div class = "button">
+                <div class = "button" onclick = "mostrarVentanaRemove()">
                     <img id = "removeButtonImage" src = "{{url_for('static', filename='img/icons/elim_event.png')}}" width="100">
                 </div>
                 <div class = "button2">
@@ -304,9 +304,18 @@
 
         </div>
 
+        <div class = "removeEventWindow" id = "removeEventWindow">
+            <div id = "removeEventContent">
+                <h2>¿Qué evento deseas borrar?</h1>
+                    <br>
+            </div>
+            
+        </div>
+
+
     </div>
 
-
+    <!-- CARGAR LOS DATOS DE LA BASE DE DATOS -->
     <script>
         document.addEventListener("DOMContentLoaded", function () {
 
@@ -322,11 +331,108 @@
 
         while (j < evento.length)
         {   
-            editarCelda(evento, diaSemanaList, horaInicioList, horaFinList, j)
+            editarCelda(evento, diaSemanaList, horaInicioList, horaFinList, j);
             j++;
             
         }
         });
     </script>
+
+    <!-- CREAR DIVS CON LOS DATOS DE LA BASE DE DATOS PARA EL MENÚ DE BORRAR EVENTO -->
+    <script>
+
+        function displayEventos()
+        {
+
+            var displayDiv = document.createElement("div");
+            displayDiv.className = "removeBoxEventDiv";
+
+            var removeEventContent = document.getElementById("removeEventContent");
+            removeEventContent.appendChild(displayDiv);
+
+            var eventoList = JSON.parse('{{ eventosList | tojson | safe }}');
+            var diaSemanaList = JSON.parse('{{ diaSemanaList | tojson | safe }}');
+            var horaInicioList = JSON.parse('{{ horaInicioList | tojson | safe }}');
+            var horaFinList = JSON.parse('{{ horaFinList | tojson | safe }}');
+
+            var j = 0;
+
+            while (j < eventoList.length)
+            {
+
+                var dataDiv = document.createElement("div");
+                dataDiv.className = "removeBoxContentDiv";
+
+                var individualEventDiv = document.createElement("div");
+                individualEventDiv.className = "individualEventDiv";
+
+                var eventTitle = document.createElement("h3");
+                eventTitle.id = j + "evento";
+
+                var eventDetailsDay = document.createElement("span");
+                eventDetailsDay.className = "removeBoxEventDetails";
+                eventDetailsDay.id = j + "dia";
+
+                var eventDetailsBegin = document.createElement("span");
+                eventDetailsBegin.className = "removeBoxEventDetails";
+                eventDetailsBegin.id = j + "horaInicio";
+
+                var eventDetailsGuion = document.createElement("span");
+                eventDetailsGuion.className = "removeBoxEventDetails";
+                var eventDetailsEnd = document.createElement("span");
+                eventDetailsEnd.className = "removeBoxEventDetails";
+
+
+                createEventRemovalGUI(eventTitle, eventDetailsDay, eventoList, diaSemanaList, horaInicioList, horaFinList, j, eventDetailsBegin, eventDetailsGuion);
+
+                individualEventDiv.appendChild(eventTitle);
+                individualEventDiv.appendChild(eventDetailsDay);
+                individualEventDiv.appendChild(eventDetailsBegin);
+                individualEventDiv.appendChild(eventDetailsGuion);
+                individualEventDiv.appendChild(eventDetailsEnd);
+                dataDiv.appendChild(individualEventDiv);
+
+                var removeButton = document.createElement("button");
+                removeButton.className = "removeButton";
+                removeButton.id = j;
+                removeButton.type = "button";
+                removeButton.textContent = "ELIMINAR"
+
+                //<!-- BORRAR EL EVENTO DE LA BASE DE DATOS -->//
+
+                removeButton.addEventListener("click", function()
+                {
+
+                    console.log(document.getElementById(this.id + "evento").textContent);
+                    console.log(document.getElementById(this.id + "dia").textContent);
+                    console.log(document.getElementById(this.id + "horaInicio").textContent);
+
+                    var eventoSTR = document.getElementById(this.id + "evento").textContent;
+                    var diaSTR = document.getElementById(this.id + "dia").textContent;
+                    var horaInicioSTR = document.getElementById(this.id + "horaInicio").textContent;
+
+                    window.location.href = "/eventRemove?eventoSTR="+ eventoSTR + "&diaSTR=" + diaSTR +"&horaInicioSTR=" +horaInicioSTR;
+
+
+
+                });
+
+
+
+                dataDiv.appendChild(removeButton);
+
+
+                displayDiv.appendChild(dataDiv);
+
+                j++;
+
+            }
+
+
+        }        
+
+    </script>
+
+    
 
 </body>

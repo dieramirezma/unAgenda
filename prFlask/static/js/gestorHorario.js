@@ -24,10 +24,13 @@ const COLORES = [
 var horaInicio;
 var horaFin;
 
-// Ocultar menú de agregar evento al cargar la página
+// Ocultar menús de agregar y quitar evento al cargar la página.
 document.addEventListener("DOMContentLoaded", function () {
   var divAgregarEvento = document.getElementById("addEventWindow");
   divAgregarEvento.style.display = "none";
+
+  var divQuitarEvento = document.getElementById("removeEventWindow");
+  divQuitarEvento.style.display = "none";
 });
 
 //% AGREGAR EVENTO
@@ -90,3 +93,63 @@ function html2canvasFunc() {
     document.getElementById("imagen").appendChild(img);
   });
 }
+
+
+// SECCIÓN DEDICADA A BORRAR EVENTO
+
+//MOSTRAR LA VENTANA DE BORRAR UN EVENTO
+
+function mostrarVentanaRemove() 
+{
+
+  var ventanaEmergente = document.getElementById("removeEventWindow");
+
+  ventanaEmergente.style.display = "flex";
+  displayEventos();
+
+  };
+
+//GENERAR LOS DIVS DE LA VENTANA DE ELIMINAR
+
+function createEventRemovalGUI(eventTitle, eventDetailsDay, evento, diaSemana, horaInicio, horaFin, j, eventDetailsBegin, eventDetailsGuion)
+{
+
+  let nombre = evento[j];
+  let diaP;
+  const horaInicioVal = horaInicio[j];
+  const horaFinVal = horaFin[j];
+
+  switch (diaSemana[j])
+  {
+
+    case "1":
+      diaP = "LUNES";
+      break;
+    case "2":
+      diaP = "MARTES";
+      break;
+    case "3":
+      diaP = "MIÉRCOLES";
+      break;
+    case "4":
+      diaP = "JUEVES";
+      break;
+    case "5":
+      diaP = "VIERNES";
+      break;
+    case "6":
+      diaP = "SÁBADO";
+      break;
+    case "7":
+      diaP = "DOMINGO";
+      break;
+
+  }
+
+  eventTitle.textContent = nombre;
+  eventDetailsDay.textContent = diaP + " ";
+  eventDetailsBegin.textContent = horaInicioVal;
+  eventDetailsGuion.textContent = ":00 - " + horaFinVal +":00";
+}
+
+
