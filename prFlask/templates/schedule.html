@@ -62,7 +62,7 @@
                 <div class = "button" onclick = "mostrarVentanaRemove()">
                     <img id = "removeButtonImage" src = "{{url_for('static', filename='img/icons/elim_event.png')}}" width="100">
                 </div>
-                <div class = "button2">
+                <div class = "button2 " onclick = "mostrarVentanaEdit()">
                     <img id = "searchButtonImage" src = "{{url_for('static', filename='img/icons/search.png')}}" width="100">
                 </div>
                 <div class = "button2" onclick="html2canvasFunc()">
@@ -228,7 +228,7 @@
 
                     <form action="/eventAdd" method="POST">
 
-                        <h2>Agrega un nuevo Evento:</h2>
+                        <h2 id = "addEventTitle">Agrega un nuevo Evento:</h2>
                         <br>
                         <label for="nombreEvento" style="margin-bottom: 10px;">Nombre del Evento:</label>
                         <br>
@@ -248,7 +248,7 @@
                         </select>
                         <br><br>
                         <label for="horaInicio" style="margin-bottom: 10px;">Hora de Inicio:</label>
-                        <select id = "horaInicio" class = "selector" name = "horaInicio">
+                        <select id = "horaInicio" class = "selector" name = "horaInicio" required>
 
                             <option value = "7" class = "opcion">7:00</option>
                             <option value = "8" class = "opcion">8:00</option>
@@ -312,6 +312,13 @@
             
         </div>
 
+        <div class = "editEventWindow" id = "editEventWindow">
+            <div id = "editEventContent">
+                <h2>¿Qué evento deseas modificar?</h1>
+                    <br>
+            </div>
+            
+        </div>
 
     </div>
 
@@ -455,6 +462,178 @@
             });
 
         }        
+
+    </script>
+
+    <!-- CREAR VENTANA DE EDITAR EVENTO -->
+
+    <script>
+
+        function displayEventosEdit()
+        {
+
+            var displayDiv = document.createElement("div");
+            displayDiv.className = "editBoxEventDiv";
+            displayDiv.id = "editFullContent";
+
+            var removeEventContent = document.getElementById("editEventContent");
+            removeEventContent.appendChild(displayDiv);
+
+            var eventoList = JSON.parse('{{ eventosList | tojson | safe }}');
+            var diaSemanaList = JSON.parse('{{ diaSemanaList | tojson | safe }}');
+            var horaInicioList = JSON.parse('{{ horaInicioList | tojson | safe }}');
+            var horaFinList = JSON.parse('{{ horaFinList | tojson | safe }}');
+
+            var j = 0;
+
+            while (j < eventoList.length)
+            {
+
+                var dataDiv = document.createElement("div");
+                dataDiv.className = "editBoxContentDiv";
+                
+
+                var individualEventDiv = document.createElement("div");
+                individualEventDiv.className = "individualEventDiv";
+
+                var eventTitle = document.createElement("h3");
+                eventTitle.id = j + "evento";
+
+                var eventDetailsDay = document.createElement("span");
+                eventDetailsDay.className = "editBoxEventDetails";
+                eventDetailsDay.id = j + "dia";
+
+                var eventDetailsBegin = document.createElement("span");
+                eventDetailsBegin.className = "editBoxEventDetails";
+                eventDetailsBegin.id = j + "horaInicio";
+
+                var eventDetailsGuion = document.createElement("span");
+                eventDetailsGuion.className = "editBoxEventDetails";
+                var eventDetailsEnd = document.createElement("span");
+                eventDetailsEnd.className = "editBoxEventDetails";
+
+
+                createEventRemovalGUI(eventTitle, eventDetailsDay, eventoList, diaSemanaList, horaInicioList, horaFinList, j, eventDetailsBegin, eventDetailsGuion);
+
+                individualEventDiv.appendChild(eventTitle);
+                individualEventDiv.appendChild(eventDetailsDay);
+                individualEventDiv.appendChild(eventDetailsBegin);
+                individualEventDiv.appendChild(eventDetailsGuion);
+                individualEventDiv.appendChild(eventDetailsEnd);
+                dataDiv.appendChild(individualEventDiv);
+
+                var editButton = document.createElement("button");
+                editButton.className = "editButton";
+                editButton.id = j;
+                editButton.type = "button";
+                editButton.textContent = "EDITAR"
+
+                //<!-- BORRAR EL EVENTO DE LA BASE DE DATOS -->//
+
+                editButton.addEventListener("click", function()
+                {
+
+                    console.log(document.getElementById(this.id + "evento").textContent);
+                    console.log(document.getElementById(this.id + "dia").textContent);
+                    console.log(document.getElementById(this.id + "horaInicio").textContent);
+
+                    var eventoSTR = document.getElementById(this.id + "evento").textContent;
+                    var diaSTR = document.getElementById(this.id + "dia").textContent;
+                    var horaInicioSTR = document.getElementById(this.id + "horaInicio").textContent;
+
+                    window.location.href = "/eventRemove2?eventoSTR="+ eventoSTR + "&diaSTR=" + diaSTR +"&horaInicioSTR=" +horaInicioSTR;
+
+                });
+
+
+
+                dataDiv.appendChild(editButton);
+
+
+                displayDiv.appendChild(dataDiv);
+
+                j++;
+
+            }
+
+
+            var acceptButton = document.createElement("button");
+            acceptButton.className = "acceptButton";
+            acceptButton.type = "button";
+            acceptButton.textContent = "VOLVER"
+
+            var removeEventWindowDiv = document.getElementById("editEventContent");
+            removeEventWindowDiv.appendChild(acceptButton);
+
+            acceptButton.addEventListener("click", function()
+            {
+
+                var fullDataDiv = document.getElementById("editFullContent");
+                fullDataDiv.remove();
+
+                this.remove();
+
+                var ventanaEmergente = document.getElementById("editEventWindow");
+                ventanaEmergente.style.display = "none";
+
+                
+
+            });
+
+        }        
+
+    </script>
+    
+    <!-- EDITAR EL EVENTO COMO TAL -->
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            var editEvent = "{{ editEvent }}";
+
+            if ( editEvent == "1")
+            {
+
+                horaInicio = document.getElementById("horaInicio");
+                horaFin = document.getElementById("horaFin");
+                var ventanaEmergente = document.getElementById("addEventWindow");
+
+                ventanaEmergente.style.display = "flex";
+
+                horaInicio.addEventListener("change", function () {
+                let opcionesHoraFin = horaFin.options;
+                let horaInicioSel = parseInt(horaInicio.value);
+                for (let i = 0; i < opcionesHoraFin.length; i++) {
+                    if (parseInt(opcionesHoraFin[i].value) <= horaInicioSel) {
+                    opcionesHoraFin[i].style.display = "none";
+                    } else {
+                    opcionesHoraFin[i].style.display = "";
+                    }
+                }
+
+                horaFin.value = toString(horaInicioSel + 1);
+                });
+
+                var nombreEventoLabel = document.getElementById("nombreEvento");
+                nombreEventoLabel.value = "{{ editEventName }}";
+
+                var diaEventoLabel = document.getElementById("diaSemana");
+                diaEventoLabel.value = "{{ editEventDay }}";
+
+                horaInicio.value = "";
+                horaFin.value = "";
+                
+                var addTitle = document.getElementById("addEventTitle");
+                addTitle.textContent = "Edita el nuevo Evento"
+
+                var cancelButton = document.getElementById("formButtonDecline");
+                cancelButton.remove();
+
+
+            }
+
+        });
 
     </script>
 

@@ -24,13 +24,16 @@ const COLORES = [
 var horaInicio;
 var horaFin;
 
-// Ocultar menús de agregar y quitar evento al cargar la página.
+// Ocultar menús de agregar, quitar y editar evento al cargar la página.
 document.addEventListener("DOMContentLoaded", function () {
   var divAgregarEvento = document.getElementById("addEventWindow");
   divAgregarEvento.style.display = "none";
 
   var divQuitarEvento = document.getElementById("removeEventWindow");
   divQuitarEvento.style.display = "none";
+
+  var divEditarEvento = document.getElementById("editEventWindow");
+  divEditarEvento.style.display = "none";
 });
 
 //% AGREGAR EVENTO
@@ -152,7 +155,17 @@ function createEventRemovalGUI(eventTitle, eventDetailsDay, evento, diaSemana, h
   eventDetailsGuion.textContent = ":00 - " + horaFinVal +":00";
 }
 
-//OCULTAR LA VENTANA
+//SECCIÓN DEDICADA A EDITAR EVENTO
+
+function mostrarVentanaEdit() 
+{
+
+  var ventanaEmergente = document.getElementById("editEventWindow");
+
+  ventanaEmergente.style.display = "flex";
+  displayEventosEdit();
+
+  };
 
 
 

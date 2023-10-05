@@ -54,7 +54,7 @@ def schedule():
     diasSemana = [resultado['diaSemana'] for resultado in resultados]
 
 
-    return render_template('schedule.html', eventosList = eventos, horaInicioList = horasInicio, horaFinList = horasFin, diaSemanaList = diasSemana)
+    return render_template('schedule.html', eventosList = eventos, horaInicioList = horasInicio, horaFinList = horasFin, diaSemanaList = diasSemana, editEvent = 0)
 
 @app.route('/eventAdd', methods = ["GET", "POST"])
 def addEvent():
@@ -94,7 +94,7 @@ def addEvent():
         diasSemana = [resultado['diaSemana'] for resultado in resultados]
 
         #Recargar la Página. 
-        return render_template('schedule.html', eventosList = eventos, horaInicioList = horasInicio, horaFinList = horasFin, diaSemanaList = diasSemana)
+        return render_template('schedule.html', eventosList = eventos, horaInicioList = horasInicio, horaFinList = horasFin, diaSemanaList = diasSemana, editEvent = 0)
     
 @app.route('/eventRemove', methods = ["GET", "POST"])
 def removeEvent():
@@ -143,7 +143,57 @@ def removeEvent():
     diasSemana = [resultado['diaSemana'] for resultado in resultados]
 
 
-    return render_template('schedule.html', eventosList = eventos, horaInicioList = horasInicio, horaFinList = horasFin, diaSemanaList = diasSemana)
+    return render_template('schedule.html', eventosList = eventos, horaInicioList = horasInicio, horaFinList = horasFin, diaSemanaList = diasSemana, editEvent = 0)
+
+
+@app.route('/eventRemove2', methods = ["GET", "POST"])
+def removeEvent2():
+    eventoSTR = request.args.get('eventoSTR')
+    diaSTR = request.args.get('diaSTR')
+    horaInicioSTR = request.args.get('horaInicioSTR')
+
+    actualDay = 0
+    _idUsuarioActual = session['idUsuario']
+    
+    if diaSTR == "LUNES ":
+        actualDay = 1
+    elif diaSTR == "MARTES ":
+        actualDay = 2
+    elif diaSTR == "MIÉRCOLES ":
+        actualDay = 3
+    elif diaSTR == "JUEVES ":
+        actualDay = 4
+    elif diaSTR == "VIERNES ":
+        actualDay = 5
+    elif diaSTR == "SÁBADO ":
+        actualDay = 6
+    elif diaSTR == "DOMINGO ":
+        actualDay = 7
+
+    cur = mysql.connection.cursor()
+    cur.execute('DELETE FROM horario WHERE evento = %s AND horaInicio = %s AND diaSemana = %s AND idUsuario = %s', (eventoSTR, horaInicioSTR, actualDay, _idUsuarioActual,))
+    mysql.connection.commit()
+    
+
+    #Recuperar los Eventos del Usuario
+    cur.execute('SELECT evento FROM horario WHERE idUsuario = %s', (_idUsuarioActual,))
+    resultados = cur.fetchall()
+    eventos = [resultado['evento'] for resultado in resultados]
+
+    cur.execute('SELECT horaInicio FROM horario WHERE idUsuario = %s', (_idUsuarioActual,))
+    resultados = cur.fetchall()
+    horasInicio = [resultado['horaInicio'] for resultado in resultados]
+    
+    cur.execute('SELECT horaFin FROM horario WHERE idUsuario = %s', (_idUsuarioActual,))
+    resultados = cur.fetchall()
+    horasFin = [resultado['horaFin'] for resultado in resultados]
+
+    cur.execute('SELECT diaSemana FROM horario WHERE idUsuario = %s', (_idUsuarioActual,))
+    resultados = cur.fetchall()
+    diasSemana = [resultado['diaSemana'] for resultado in resultados]
+
+
+    return render_template('schedule.html', eventosList = eventos, horaInicioList = horasInicio, horaFinList = horasFin, diaSemanaList = diasSemana, editEvent = 1, editEventName = eventoSTR, editEventDay = actualDay)
 
 # Ruta para el proceso de inicio de sesión
 @app.route('/loginAccess', methods=["GET", "POST"])
