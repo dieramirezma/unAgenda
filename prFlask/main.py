@@ -9,8 +9,7 @@ app = Flask(__name__, template_folder='templates')
 # Configuración de la conexión a la base de datos MySQL
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-# app.config['MYSQL_PASSWORD'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'db12dieramirezma'
+app.config['MYSQL_PASSWORD'] = 'root'
 app.config['MYSQL_DB'] = 'prFlask'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
