@@ -273,7 +273,7 @@ def recuperar():
         cur.close()
         
         if usuario:
-            # Generar un código de verificación (puedes usar una biblioteca como 'secrets' para esto)
+            # Generar un código de verificación 
             codigo_verificacion = secrets.token_hex(16)
 
             # Guardar el código de verificación en la base de datos junto con la dirección de correo electrónico
