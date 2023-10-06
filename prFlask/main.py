@@ -1,6 +1,7 @@
 # Importación de los módulos necesarios
 from flask import Flask, render_template, redirect, request, session
 from flask_mysqldb import MySQL, MySQLdb
+import secrets
 
 # Crear una instancia de la aplicación Flask
 app = Flask(__name__, template_folder='templates')
@@ -260,6 +261,37 @@ def register():
 
     # Si se accede al registro por GET o no se proporcionan datos válidos, mostrar el formulario de registro
     return render_template('register.html')
+@app.route('/recuperate', methods=["GET", "POST"])
+def recuperar():
+      if request.method == 'POST' and 'txtEmail' in request.form:
+        _correo = request.form['txtEmail']
+        
+        # Verificar si el correo existe en la base de datos
+        cur = mysql.connection.cursor()
+        cur.execute('SELECT * FROM usuario WHERE correo = %s', [_correo])
+        usuario = cur.fetchone()
+        cur.close()
+        
+        if usuario:
+            # Generar un código de verificación 
+            codigo_verificacion = secrets.token_hex(16)
+
+            # Guardar el código de verificación en la base de datos junto con la dirección de correo electrónico
+            cur = mysql.connection.cursor()
+            cur.execute('UPDATE usuario SET codigo_verificacion = %s WHERE idUsuario = %s', (codigo_verificacion, usuario['idUsuario']))
+            mysql.connection.commit()
+            cur.close()
+
+            # Envía el código de verificación al correo electrónico del usuario
+            # enviar_codigo_verificacion(_correo, codigo_verificacion)
+
+            print('Se ha enviado un código de verificación a tu correo electrónico. Utilízalo para restablecer tu contraseña.', 'success')
+            return render_template('recuperate.html')
+
+        else:
+            print('El correo electrónico proporcionado no está registrado.', 'error')
+
+      return render_template('recuperate.html')
 
 @app.route('/calculator')
 def calculator():
