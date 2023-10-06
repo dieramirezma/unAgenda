@@ -33,6 +33,10 @@ CREATE TABLE `usuario` (
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
+-- ALTER TABLE usuario
+-- ADD codigo_verificacion VARCHAR(255) NULL;
+
+select * from usuario;
 --
 -- Dumping data for table `usuario`
 --
@@ -53,6 +57,15 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2023-09-09 15:24:54
+CREATE TABLE codigo (
+  idCodigo INT AUTO_INCREMENT PRIMARY KEY,
+  idUsuario INT,
+  codigo_verificacion VARCHAR(255) NULL,
+  FOREIGN KEY (idUsuario) REFERENCES usuarios(idUsuario)
+);
+ select * from codigo; 
+   -- Insertar un nuevo código de verificación para un usuario específico
+INSERT INTO codigo (idUsuario, codigo_verificacion) VALUES (1, 'hola');
 
 -- para crear notas en el bloc (en proceso)
 CREATE TABLE notas (
@@ -64,7 +77,7 @@ CREATE TABLE notas (
 
 INSERT INTO notas (idUsuario, contenido) VALUES (1, 'Esta es la nota del usuario 1.');
 
-
+select * from usuario;
 SELECT * FROM notas;
 
 
