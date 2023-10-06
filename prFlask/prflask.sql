@@ -28,7 +28,6 @@ CREATE TABLE `usuario` (
   `nombre` varchar(50) NOT NULL,
   `correo` varchar(50) NOT NULL,
   `contraseña` varchar(50) NOT NULL,
-  `codigo_verificacion` VARCHAR(255),
   PRIMARY KEY (`idUsuario`),
   UNIQUE KEY `correo` (`correo`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
