@@ -276,25 +276,48 @@ def recuperar():
         cur.close()
         
         if usuario:
-            # Generar un código de verificación 
-            codigo_verificacion = secrets.token_hex(16)
+            # Generar un código de verificación (puedes usar una biblioteca como 'secrets' para esto)
+            codigo_verificacion = secrets.token_hex(4)
 
             # Guardar el código de verificación en la base de datos junto con la dirección de correo electrónico
             cur = mysql.connection.cursor()
-            cur.execute('UPDATE usuario SET codigo_verificacion = %s WHERE idUsuario = %s', (codigo_verificacion, usuario['idUsuario']))
+            cur.execute('UPDATE codigo SET codigo_verificacion = %s WHERE idUsuario = %s', (codigo_verificacion, usuario['idUsuario']))
             mysql.connection.commit()
             cur.close()
 
             # Envía el código de verificación al correo electrónico del usuario
             # enviar_codigo_verificacion(_correo, codigo_verificacion)
 
-            print('Se ha enviado un código de verificación a tu correo electrónico. Utilízalo para restablecer tu contraseña.', 'success')
-            return render_template('recuperate.html')
+            # Flash('Se ha enviado un código de verificación a tu correo electrónico. Utilízalo para restablecer tu contraseña.', 'success')
+            return render_template('formrecupe.html')
 
         else:
             print('El correo electrónico proporcionado no está registrado.', 'error')
 
       return render_template('recuperate.html')
+
+@app.route('/formrecupe', methods=["GET", "POST"])
+def form():
+    if request.method == 'POST':
+        # Obtén el código de recuperación desde el formulario HTML
+        codigo_recuperacion = request.form['txtNombre']
+
+        # Obtén el ID del usuario actual desde la sesión (asegúrate de que el usuario haya iniciado sesión previamente)
+        id_usuario = session.get('idUsuario')
+
+        # Verifica si el código de recuperación coincide con el código almacenado en la base de datos
+        cur = mysql.connection.cursor()
+        cur.execute('SELECT codigo_verificacion FROM codigo WHERE idUsuario = %s', (id_usuario,))
+        codigo_verificacion_db = cur.fetchone()
+
+        if codigo_verificacion_db and codigo_recuperacion == codigo_verificacion_db['codigo_verificacion']:
+            # El código de recuperación es válido
+            print('Código de recuperación válido.', 'success')
+        else:
+            # El código de recuperación no coincide, muestra un mensaje de error
+            print('El código de recuperación no es válido. Intenta nuevamente.', 'error')
+
+    return render_template('formrecupe.html')
 
 # Configuración de la clave secreta para las sesiones de usuario
 if __name__ == '__main__':
