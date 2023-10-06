@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora</title>
+    <link rel="stylesheet" href="{{url_for('static', filename = 'styles/calculatorStyle.css')}}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="header">
+        <div class = "sideMenuContainer"> <!-- MENU LATERAL -->
+
+            <br>
+            <a href = "admin">
+                <img id = "unAgendaLabel" src = "{{url_for('static', filename='img/unAgenda1.png')}}" width="100"/>
+            </a>
+
+            <br><br>
+
+            <a href = "admin">
+                <div class = "iconBox">
+                    <img class = "iconImage" src = "{{url_for('static', filename='img/mainmenumini.png')}}" width="100"/>
+                </div>
+            </a>
+            <a href = "schedule">
+                <div class = "iconBox">
+                    <img class = "iconImage" src = "{{url_for('static', filename='img/scheduleindexmini.png')}}" width="100"/>
+                </div>
+            </a>
+            <a href = "calculator">
+                <div class = "iconBox">
+                    <img class = "iconImage" src = "{{url_for('static', filename='img/calculatorindexmini.png')}}" width="100"/>
+                </div>
+            </a>
+
+        </div>
+
+        <div class = "welcomeText">
+            <h1>Calculadora de Promedios</h1>
+        </div> 
+
+        <div class="container-note-percentage" >
+            <div contenteditable="true" class="percentage">
+                40%
+            </div>
+            <div class="container-notes">
+                <div class="container-button-notes">
+                    <div contenteditable="true" class="note">
+                        4.5
+                    </div>
+                    <button class="editNote"><img class='img-editNote' src="{{url_for('static', filename='img/icons/editarNota.png')}}" alt="Editar nota"></button>
+                    <button class="deletNote"><img class='img-editNote' src="{{url_for('static', filename='img/icons/borrarNota.png')}}" alt="Borrar nota"></button>
+                </div>    
+                <div class="container-button-notes">
+                    <div contenteditable="true" class="note">
+                        4.5
+                    </div>
+                    <button class="editNote"><img class='img-editNote' src="{{url_for('static', filename='img/icons/editarNota.png')}}" alt="Editar nota"></button>
+                    <button class="deletNote"><img class='img-editNote' src="{{url_for('static', filename='img/icons/borrarNota.png')}}" alt="Borrar nota"></button>
+                </div>  
+                <div class="container-button-notes">
+                    <div contenteditable="true" class="note">
+                        4.5
+                    </div>
+                    <button class="editNote"><img class='img-editNote' src="{{url_for('static', filename='img/icons/editarNota.png')}}" alt="Editar nota"></button>
+                    <button class="deletNote"><img class='img-editNote' src="{{url_for('static', filename='img/icons/borrarNota.png')}}" alt="Borrar nota"></button>
+                </div>  
+                <div>
+                    <button class="addNote">Añadir nota</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -8,7 +8,7 @@ app = Flask(__name__, template_folder='templates')
 # Configuración de la conexión a la base de datos MySQL
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'root'
+app.config['MYSQL_PASSWORD'] = 'AMUnae54'
 app.config['MYSQL_DB'] = 'prFlask'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -260,6 +260,10 @@ def register():
 
     # Si se accede al registro por GET o no se proporcionan datos válidos, mostrar el formulario de registro
     return render_template('register.html')
+
+@app.route('/calculator')
+def calculator():
+    return render_template('calculator.html')
 
 # Configuración de la clave secreta para las sesiones de usuario
 if __name__ == '__main__':
