@@ -1,5 +1,4 @@
-*
-{
+* {
 
     margin: 0;
     padding: 0;
@@ -10,8 +9,7 @@
 
 /* CONFIGURACIÓN DEL CONTENEDOR DE TODO */
 
-.mainContainer
-{
+.mainContainer {
 
     background-image: url(/static/img/background.png);
     background-size: cover;
@@ -22,8 +20,7 @@
 
 /* CONFIGURACIÓN DEL MENÚ LATERAL Y DE SUS COMPONENTES */
 
-.sideMenuContainer
-{
+.sideMenuContainer {
 
     background-color: rgba(169, 169, 169, .5);
 
@@ -38,8 +35,7 @@
 
 }
 
-#unAgendaLabel
-{
+#unAgendaLabel {
 
     max-width: 100%;
     max-height: 100%;
@@ -50,8 +46,7 @@
 
 }
 
-.iconBox
-{
+.iconBox {
 
     max-height: 100%;
 
@@ -69,16 +64,14 @@
 
 }
 
-.iconBox:hover
-{
+.iconBox:hover {
 
     background-color: rgba(0, 0, 0, 0.2);
 
 }
 
-.iconImage
-{
-    
+.iconImage {
+
 
     max-width: 100%;
     max-height: 100%;
@@ -88,8 +81,7 @@
 
 /* CONFIGURACIÓN DEL CONTENEDOR PRINCIPAL */
 
-.contentContainer
-{
+.contentContainer {
 
     width: 90%;
     height: 100%;
@@ -98,13 +90,12 @@
 
     float: right;
     text-align: center;
-
+    position: relative;
 }
 
 /* CONFIGURACIÓN DEL ENUNCIADO DE LA PÁGINA */
 
-.titleContainer
-{
+.titleContainer {
 
     color: white;
     text-align: center;
@@ -117,8 +108,7 @@
 
 /* CONFIGURACIÓN DE LOS BOTONES DE LA PÁGINA */
 
-.buttonsContainer
-{
+.buttonsContainer {
 
     height: 10%;
     max-height: 10%;
@@ -131,8 +121,7 @@
 
 }
 
-.button
-{
+.button {
 
 
     width: 12%;
@@ -155,8 +144,7 @@
 
 }
 
-.button2
-{
+.button2 {
 
 
     width: 12%;
@@ -179,24 +167,21 @@
 
 }
 
-.button:hover
-{
+.button:hover {
 
     box-shadow: 0 0.2rem 0.6rem rgba(0, 0, 0, 1);
     cursor: pointer;
 
 }
 
-.button2:hover
-{
+.button2:hover {
 
     box-shadow: 0 0.2rem 0.6rem rgba(0, 0, 0, 1);
     cursor: pointer;
 
 }
 
-#addButtonImage
-{
+#addButtonImage {
 
     max-height: 100%;
     max-width: 30%;
@@ -204,24 +189,21 @@
 }
 
 
-#removeButtonImage
-{
+#removeButtonImage {
 
     max-height: 100%;
     max-width: 30%;
 
 }
 
-#captureButtonImage
-{
+#captureButtonImage {
 
     max-height: 100%;
     max-width: 30%;
 
 }
 
-#searchButtonImage
-{
+#searchButtonImage {
 
     max-height: 100%;
     max-width: 30%;
@@ -230,8 +212,7 @@
 
 /* CONFIGURACIÓN DE LA TABLA Y SUS PROPIEDADES */
 
-.scheduleContainer
-{
+.scheduleContainer {
 
 
     width: 100%;
@@ -246,21 +227,19 @@
     padding-bottom: 0.5rem;
     overflow-y: auto;
 
-    
+
 
 }
 
-#schedule
-{
+#schedule {
 
     margin: 0 auto;
 
 }
 
-.scheduleHeader
-{
+.scheduleHeader {
 
-    background-color:rgb(136, 123, 123);
+    background-color: rgb(136, 123, 123);
     color: white;
     padding-top: 1rem;
     padding-bottom: 1rem;
@@ -273,10 +252,9 @@
 
 }
 
-.scheduleBody1
-{
+.scheduleBody1 {
 
-    background-color:rgb(70, 70, 70);
+    background-color: rgb(70, 70, 70);
     color: white;
     padding: 0.5rem;
 
@@ -285,10 +263,9 @@
 
 }
 
-.scheduleBody2
-{
+.scheduleBody2 {
 
-    background-color:rgb(82, 82, 82);
+    background-color: rgb(82, 82, 82);
     color: white;
     padding: 0.5rem;
 
@@ -297,8 +274,7 @@
 
 }
 
-.addEventWindow 
-{
+.addEventWindow {
     display: none;
     position: fixed;
     top: 0;
@@ -310,16 +286,14 @@
     align-items: center;
 }
 
-#addEventForm
-{
+#addEventForm {
     background: white;
     padding: 20px;
     border-radius: 5px;
     text-align: center;
 }
 
-.inputText
-{
+.inputText {
 
     background: rgb(219, 219, 219);
     width: 80%;
@@ -332,8 +306,7 @@
 
 }
 
-.selector
-{
+.selector {
 
     width: 40%;
     height: 2.5rem;
@@ -341,8 +314,7 @@
 
 }
 
-#formButtonAccept
-{
+#formButtonAccept {
 
     margin: 1rem;
     padding-top: 0.5rem;
@@ -357,8 +329,7 @@
 
 }
 
-#formButtonDecline
-{
+#formButtonDecline {
 
     margin: 1rem;
     padding-top: 0.5rem;
@@ -373,8 +344,7 @@
 
 }
 
-.removeEventWindow 
-{
+.removeEventWindow {
     display: none;
     position: fixed;
     top: 0;
@@ -386,8 +356,7 @@
     align-items: center;
 }
 
-#removeEventContent
-{   
+#removeEventContent {
     width: 60%;
     background: white;
     padding: 20px;
@@ -395,8 +364,7 @@
     text-align: center;
 }
 
-.removeBoxEventDiv
-{
+.removeBoxEventDiv {
 
     overflow-y: auto;
     height: 25rem;
@@ -404,8 +372,7 @@
 
 }
 
-.removeBoxContentDiv
-{
+.removeBoxContentDiv {
 
     text-align: left;
     padding: 1rem;
@@ -413,24 +380,21 @@
 
 }
 
-.individualEventDiv
-{
+.individualEventDiv {
     width: 80%;
     float: left;
     padding: 0.5rem;
 
 }
 
-.removeBoxEventDetails
-{
+.removeBoxEventDetails {
 
     font-style: italic;
     color: darkgray;
 
 }
 
-.removeButton
-{
+.removeButton {
 
     margin: 1rem;
     padding-top: 0.5rem;
@@ -445,8 +409,7 @@
 
 }
 
-.acceptButton
-{
+.acceptButton {
 
     margin: 1rem;
     padding-top: 0.5rem;
@@ -461,8 +424,7 @@
 
 }
 
-.editButton
-{
+.editButton {
 
     margin: 1rem;
     padding-top: 0.5rem;
@@ -477,22 +439,19 @@
 
 }
 
-.editButton:hover
-{
+.editButton:hover {
 
     cursor: pointer;
 
 }
 
-.removeButton:hover
-{
+.removeButton:hover {
 
     cursor: pointer;
 
 }
 
-.acceptButton:hover
-{
+.acceptButton:hover {
 
     cursor: pointer;
 
@@ -500,8 +459,7 @@
 
 
 
-.editEventWindow 
-{
+.editEventWindow {
     display: none;
     position: fixed;
     top: 0;
@@ -513,8 +471,7 @@
     align-items: center;
 }
 
-#editEventContent
-{   
+#editEventContent {
     width: 60%;
     background: white;
     padding: 20px;
@@ -522,8 +479,7 @@
     text-align: center;
 }
 
-.editBoxEventDiv
-{
+.editBoxEventDiv {
 
     overflow-y: auto;
     height: 25rem;
@@ -531,8 +487,7 @@
 
 }
 
-.editBoxContentDiv
-{
+.editBoxContentDiv {
 
     text-align: left;
     padding: 1rem;
@@ -540,10 +495,63 @@
 
 }
 
-.editBoxEventDetails
-{
+.editBoxEventDetails {
 
     font-style: italic;
     color: darkgray;
 
 }
+
+/* ESTILO PARA LA VENTANA DE DESCARGAR HORARIO */
+.downloadEventWindow {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.downloadEventContent {
+    background-color: #fff;
+    margin: 5% auto;
+    padding: 20px;
+    width: 70%;
+    border-radius: 5px;
+    text-align: center;
+}
+#textHeader {
+    display: flex;
+    text-align: center;
+    justify-content: center;
+}
+
+#textHeader h2 {
+    margin-right: 15px;
+    margin-left: 40px
+}
+
+#textHeader img {
+    margin-left: 10px;
+}
+
+#downBtn,
+#cerrarDownBtn {
+    cursor: pointer;
+}
+
+.tabla-duplicada {
+    height: 100%;
+    width: 100%;
+}
+
+.tabla-duplicada table {
+    width: 100%;
+    transform: scale(0.45);
+    transform-origin: 0 0;
+    margin-left: 24%;
+}
+

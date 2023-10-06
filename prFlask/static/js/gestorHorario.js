@@ -83,20 +83,62 @@ function editarCelda(evento, diaSemanaList, horaInicioList, horaFinList, j) {
     celda.style.backgroundColor = colorRandom;
     celda.style.color = "black";
     celda.textContent = nombre;
-  } 
+  }
 }
 
 // % DESCARGAR HORARIO
-function html2canvasFunc() {
-  html2canvas(document.querySelector("table")).then(function (canvas) {
-    // Convertir el canvas en una imagen PNG
-    var imgData = canvas.toDataURL("image/png");
-    var img = new Image();
-    img.src = imgData;
-    document.getElementById("imagen").appendChild(img);
-  });
+function mostrarVentanaDescarga() {
+  const ventanaEmergente = document.getElementById("downloadEventWindow");
+  ventanaEmergente.style.display = "flex";
+  displayHorario();
 }
 
+function displayHorario() {
+  const downloadEventContent = document.getElementById("downloadEventContent");
+  const tablaOriginal = document.getElementById("schedule");
+
+  const tablaClonada = tablaOriginal.cloneNode(true);
+  tablaClonada.removeAttribute("id");
+
+  const tablaContenedor = document.createElement("div");
+  tablaContenedor.className = "tabla-duplicada";
+
+  downloadEventContent.appendChild(tablaContenedor);
+  
+  tablaContenedor.appendChild(tablaClonada);
+
+  const cerrarBtn = document.getElementById("cerrarDownBtn");
+
+  cerrarBtn.addEventListener("click", function () { 
+    const ventanaEmergente = document.getElementById("downloadEventWindow");
+    ventanaEmergente.style.display = "none";
+    tablaContenedor.remove();
+  });
+
+  downBtn.addEventListener("click", function () { 
+  
+    html2canvas(tablaContenedor).then(function (canvas) {
+      // Crea una imagen a partir del canvas
+      var imgData = canvas.toDataURL('image/png');
+      var img = new Image();
+      img.src = imgData;
+
+      // Crea un enlace temporal para iniciar la descarga de la imagen
+      var enlaceDescarga = document.createElement('a');
+      enlaceDescarga.href = imgData;
+      enlaceDescarga.download = 'unAgenda.png';
+      enlaceDescarga.style.display = 'none';
+      document.body.appendChild(enlaceDescarga);
+      enlaceDescarga.click();
+      document.body.removeChild(enlaceDescarga);
+
+      const ventanaEmergente = document.getElementById("downloadEventWindow");
+      ventanaEmergente.style.display = "none";
+      tablaContenedor.remove();
+    });
+  });
+
+}
 
 // SECCIÓN DEDICADA A BORRAR EVENTO
 
