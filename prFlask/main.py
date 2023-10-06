@@ -9,7 +9,7 @@ app = Flask(__name__, template_folder='templates')
 # Configuración de la conexión a la base de datos MySQL
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'root'
+app.config['MYSQL_PASSWORD'] = '22446688Rengifo'
 app.config['MYSQL_DB'] = 'prFlask'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -251,13 +251,16 @@ def register():
         cur.execute('INSERT INTO usuario (nombre, correo, contraseña) VALUES (%s, %s, %s)', (_nombre, _correo, _contraseña))
         mysql.connection.commit()
 
+        cur.execute('SELECT * FROM usuario WHERE correo = %s AND contraseña = %s', (_correo, _contraseña))
+        new_user = cur.fetchone()
+
         # Establecer una sesión de usuario para el nuevo usuario registrado
         session['logueado'] = True
-        session['idUsuario'] = cur.lastrowid
-        session['nombre'] = existing_user['nombre']
+        session['idUsuario'] = new_user['idUsuario']
+        session['nombre'] = new_user['nombre']
 
         # Redirigir al usuario a la página de administrador
-        return render_template('admin.html')
+        return render_template('admin.html', username = session['nombre'])
 
     # Si se accede al registro por GET o no se proporcionan datos válidos, mostrar el formulario de registro
     return render_template('register.html')
