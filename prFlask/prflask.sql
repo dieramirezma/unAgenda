@@ -57,17 +57,22 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2023-09-09 15:24:54
+DROP TABLE IF EXISTS `codigo`;
 CREATE TABLE codigo (
-  idCodigo INT AUTO_INCREMENT PRIMARY KEY,
-  idUsuario INT,
-  codigo_verificacion VARCHAR(255) NULL,
-  FOREIGN KEY (idUsuario) REFERENCES usuarios(idUsuario)
+  `idCodigo` INT AUTO_INCREMENT PRIMARY KEY,
+  `idUsuario` INT(11) NOT NULL,
+  `codigo_verificacion` VARCHAR(255) NULL,
+  -- PRIMARY KEY (`idCodigo`),
+  FOREIGN KEY (`idUsuario`) REFERENCES usuario(`idUsuario`)
 );
  select * from codigo; 
+ select * from usuario;
+-- drop table codigo;
    -- Insertar un nuevo código de verificación para un usuario específico
-INSERT INTO codigo (idUsuario, codigo_verificacion) VALUES (1, 'hola');
+INSERT INTO codigo (idUsuario, codigo_verificacion) VALUES (3, "");
 
 -- para crear notas en el bloc (en proceso)
+DROP TABLE IF EXISTS `notas`;
 CREATE TABLE notas (
     idNota INT AUTO_INCREMENT PRIMARY KEY,
     idUsuario INT,
