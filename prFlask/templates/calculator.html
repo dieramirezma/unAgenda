@@ -36,41 +36,49 @@
 
         </div>
 
+
         <div class = "welcomeText">
             <h1>Calculadora de Promedios</h1>
         </div> 
 
-        <div class="container-note-percentage" >
-            <div contenteditable="true" class="percentage">
-                40%
-            </div>
-            <div class="container-notes">
-                <div class="container-button-notes">
-                    <div contenteditable="true" class="note">
-                        4.5
+        <button id="addGroupNotes"><img class="img-editNote" src="{{url_for('static', filename='img/icons/anadirGrupoNotas.png')}}" alt="Añadir grupo de notas"></button>
+        
+        <ul id="groupNotes">
+            <li class="li-group-notes">
+                <div class="container-note-percentage" >
+                    <div contenteditable="true" class="percentage">
+                        40%
                     </div>
-                    <button class="editNote"><img class='img-editNote' src="{{url_for('static', filename='img/icons/editarNota.png')}}" alt="Editar nota"></button>
-                    <button class="deletNote"><img class='img-editNote' src="{{url_for('static', filename='img/icons/borrarNota.png')}}" alt="Borrar nota"></button>
-                </div>    
-                <div class="container-button-notes">
-                    <div contenteditable="true" class="note">
-                        4.5
+                    <div class="container-notes">
+                        <div class="container-button-notes">
+                            <div contenteditable="true" class="note">
+                                4.5
+                            </div>
+                            <button class="editNote"><img class='img-editNote' src="{{url_for('static', filename='img/icons/editarNota.png')}}" alt="Editar nota"></button>
+                            <button class="deletNote"><img class='img-editNote' src="{{url_for('static', filename='img/icons/borrarNota.png')}}" alt="Borrar nota"></button>
+                        </div>    
+                        <div class="container-button-notes">
+                            <div contenteditable="true" class="note">
+                                4.5
+                            </div>
+                            <button class="editNote"><img class='img-editNote' src="{{url_for('static', filename='img/icons/editarNota.png')}}" alt="Editar nota"></button>
+                            <button class="deletNote"><img class='img-editNote' src="{{url_for('static', filename='img/icons/borrarNota.png')}}" alt="Borrar nota"></button>
+                        </div>  
+                        <div class="container-button-notes">
+                            <div contenteditable="true" class="note">
+                                4.5
+                            </div>
+                            <button class="editNote"><img class='img-editNote' src="{{url_for('static', filename='img/icons/editarNota.png')}}" alt="Editar nota"></button>
+                            <button class="deletNote"><img class='img-editNote' src="{{url_for('static', filename='img/icons/borrarNota.png')}}" alt="Borrar nota"></button>
+                        </div>  
+                        <div>
+                            <button class="addNote">Añadir nota</button>
+                        </div>
                     </div>
-                    <button class="editNote"><img class='img-editNote' src="{{url_for('static', filename='img/icons/editarNota.png')}}" alt="Editar nota"></button>
-                    <button class="deletNote"><img class='img-editNote' src="{{url_for('static', filename='img/icons/borrarNota.png')}}" alt="Borrar nota"></button>
-                </div>  
-                <div class="container-button-notes">
-                    <div contenteditable="true" class="note">
-                        4.5
-                    </div>
-                    <button class="editNote"><img class='img-editNote' src="{{url_for('static', filename='img/icons/editarNota.png')}}" alt="Editar nota"></button>
-                    <button class="deletNote"><img class='img-editNote' src="{{url_for('static', filename='img/icons/borrarNota.png')}}" alt="Borrar nota"></button>
-                </div>  
-                <div>
-                    <button class="addNote">Añadir nota</button>
                 </div>
-            </div>
-        </div>
+            </li>    
+        </ul>
     </div>
+    <script src="{{url_for('static', filename='js/gestorCalculadora.js')}}"></script>
 </body>
 </html>

@@ -40,7 +40,7 @@ CREATE TABLE `usuario` (
 
 LOCK TABLES `usuario` WRITE;
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
-INSERT INTO `usuario` VALUES (1,'Usuario1','usuario1@example.com','pass1'),(2,'Usuario2','usuario2@example.com','pass2'),(3,'Usuario3','usuario3@example.com','pass3');
+INSERT INTO `usuario` VALUES (1,'Usuario1','usuario1@example.com','pass1', 'abc'),(2,'Usuario2','usuario2@example.com','pass2', 'abc'),(3,'Usuario3','usuario3@example.com','pass3', 'abc');
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -56,6 +56,7 @@ UNLOCK TABLES;
 -- Dump completed on 2023-09-09 15:24:54
 
 -- para crear notas en el bloc (en proceso)
+DROP TABLE IF EXISTS `usuario`;
 CREATE TABLE notas (
     idNota INT AUTO_INCREMENT PRIMARY KEY,
     idUsuario INT,
