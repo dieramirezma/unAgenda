@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>unAgenda</title>
+      <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&display=swap" rel="stylesheet">
+      <link rel = "stylesheet" href = "{{url_for('static', filename='styles/menustyle.css')}}">
+   </head>
+   <body>
+      <div class="header">
+         <!-- Contiene a todo el código, dado que es el header el que contiene el fondo de pantalla. Si se coloca alguna división después de esta, aparecerá -->
+         <!-- debajo del fondo, lo cual obviamente no queremos.                                                                                              -->
+         <div class = "menuSideBar">
+            <!-- MENU LATERAL -->
+            <a href = "admin">
+            <img id = "unAgendaLabel" src = "{{url_for('static', filename='img/unAgenda2.png')}}" width="400"/>
+            </a>
+            <br><br>
+            <a href = "admin">
+               <div class = "selectedIndexBox">
+                  <img class = "iconMenu" src = "{{url_for('static', filename='img/mainmenu.png')}}" width="300"/>
+               </div>
+            </a>
+            <a href = "schedule">
+               <div class = "selectedIndexBox">
+                  <img class = "iconMenu" src = "{{url_for('static', filename='img/scheduleindex.png')}}" width="300"/>
+               </div>
+            </a>
+            <a href = "/">
+               <div class = "selectedIndexBox">
+                  <img class = "iconMenu" src = "{{url_for('static', filename='img/calculatorindex.png')}}" width="300"/>
+               </div>
+            </a>
+         </div>
+         <div class = "welcomeText">
+            <br><br>
+            <h1 id = "welcomeBackLabel">¡Es bueno verte de nuevo, {{ username }}!</h1>
+            <br><br>
+            <h3 id ="instructionLabel">Selecciona una de las opciones a continuación<br> y elige qué actividad deseas hacer: </h3>
+         </div>
+         <div class = "buttonsArea">
+            <br>
+            <div class = "buttonCalendar">
+               <br>
+               <img id = "calendarImage" src = "{{url_for('static', filename='img/calendar.jpg')}}"/>
+               <br><br>
+               <p>GESTIONAR HORARIO</p>
+               <br><br>
+            </div>
+            <div class = "buttonCalculator">
+               <br>
+               <img id = "calendarImage" src = "{{url_for('static', filename='img/calculator.jpg')}}"/>
+               <br><br>
+               <p>CALCULADORA DE PROMEDIOS</p>
+               <br>
+            </div>
+         </div>
+      </div>
+   </body>
+</html>
