@@ -266,43 +266,24 @@ def register():
     return render_template('register.html')
 @app.route('/recuperate', methods=["GET", "POST"])
 def recuperar():
-      if request.method == 'POST' and 'txtEmail' in request.form:
-        _correo = request.form['txtEmail']
-        
+      if request.method == 'POST' and 'txtEmail1' in request.form:
+        _correo1 = request.form['txtEmail1']
        # Verificar si el correo existe en la base de datos
         cur = mysql.connection.cursor()
-        cur.execute('SELECT idUsuario FROM usuario WHERE correo = %s', (_correo,))
-        # cur.execute('INSERT INTO codigo (idUsuario) VALUES (%s)',(_idUsuarioActual))
-        # cur.execute('INSERT INTO codigo (idUsuario) SELECT * FROM usuario')
+        cur.execute('SELECT idUsuario FROM usuario WHERE correo = %s', (_correo1,))
         usuario = cur.fetchone()
         
         if usuario:
             # Generar un código de verificación (puedes usar una biblioteca como 'secrets' para esto)
+            cur.execute('INSERT INTO codigo (idUsuario) SELECT idusuario FROM usuario WHERE correo = %s', (_correo1,))
+            resultado = cur.fetchone()
+            id_usuario = session['idUsuario']
+            
+            # idusuario = ['idUsuario']
             codigo_verificacion = secrets.token_hex(4)
-
-            # Guardar el código de verificación en la base de datos junto con la dirección de correo electrónico
-            # id_usuario = usuario[0]
-            # cur.execute('INSERT INTO codigo (idUsuario, codigo_verificacion) VALUES (%s, %s)', (id_usuario, codigo_verificacion))
-            # # cur.execute('SELECT evento FROM horario WHERE idUsuario = %s', (_idUsuarioActual,))
-            # cur = mysql.connection.cursor()
-            # # mysql.connection.commit()
-    
-            # cur.execute('UPDATE codigo SET codigo_verificacion = %s WHERE idUsuario = %s', (codigo_verificacion, id_usuario))
-            # mysql.connection.commit()
+            cur.execute('UPDATE codigo SET codigo_verificacion = %s WHERE idUsuario = %s', (codigo_verificacion,  id_usuario,))
+            mysql.connection.commit()
             # cur.close()
-            cur.execute('INSERT INTO codigo (idUsuario) SELECT idusuario FROM usuario')
-            _idUsuarioActual = session['idUsuario']
-            # cur.execute('INSERT INTO codigo (idUsuario) VALUES (%s)',(_idUsuarioActual))
-            mysql.connection.commit()
-            cur.close()
-            # Guardar el código de verificación en la base de datos junto con la dirección de correo electrónico
-            
-            # cur.execute('SELECT codigo_verificacion FROM codigo WHERE idUsuario = %s', (_idUsuarioActual,_idUsuarioActual,))
-            cur = mysql.connection.cursor()
-            
-            cur.execute('UPDATE codigo SET codigo_verificacion = %s WHERE idUsuario = %s', (codigo_verificacion, _idUsuarioActual,))
-            mysql.connection.commit()
-            cur.close()
 
 
             # Envía el código de verificación al correo electrónico del usuario
@@ -312,7 +293,7 @@ def recuperar():
             return render_template('formrecupe.html')
 
         else:
-            print('El correo electrónico proporcionado no está registrado.', 'error')
+            return render_template('recuperate.html')
 
       return render_template('recuperate.html')
 
