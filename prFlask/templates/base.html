@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <title>{{ title }}</title>
+    <style>
+        body {
+            background-color: #4C4C4C;
+        }
+        a {
+            color: #5488A3;
+        }
+        .loginBox {
+            color: #fff;
+            background-color: #353535;
+            padding: 20px;
+            width: 50ex;
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: 10px;
+            margin-top: 10%;
+        }
+        .btn {
+            padding-left: 20px;
+            padding-right: 20px;
+            background-color: #5488A3;
+            border-color: #5488A3;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="loginBox">
+    {% block content %}{% endblock %}
+</div>
+</body>
+</html>

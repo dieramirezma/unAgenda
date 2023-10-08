@@ -1,5 +1,6 @@
 # Importación de los módulos necesarios
-from flask import Flask, render_template, redirect, request, session
+from flask import Flask, render_template, redirect, request, session, url_for
+
 from flask_mysqldb import MySQL, MySQLdb
 import secrets
 
@@ -227,6 +228,11 @@ def login():
             # Si no se encuentra un usuario, redirigir de nuevo a la página de inicio
             return render_template('index.html')
 
+@app.route('/preguntas')
+def preguntas():
+    return render_template('preguntas.html')
+    
+
 # Ruta para el proceso de registro
 @app.route('/register', methods=["GET", "POST"])
 def register():
@@ -236,115 +242,74 @@ def register():
         _contraseña = request.form['txtPassword']
         _nombre = request.form['txtNombre']
 
-        # Crear un cursor para la base de datos MySQL
         cur = mysql.connection.cursor()
 
-        # Verificar si el correo ya está en uso
         cur.execute('SELECT * FROM usuario WHERE correo = %s', [_correo])
         existing_user = cur.fetchone()
 
-        # Si el correo ya está en uso, mostrar un mensaje de error
         if existing_user:
             return render_template('register.html', message='El correo ya está en uso.')
 
-        # Si el correo no está en uso, insertar el nuevo usuario en la base de datos
         cur.execute('INSERT INTO usuario (nombre, correo, contraseña) VALUES (%s, %s, %s)', (_nombre, _correo, _contraseña))
         mysql.connection.commit()
 
         cur.execute('SELECT * FROM usuario WHERE correo = %s AND contraseña = %s', (_correo, _contraseña))
         new_user = cur.fetchone()
 
-        # Establecer una sesión de usuario para el nuevo usuario registrado
         session['logueado'] = True
         session['idUsuario'] = new_user['idUsuario']
         session['nombre'] = new_user['nombre']
 
-        # Redirigir al usuario a la página de administrador
-        return render_template('admin.html', username = session['nombre'])
+        return render_template('preguntas.html')
 
-    # Si se accede al registro por GET o no se proporcionan datos válidos, mostrar el formulario de registro
     return render_template('register.html')
-@app.route('/recuperate', methods=["GET", "POST"])
-def recuperar():
-      if request.method == 'POST' and 'txtEmail1' in request.form:
-        _correo1 = request.form['txtEmail1']
-       # Verificar si el correo existe en la base de datos
-        cur = mysql.connection.cursor()
-        cur.execute('SELECT idUsuario FROM usuario WHERE correo = %s', (_correo1,))
-        usuario = cur.fetchone()
-        
-        if usuario:
-            # Generar un código de verificación (puedes usar una biblioteca como 'secrets' para esto)
-            cur.execute('INSERT INTO codigo (idUsuario) SELECT idusuario FROM usuario WHERE correo = %s', (_correo1,))
-            resultado = cur.fetchone()
-            id_usuario = session['idUsuario']
-            
-            # idusuario = ['idUsuario']
-            codigo_verificacion = secrets.token_hex(4)
-            cur.execute('UPDATE codigo SET codigo_verificacion = %s WHERE idUsuario = %s', (codigo_verificacion,  id_usuario,))
+
+@app.route('/procesar_preguntas', methods=["POST"])
+def procesar_preguntas():
+    if request.method == 'POST':
+        respuesta1 = request.form['respuesta1']
+        respuesta2 = request.form['respuesta2']
+        respuesta3 = request.form['respuesta3']
+
+        idUsuario = session.get('idUsuario')
+
+        if idUsuario:
+            cur = mysql.connection.cursor()
+
+            cur.execute('INSERT INTO respuestas_seguridad (idUsuario, respuesta1, respuesta2, respuesta3) VALUES (%s, %s, %s, %s)',
+                        (idUsuario, respuesta1, respuesta2, respuesta3))
+
             mysql.connection.commit()
-            # cur.close()
+
+            return redirect(url_for('homepage'))
+
+    return render_template('error.html')
 
 
-            # Envía el código de verificación al correo electrónico del usuario
-            # enviar_codigo_verificacion(_correo, codigo_verificacion)
+@app.route('/recuperar_contraseña', methods=["GET", "POST"])
+def recuperar_contraseña():
+    if request.method == 'POST':
+        _nombreUsuario = request.form['nombreUsuario']
+        _respuesta1 = request.form['respuesta1']
+        _respuesta2 = request.form['respuesta2']
+        _respuesta3 = request.form['respuesta3']
+        _nuevaContraseña = request.form['nuevaContraseña']  # Nueva contraseña ingresada por el usuario
 
-            # Flash('Se ha enviado un código de verificación a tu correo electrónico. Utilízalo para restablecer tu contraseña.', 'success')
-            return render_template('formrecupe.html')
-
-        else:
-            return render_template('recuperate.html')
-
-      return render_template('recuperate.html')
-
-@app.route('/formrecupe', methods=["GET", "POST"])
-def form():
-    if request.method == 'POST'and 'txt' in request.form:
-        # Obtén el código de recuperación desde el formulario HTML
-        _nombre = request.form['txtNombre']
-
-        # Obtén el ID del usuario actual desde la sesión (asegúrate de que el usuario haya iniciado sesión previamente)
-        # id_usuario = session.get('idUsuario')
-        _idUsuarioActual = session['idUsuario']
-
-        cur.execute('SELECT evento FROM horario WHERE idUsuario = %s', (_idUsuarioActual,))
-        resultados = cur.fetchall()
-        eventos = [resultado['evento'] for resultado in resultados]
-
-        # Verifica si el código de recuperación coincide con el código almacenado en la base de datos
         cur = mysql.connection.cursor()
-        cur.execute('SELECT codigo_verificacion FROM codigo WHERE idUsuario = %s', (_idUsuarioActual,))
-        codigo_verificacion_db = cur.fetchone()
-        verificar = [codigo_verificacion_db['codigo_verificacion'] for codigo_verificacion_db in codigo_verificacion_db]
 
+        cur.execute('SELECT idUsuario FROM respuestas_seguridad WHERE idUsuario = (SELECT idUsuario FROM usuario WHERE nombre = %s) AND respuesta1 = %s AND respuesta2 = %s AND respuesta3 = %s',
+                    (_nombreUsuario, _respuesta1, _respuesta2, _respuesta3))
+        usuario_coincidente = cur.fetchone()
 
-        if codigo_verificacion_db and _nombre == codigo_verificacion_db['codigo_verificacion']:
-            # El código de recuperación es válido
-            print('Código de recuperación válido.', 'success')
+        if usuario_coincidente:
+            cur.execute('UPDATE usuario SET contraseña = %s WHERE nombre = %s', (_nuevaContraseña, _nombreUsuario))
+            mysql.connection.commit()
+            return redirect(url_for('homepage'))  # Redirige al usuario a la página de inicio
         else:
-            # El código de recuperación no coincide, muestra un mensaje de error
-            print('El código de recuperación no es válido. Intenta nuevamente.', 'error')
-    
-    return render_template('change.html')
-@app.route('/change', methods=["GET", "POST"])
-def cambiar_contrasena():
-    if request.method == 'POST' and 'txtPassword' in request.form:
-       _contraseña = request.form['txtPassword']
-       correo_usuario = session.get('correo')  # Obtén el correo del usuario de la sesión
+            return render_template('error_recuperación_contraseña.html')
 
-       cur = mysql.connection.cursor()
-       cur.execute('SELECT idUsuario FROM usuario WHERE correo = %s', (correo_usuario,))
-       usuario = cur.fetchone()
+    return render_template('recuperar_contraseña.html')
 
-       if usuario:
-          id_usuario = usuario['idUsuario']
-          cur.execute('UPDATE contraseña FROM usuario = %s WHERE idUsuario = %s', (_contraseña, id_usuario))
-          mysql.connection.commit()
-
-        # Redirigir al usuario a otra página después de cambiar la contraseña
-    return redirect('/admin')  # Cambia '/otra_pagina' por la URL de la página a la que deseas redirigir al usuario
-
-        
 
 # Configuración de la clave secreta para las sesiones de usuario
 if __name__ == '__main__':
