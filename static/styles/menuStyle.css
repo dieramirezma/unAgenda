@@ -1,0 +1,163 @@
+*
+{
+
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+
+}
+
+.header
+{
+
+    width: 100%;
+    height: 100vh;
+
+    max-width: 100%;
+    max-height: 100%;
+
+    background-image: url('/static/img/background.png');
+    background-position: center;
+    background-size: cover;
+
+    overflow: hidden;
+
+}
+
+.menuSideBar
+{
+
+    background-color: rgba(169, 169, 169, .5);
+    width: 30%;
+    height: 100%;
+
+    float: left;
+    text-align: center;
+
+
+}
+
+#unAgendaLabel
+{
+
+    max-width: 100%;
+
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-top: 2rem;
+
+}
+
+.selectedIndexBox
+{
+
+    max-width: 100%;
+    margin: auto;
+
+    transition: background-color 0.3s ease;
+
+    width: 300px;
+
+    padding-left: 1%;
+    padding-right: 1rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    border-radius: 10px;
+
+    text-align: center;
+
+}
+
+.selectedIndexBox:hover
+{
+
+    background-color: rgba(0, 0, 0, 0.2);
+
+}
+
+.iconMenu
+{
+
+    max-width: 100%;
+    margin: auto;
+
+}
+
+.welcomeText
+{
+    
+    color: white;
+    width: 70%;
+    float: right;
+
+    padding-left: 2rem;
+
+}
+
+.buttonsArea
+{
+
+    width: 70%;
+    float: right;
+    height: 60%;
+    
+
+}
+
+.buttonCalendar
+{
+
+    max-width: 100%;
+
+    background-color: rgb(153, 153, 153, 0.7);
+    transition: box-shadow 0.3s ease;
+
+    width: 200px;
+    text-align: center;
+    border-radius: 10px;
+    margin-left: 2rem;
+    margin-right: 2rem;
+
+    float: left;
+
+}
+
+.buttonCalculator
+{
+
+    max-width: 100%;
+
+    background-color: rgb(153, 153, 153, 0.7);
+    transition: box-shadow 0.3s ease;
+
+    width: 200px;
+    text-align: center;
+    border-radius: 10px;
+    margin-left: 2rem;
+    margin-right: 2rem;
+
+    float: left;
+
+}
+
+.buttonCalendar:hover
+{
+
+    box-shadow: 0 0.2rem 0.6rem rgba(255, 255, 255, 0.3);
+
+}
+
+.buttonCalculator:hover
+{
+
+    box-shadow: 0 0.2rem 0.6rem rgba(255, 255, 255, 0.3);
+
+}
+
+#calendarImage
+{
+
+    max-width: 100%;
+
+}
