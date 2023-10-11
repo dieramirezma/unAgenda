@@ -322,18 +322,19 @@ def calculator():
     id_group = request.args.get("id_group")
     uuid = request.args.get("uuid")
     is_update = request.args.get("isUpdate")
+    is_update_group = request.args.get("isUpdateGroup")
+    id_nota = request.args.get("id_nota")
     # if uuid == None:
     #     repeated = 0
 
     db = mysql.connection.cursor()
     # print(repeated)
-    print(f"nota: {note} {type(note)} {note != 'None'}, porcentaje: {percentage} {type(percentage)} {percentage != None}, id: {id_group} {type(id_group)} {id_group != None}, id de usuario: {session['idUsuario']}, isUpdate: {is_update} {type(is_update)}")
+    print(f"nota: {note} {type(note)} {note != 'None'}, porcentaje: {percentage} {type(percentage)} {percentage != None}, id: {id_group} {type(id_group)} {id_group != None}, id de usuario: {session['idUsuario']}, isUpdate: {is_update} {type(is_update)} isUpdateGroup: {is_update_group} {type(is_update_group)}")
 
     if note != None and percentage != None and id_group != None and note != "None" and percentage != "None" and id_group != "None" and is_update != None and is_update != "None":
     #    if repeated != uuid:
         is_update = int(is_update)
         if is_update == 1:
-            id_nota = request.args.get("id_nota")
             db.execute(f'UPDATE grupoNotas set nota = {note} WHERE idNota = {id_nota} AND idUsuario = {session["idUsuario"]}')
             mysql.connection.commit()
             print("--------------------- Actualizado con éxito -----------------------------")
@@ -342,9 +343,16 @@ def calculator():
             mysql.connection.commit()
             print("--------------------- Insertado con éxito -----------------------------")
         # repeated = uuid
+    elif note == "None" and percentage != "None" and id_group != "None" and id_nota == "None" and is_update != "None" and is_update_group != "None":
+        is_update = int(is_update)
+        is_update_group = int(is_update_group)
+        if is_update == 0 and is_update_group == 1:
+            db.execute(f'UPDATE grupoNotas set porcentaje = {percentage} WHERE numGrupo = {id_group} AND idUsuario = {session["idUsuario"]}')
+            mysql.connection.commit()
+            print("--------------------- Actualizado grupo con éxito -----------------------------")
 
     # Recuperar las notas
-    db.execute("SELECT * FROM grupoNotas ORDER BY numGrupo")
+    db.execute(f"SELECT * FROM grupoNotas WHERE idUsuario = {session['idUsuario']} ORDER BY numGrupo")
     notas = db.fetchall()
 
     #print("HHHHHHHHHHHHHHHHHHHHHHOOOOOOOOOOOOOOOOOOOOOOOOLLLLLLLLLLLLLLLLLLLLLAAAAAAAAAAAAAAAAAAAAA ", notas)

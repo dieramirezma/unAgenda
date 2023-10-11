@@ -13,6 +13,7 @@ let btns_confirm = document.querySelectorAll('.confirmNote');
 let varId = Number(document.querySelector('#group-id').textContent) + 1;
 
 let isUpdate = 0;
+let isUpdateGroup = 0;
 
 function generateUUID() { // Public Domain/MIT
     var d = new Date().getTime();//Timestamp
@@ -314,7 +315,7 @@ btn_close_edit.addEventListener('click', () => {
     modal_container.classList.remove('show');
 });
 
-const edit_group_event = function(e){
+const edit_group_event = function(e) {
     e.preventDefault();
     // console.log(this.nextSibling.nextSibling)
     // console.log(this.previousSibling.previousSibling.previousSibling)
@@ -324,11 +325,28 @@ const edit_group_event = function(e){
     confirm_group.style.display= "block";
     this.style.display = "none"
     input_group.readOnly = false;
+    isUpdateGroup = 1;
 }
 
 btns_edit_group.forEach(boton => {
     boton.addEventListener('click', edit_group_event);
 }); 
+
+const confirm_group_event = function(e) {
+    e.preventDefault();
+    id_group = Number(this.parentNode.previousSibling.previousSibling.textContent.split('Grupo ')[1]) - 1
+    percentage = this.previousSibling.previousSibling.previousSibling.previousSibling.previousSibling.value
+    // console.log(this.parentNode.previousSibling.previousSibling.textContent.split('Grupo ')[1]);
+    // console.log(this.previousSibling.previousSibling.previousSibling.previousSibling.previousSibling);
+    isUpdate = 0;
+    let _isUpdateGroup = isUpdateGroup;
+    isUpdateGroup = 0;
+    window.location.href = "/calculator?note=" + "None" + "&percentage=" + percentage + "&id_group=" + id_group + '&uuid=' + generateUUID() + "&isUpdate=" + isUpdate + "&id_nota=" + "None" + "&isUpdateGroup=" + _isUpdateGroup;
+}
+
+btns_confirm_group.forEach(boton => {
+    boton.addEventListener('click', confirm_group_event);
+});
 
 
 {/* <div class="container-note-percentage" >
