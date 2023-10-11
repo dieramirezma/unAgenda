@@ -16,12 +16,11 @@
 
     max-width: 100%;
     max-height: 100%;
-
     background-image: url("../img/background.png");
     background-position: center;
     background-size: cover;
-
-    overflow: hidden;
+    /* scroll-behavior: smooth; */
+    overflow-y: scroll;
 
 }
 
@@ -163,7 +162,9 @@
     text-align: center;
     border-radius: 5px;
     margin-bottom: 2px;   
+    margin-left: 1px;
     width: 100%;
+    border: black solid 2px;
 }
 
 .percentage {
@@ -184,7 +185,6 @@
     display: flex;
     /* align-items: center; */
     width: 400px;
-    margin-left: 12rem;
 }
 
 .container-notes {
@@ -264,5 +264,37 @@ ul {
 }
 
 .li-group-notes {
+    margin-bottom: 7px;
+}
+.li-notes {
     margin-bottom: 5px;
+}
+
+#groupNotes {
+    margin-left: 12rem;
+}
+
+form {
+    display: flex;
+    width: 100%;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none;  
+}
+
+.confirmNote {
+    margin-left: 5px;
+    height: 25px;
+    width: 25px;
+    padding: 3px;
+    border-radius: 5px;
+    background-color: #00000000;
+    border: #21a10f solid 1px;
+    display: none;
+}
+
+.confirmNote:hover {
+    box-shadow: 0px 2px 3px 1px #21a10f;
 }

@@ -311,9 +311,40 @@ def recuperar_contraseña():
     return render_template('recuperar_contraseña.html')
 
 
-@app.route('/calculator')
+@app.route('/calculator', methods=['POST', 'GET'])
 def calculator():
-    return render_template('calculator.html')
+    note = request.args.get("note")
+    percentage = request.args.get("percentage")
+    id_group = request.args.get("id_group")
+
+    db = mysql.connection.cursor()
+
+    print(f"nota: {note} {type(note)} {note != 'None'}, porcentaje: {percentage} {type(percentage)} {percentage != None}, id: {id_group} {type(id_group)} {id_group != None}, id de usuario: {session['idUsuario']}")
+
+    if note != None and percentage != None and id_group != None and note != "None" and percentage != "None" and id_group != "None":
+        print("EEEEEEEEEEEEnnnnnnnnnttttttttttttttroooooooooooooooo, EEEEEEEEEEEEEEERRRRRRRRRRRRRROOOOOOOOOOOORRRRRRR!!!!")
+        db.execute(f'INSERT INTO grupoNotas (idUsuario, numGrupo, porcentaje, nota) VALUES ({session["idUsuario"]}, {id_group}, {percentage}, {note})')
+        mysql.connection.commit()
+
+    # Recuperar las notas
+    db.execute("SELECT * FROM grupoNotas ORDER BY numGrupo")
+    notas = db.fetchall()
+
+    print("HHHHHHHHHHHHHHHHHHHHHHOOOOOOOOOOOOOOOOOOOOOOOOLLLLLLLLLLLLLLLLLLLLLAAAAAAAAAAAAAAAAAAAAA ", notas)
+
+    group = -1
+    nota_ordenadas = []
+    for nota in notas:
+        if group != nota["numGrupo"]:
+            nota_ordenadas.append([])
+            group = nota["numGrupo"]
+        
+        nota_ordenadas[nota["numGrupo"]].append(nota)
+
+
+    print(nota_ordenadas)
+
+    return render_template('calculator.html', nota_ordenadas=nota_ordenadas, len_group=len(nota_ordenadas))
 
 # Configuración de la clave secreta para las sesiones de usuario
 if __name__ == '__main__':
