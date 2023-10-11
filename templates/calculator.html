@@ -40,8 +40,10 @@
         <div class = "welcomeText">
             <h1>Calculadora de Promedios</h1>
         </div> 
-
-        <button id="addGroupNotes"><img class="img-editNote" src="{{url_for('static', filename='img/icons/anadirGrupoNotas.png')}}" alt="Añadir grupo de notas"></button>
+        <div id="botones">
+            <button id="addGroupNotes"><img class="img-editNote" src="{{url_for('static', filename='img/icons/anadirGrupoNotas.png')}}" alt="Añadir grupo de notas"></button>
+            <button id="editGroupNotes"><img class="img-editNote" src="{{url_for('static', filename='img/icons/editarGrupo.png')}}" alt="Editar grupo de notas"></button>
+        </div>    
         <div style="display: none;" id="group-id">
             {% if len_group == 0 %}
                 -1
@@ -54,7 +56,7 @@
             {% for nota in nota_ordenadas %}
                 <li class="li-notes" id="li{{ nota[0]['numGrupo'] }}">
                     <div class="container-note-percentage" >
-                        <div contenteditable="true" class="percentage">
+                        <div  class="percentage">
                             {{ nota[0]["porcentaje"] }}%
                         </div>
                         <div class="container-notes">

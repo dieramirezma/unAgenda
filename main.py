@@ -313,6 +313,9 @@ def recuperar_contraseña():
 
 @app.route('/calculator', methods=['POST', 'GET'])
 def calculator():
+    # if request.method == 'POST':
+    #     print("--------------------- Entro -----------------------------")
+    #     print(request.form)
     note = request.args.get("note")
     percentage = request.args.get("percentage")
     id_group = request.args.get("id_group")
@@ -322,15 +325,14 @@ def calculator():
     print(f"nota: {note} {type(note)} {note != 'None'}, porcentaje: {percentage} {type(percentage)} {percentage != None}, id: {id_group} {type(id_group)} {id_group != None}, id de usuario: {session['idUsuario']}")
 
     if note != None and percentage != None and id_group != None and note != "None" and percentage != "None" and id_group != "None":
-        print("EEEEEEEEEEEEnnnnnnnnnttttttttttttttroooooooooooooooo, EEEEEEEEEEEEEEERRRRRRRRRRRRRROOOOOOOOOOOORRRRRRR!!!!")
-        db.execute(f'INSERT INTO grupoNotas (idUsuario, numGrupo, porcentaje, nota) VALUES ({session["idUsuario"]}, {id_group}, {percentage}, {note})')
-        mysql.connection.commit()
+       db.execute(f'INSERT INTO grupoNotas (idUsuario, numGrupo, porcentaje, nota) VALUES ({session["idUsuario"]}, {id_group}, {percentage}, {note})')
+       mysql.connection.commit()
 
     # Recuperar las notas
     db.execute("SELECT * FROM grupoNotas ORDER BY numGrupo")
     notas = db.fetchall()
 
-    print("HHHHHHHHHHHHHHHHHHHHHHOOOOOOOOOOOOOOOOOOOOOOOOLLLLLLLLLLLLLLLLLLLLLAAAAAAAAAAAAAAAAAAAAA ", notas)
+    #print("HHHHHHHHHHHHHHHHHHHHHHOOOOOOOOOOOOOOOOOOOOOOOOLLLLLLLLLLLLLLLLLLLLLAAAAAAAAAAAAAAAAAAAAA ", notas)
 
     group = -1
     nota_ordenadas = []
@@ -342,7 +344,7 @@ def calculator():
         nota_ordenadas[nota["numGrupo"]].append(nota)
 
 
-    print(nota_ordenadas)
+    #print(nota_ordenadas)
 
     return render_template('calculator.html', nota_ordenadas=nota_ordenadas, len_group=len(nota_ordenadas))
 

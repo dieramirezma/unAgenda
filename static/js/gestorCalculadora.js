@@ -1,12 +1,10 @@
 const addBtnGroup = document.querySelector('#addGroupNotes');
 const ul = document.querySelector('#groupNotes');
-const addBtnNote = document.querySelector('.addNote');
 const btns_edit = document.querySelectorAll('.editNote');
 const btns_add_note = document.querySelectorAll('.addNote');
-const btns_confirm = document.querySelectorAll('.confirmNote');
-
+let btns_confirm = document.querySelectorAll('.confirmNote');
+console.log(document.querySelectorAll('.confirmNote'));
 let varId = Number(document.querySelector('#group-id').textContent) + 1;
-// window.location.href ='/calculator?note=' + "None" + "&percentage=" + "None" + "&id_group=" + "None";
 
 addBtnGroup.addEventListener('click', (e) => {
     const li = document.createElement('li');
@@ -37,7 +35,6 @@ addBtnGroup.addEventListener('click', (e) => {
     addBtnGroup.disabled = "true";
     
     div_percentage.classList.add('percentage');
-    div_percentage.contentEditable = "true";
     div_percentage.textContent = '40%';
 
     div_container_notes.classList.add("container-notes");
@@ -68,11 +65,38 @@ addBtnGroup.addEventListener('click', (e) => {
     img_delete.classList.add("img-editNote");
     img_delete.src = 'static/img/icons/borrarNota.png';
 
-    button_confirm_note.classList.add("confirmNote");
+    button_confirm_note.className = "confirmNote";
     button_confirm_note.style.display = "block";
     
     img_confirm.classList.add("img-editNote");
     img_confirm.src = 'static/img/icons/Confirm_note.png';
+
+    button_confirm_note.addEventListener('click', (ev) => {
+        ev.preventDefault();
+
+        let note = 0;
+        let percentage = 0
+
+        // console.log(this.nextSibling.nextSibling);
+        // .textContent.split('%')[0]
+        console.log(div_percentage.textContent.split('%')[0]);
+        // console.log(this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.id.split('li')[1]);
+        note = input_note.value;
+        percentage = Number(div_percentage.textContent.split('%')[0]);
+        // console.log(this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode)
+        id_group = Number(button_confirm_note.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.id.split('li')[1]);
+        // console.log(this.parentNode.parentNode.parentNode.parentNode.parentNode.firstChild.nextSibling.nextSibling.nextSibling.firstChild.nextSibling);
+
+        button_add_note.disabled = false;
+        addBtnGroup.disabled = false;
+        button_edit_note.style.display = "block";
+        button_confirm_note.style.display = "none";
+        input_note.readOnly = true;
+
+        // alert(note + " " + percentage + " " + id_group)
+        window.location.href = "/calculator?note=" + note + "&percentage=" + percentage + "&id_group=" + id_group;
+        // console.log(e);
+    });
 
     button_add_note.classList.add("addNote");
     button_add_note.textContent = "Añadir Nota"
@@ -97,9 +121,11 @@ addBtnGroup.addEventListener('click', (e) => {
 
     ul.appendChild(li);
 
-    console.log(document.getElementById("groupNotes").childNodes.length);
-    console.log(document.getElementById("groupNotes").childNodes);
+    // console.log(document.getElementById("groupNotes").childNodes.length);
+    // console.log(document.getElementById("groupNotes").childNodes);
 
+    // console.log(document.querySelectorAll('.confirmNote'));
+    // btns_confirm = document.querySelectorAll('.confirmNote');
     varId++;
 });
 
@@ -162,11 +188,34 @@ const add_note_event = function(e) {
     img_delete.classList.add("img-editNote");
     img_delete.src = 'static/img/icons/borrarNota.png';
 
-    button_confirm_note.classList.add("confirmNote");
+    button_confirm_note.className = "confirmNote";
     button_confirm_note.style.display = "block";
 
     img_confirm.classList.add("img-editNote");
     img_confirm.src = 'static/img/icons/Confirm_note.png';
+
+    button_confirm_note.addEventListener('click', (e) => {
+        e.preventDefault();
+        console.log(this);
+        console.log(button_confirm_note.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.firstChild.nextSibling.textContent.split('%')[0]);
+
+        note = input_note.value;
+        // console.log(note);
+        percentage = Number(button_confirm_note.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.firstChild.nextSibling.textContent.split('%')[0]);
+        // console.log(this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode)
+        id_group = Number(button_confirm_note.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.id.split('li')[1]);
+        // console.log(this.parentNode.parentNode.parentNode.parentNode.parentNode.firstChild.nextSibling.nextSibling.nextSibling.firstChild.nextSibling);
+
+        this.disabled = false;
+        addBtnGroup.disabled = false;
+        button_edit_note.style.display = "block";
+        button_confirm_note.style.display = "none";
+        input_note.readOnly = true;
+
+        // alert(note + " " + percentage + " " + id_group)
+        window.location.href = "/calculator?note=" + note + "&percentage=" + percentage + "&id_group=" + id_group;
+    
+    });
 
     button_edit_note.appendChild(img_edit);
     button_delete_note.appendChild(img_delete);
@@ -179,6 +228,10 @@ const add_note_event = function(e) {
     li_notes.appendChild(div_container_button_notes);
     // console.log(div_parent.firstChild.nextSibling);
     div_parent.firstChild.nextSibling.appendChild(li_notes);
+
+    btns_confirm = document.querySelectorAll('.confirmNote');
+
+    console.log("Hola");
 }
 
 btns_add_note.forEach(boton => {
@@ -186,14 +239,16 @@ btns_add_note.forEach(boton => {
 });
 
 const confirm_event = function(event) {
+    event.preventDefault();
+
     const button_add_note = this.parentNode.parentNode.parentNode.parentNode.parentNode.firstChild.nextSibling.nextSibling.nextSibling.firstChild.nextSibling;
     const input_note = this.previousSibling.previousSibling;
     const button_edit_note = this.nextSibling.nextSibling;
 
+    
+
     let note = 0;
     let percentage = 0
-
-    event.preventDefault();
 
     // console.log(this.nextSibling.nextSibling);
     // .textContent.split('%')[0]
@@ -211,12 +266,13 @@ const confirm_event = function(event) {
     this.style.display = "none";
     input_note.readOnly = true;
 
-    window.location.href ='/calculator?note=' + note + "&percentage=" + percentage + "&id_group=" + id_group;
+    // alert(note + " " + percentage + " " + id_group)
+    window.location.href = "/calculator?note=" + note + "&percentage=" + percentage + "&id_group=" + id_group;
     // console.log(e);
 }
 
-btns_confirm.forEach(boton => {
-    boton.addEventListener('click', confirm_event);
+btns_confirm.forEach(btn => {
+    btn.addEventListener('click', confirm_event);
 });
 
 {/* <div class="container-note-percentage" >
