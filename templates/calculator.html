@@ -65,12 +65,30 @@
                                     <li>
                                         <div class="container-button-notes">
                                             <form method="post">
-                                                <input type="number" id='{{n["idNota"]}}' readonly class="note" value="{{n['nota']}}">
+                                                <input type="number" id='numero' readonly class="note" value="{{n['nota']}}">
                                                 <button class="confirmNote"><img class='img-editNote' src="{{url_for('static', filename='img/icons/confirm_note.png')}}" alt="Editar nota"></button>
                                                 <button class="editNote"><img class='img-editNote' src="{{url_for('static', filename='img/icons/editarNota.png')}}" alt="Editar nota"></button>
-                                                <button class="deletNote"><img class='img-editNote' src="{{url_for('static', filename='img/icons/borrarNota.png')}}" alt="Borrar nota"></button>
+                                                
                                             </form>
-                                        </div>    
+
+                                            <button class="deletNote" id = '{{n["idNota"]}}'><img class='img-editNote' src="{{url_for('static', filename='img/icons/borrarNota.png')}}" alt="Borrar nota"></button>
+
+                                        </div>
+                                        
+                                        <script>
+
+                                            var removeButton = document.getElementById('{{n["idNota"]}}');
+
+                                            removeButton.addEventListener("click", function () {
+
+                                                console.log("done?");
+                                                window.location.href = "/calculator?deletedEvent=" + this.id;
+                                            
+                                            }
+                                            );
+
+                                        </script>
+
                                     </li>
                                 {% endfor %}      
                             </ul>
