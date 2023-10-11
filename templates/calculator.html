@@ -65,7 +65,7 @@
                                     <li>
                                         <div class="container-button-notes">
                                             <form method="post">
-                                                <input type="number" readonly class="note" value="{{n['nota']}}">
+                                                <input type="number" id='{{n["idNota"]}}' readonly class="note" value="{{n['nota']}}">
                                                 <button class="confirmNote"><img class='img-editNote' src="{{url_for('static', filename='img/icons/confirm_note.png')}}" alt="Editar nota"></button>
                                                 <button class="editNote"><img class='img-editNote' src="{{url_for('static', filename='img/icons/editarNota.png')}}" alt="Editar nota"></button>
                                                 <button class="deletNote"><img class='img-editNote' src="{{url_for('static', filename='img/icons/borrarNota.png')}}" alt="Borrar nota"></button>
@@ -82,6 +82,25 @@
                 </li>
             {% endfor %}
         </ul>
+
+        <div class="modal-container" id="modal-container">
+            <div class="modal">
+                <h2>¿Cuál porcentaje quieres cambiar?</h1>
+                <ul>
+                {% for nota in nota_ordenadas %}
+                    <li class="li-edit-group">
+                        <h3>Grupo {{ nota[0]["numGrupo"] + 1 }}</h2>
+                        <form action="" method="post" class="form-group">
+                            <input type="number" class="input-group" readonly value="{{nota[0]['porcentaje']}}"><p>%</p>
+                            <button class="edit-group">Editar</button>
+                            <button class="confirm-group">Confirmar</button>
+                        </form>
+                    </li>
+                {% endfor %}
+                </ul>
+                <button id="close">Cerrar</button>
+            </div>
+        </div>
     </div>
     <script src="{{url_for('static', filename='js/gestorCalculadora.js')}}"></script>
 </body>

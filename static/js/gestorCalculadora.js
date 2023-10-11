@@ -2,9 +2,35 @@ const addBtnGroup = document.querySelector('#addGroupNotes');
 const ul = document.querySelector('#groupNotes');
 const btns_edit = document.querySelectorAll('.editNote');
 const btns_add_note = document.querySelectorAll('.addNote');
+const btn_edit_group = document.querySelector("#editGroupNotes");
+const modal_container = document.querySelector(".modal-container");
+const btn_close_edit = document.querySelector("#close");
+const btns_edit_group = document.querySelectorAll(".edit-group")
+const btns_confirm_group = document.querySelectorAll(".confirm-group")
 let btns_confirm = document.querySelectorAll('.confirmNote');
-console.log(document.querySelectorAll('.confirmNote'));
+// console.log(document.querySelectorAll('.confirmNote'));
+
 let varId = Number(document.querySelector('#group-id').textContent) + 1;
+
+let isUpdate = 0;
+
+function generateUUID() { // Public Domain/MIT
+    var d = new Date().getTime();//Timestamp
+    var d2 = ((typeof performance !== 'undefined') && performance.now && (performance.now()*1000)) || 0;//Time in microseconds since page-load or 0 if unsupported
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = Math.random() * 16;//random number between 0 and 16
+        if(d > 0){//Use timestamp until depleted
+            r = (d + r)%16 | 0;
+            d = Math.floor(d/16);
+        } else {//Use microseconds since page-load if supported
+            r = (d2 + r)%16 | 0;
+            d2 = Math.floor(d2/16);
+        }
+        return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+    });
+}
+
+console.log(generateUUID())
 
 addBtnGroup.addEventListener('click', (e) => {
     const li = document.createElement('li');
@@ -50,7 +76,7 @@ addBtnGroup.addEventListener('click', (e) => {
     input_note.step = "0.001";
     input_note.min = "0";
     input_note.max = "5";
-    input_note.required = "true";
+    input_note.required = true;
     input_note.placeholder = "Ingrese una nota..."
     input_note.classList.add("note");
 
@@ -94,7 +120,7 @@ addBtnGroup.addEventListener('click', (e) => {
         input_note.readOnly = true;
 
         // alert(note + " " + percentage + " " + id_group)
-        window.location.href = "/calculator?note=" + note + "&percentage=" + percentage + "&id_group=" + id_group;
+        window.location.href = "/calculator?note=" + note + "&percentage=" + percentage + "&id_group=" + id_group + '&uuid=' + generateUUID() + "&isUpdate=" + isUpdate;
         // console.log(e);
     });
 
@@ -136,6 +162,7 @@ const editNoteFun = function(e) {
     // console.log(this.previousSibling.previousSibling.previousSibling.previousSibling);
     // console.log(this.previousSibling.previousSibling);
     this.style.display = "none";
+    isUpdate = 1;
 }
 
 btns_edit.forEach(boton => {
@@ -170,7 +197,7 @@ const add_note_event = function(e) {
     input_note.min = "0";
     input_note.max = "5";
     input_note.placeholder = "Ingrese una nota..."
-    input_note.required = "true";
+    input_note.required = true;
     input_note.classList.add("note");
     // div_notes.classList.add("note");
     // div_notes.contentEditable = "true";
@@ -213,7 +240,7 @@ const add_note_event = function(e) {
         input_note.readOnly = true;
 
         // alert(note + " " + percentage + " " + id_group)
-        window.location.href = "/calculator?note=" + note + "&percentage=" + percentage + "&id_group=" + id_group;
+        window.location.href = "/calculator?note=" + note + "&percentage=" + percentage + "&id_group=" + id_group + '&uuid=' + generateUUID() + "&isUpdate=" + isUpdate;
     
     });
 
@@ -258,6 +285,7 @@ const confirm_event = function(event) {
     percentage = Number(this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.firstChild.nextSibling.textContent.split('%')[0]);
     // console.log(this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode)
     id_group = Number(this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.id.split('li')[1]);
+    id_nota = input_note.id
     // console.log(this.parentNode.parentNode.parentNode.parentNode.parentNode.firstChild.nextSibling.nextSibling.nextSibling.firstChild.nextSibling);
 
     button_add_note.disabled = false;
@@ -266,14 +294,42 @@ const confirm_event = function(event) {
     this.style.display = "none";
     input_note.readOnly = true;
 
+    let _isUpdate = isUpdate;
+    isUpdate = 0;
+
     // alert(note + " " + percentage + " " + id_group)
-    window.location.href = "/calculator?note=" + note + "&percentage=" + percentage + "&id_group=" + id_group;
+    window.location.href = "/calculator?note=" + note + "&percentage=" + percentage + "&id_group=" + id_group + '&uuid=' + generateUUID() + "&isUpdate=" + _isUpdate + "&id_nota=" + id_nota;
     // console.log(e);
 }
 
 btns_confirm.forEach(btn => {
     btn.addEventListener('click', confirm_event);
 });
+
+btn_edit_group.addEventListener('click', () => {
+    modal_container.classList.add('show');
+});
+
+btn_close_edit.addEventListener('click', () => {
+    modal_container.classList.remove('show');
+});
+
+const edit_group_event = function(e){
+    e.preventDefault();
+    // console.log(this.nextSibling.nextSibling)
+    // console.log(this.previousSibling.previousSibling.previousSibling)
+    const confirm_group = this.nextSibling.nextSibling;
+    const input_group = this.previousSibling.previousSibling.previousSibling;
+
+    confirm_group.style.display= "block";
+    this.style.display = "none"
+    input_group.readOnly = false;
+}
+
+btns_edit_group.forEach(boton => {
+    boton.addEventListener('click', edit_group_event);
+}); 
+
 
 {/* <div class="container-note-percentage" >
     <div contenteditable="true" class="percentage">

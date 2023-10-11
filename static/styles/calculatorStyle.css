@@ -314,3 +314,78 @@ input[type=number]::-webkit-outer-spin-button {
 .confirmNote:hover {
     box-shadow: 0px 2px 3px 1px #21a10f;
 }
+
+.modal-container {
+    display: flex;
+    background-color: rgba(0, 0, 0, 0.3);
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    pointer-events: none;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    opacity: 0;
+}
+
+.modal {
+    background-color: white;
+    width: 600px;
+    max-width: 100%;
+    padding: 30px 50px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.show {
+    pointer-events: auto;
+    opacity: 1;
+}
+
+.input-group {
+    width: 50px;
+    border: black solid 1px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.form-group{
+    justify-content: center;
+}
+
+.edit-group, .confirm-group, #close {
+    color: black;
+    border-radius: 5px;
+    padding: 5px 15px;
+}
+
+.edit-group, .confirm-group {
+    margin-left: 10px;
+}
+
+.edit-group{
+    background-color: #3dc2ffe7;
+    border: #0567fa solid 2px;
+}
+
+.confirm-group {
+    background-color: #6efa10e7;
+    border: #05fa7f solid 2px;
+    display: none;
+}
+
+#close {
+    background-color: #0567fa;
+    border: none;
+}
+
+.li-edit-group {
+    margin-bottom: 10px;
+    border: black solid 3px;
+    border-radius: 10px;
+    padding: 5px 10px;
+}
+
+

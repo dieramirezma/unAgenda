@@ -6,7 +6,6 @@ import secrets
 
 # Crear una instancia de la aplicación Flask
 app = Flask(__name__, template_folder='templates')
-
 # Configuración de la conexión a la base de datos MySQL
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
@@ -316,17 +315,33 @@ def calculator():
     # if request.method == 'POST':
     #     print("--------------------- Entro -----------------------------")
     #     print(request.form)
+    # repeat = 0
+
     note = request.args.get("note")
     percentage = request.args.get("percentage")
     id_group = request.args.get("id_group")
+    uuid = request.args.get("uuid")
+    is_update = request.args.get("isUpdate")
+    # if uuid == None:
+    #     repeated = 0
 
     db = mysql.connection.cursor()
+    # print(repeated)
+    print(f"nota: {note} {type(note)} {note != 'None'}, porcentaje: {percentage} {type(percentage)} {percentage != None}, id: {id_group} {type(id_group)} {id_group != None}, id de usuario: {session['idUsuario']}, isUpdate: {is_update} {type(is_update)}")
 
-    print(f"nota: {note} {type(note)} {note != 'None'}, porcentaje: {percentage} {type(percentage)} {percentage != None}, id: {id_group} {type(id_group)} {id_group != None}, id de usuario: {session['idUsuario']}")
-
-    if note != None and percentage != None and id_group != None and note != "None" and percentage != "None" and id_group != "None":
-       db.execute(f'INSERT INTO grupoNotas (idUsuario, numGrupo, porcentaje, nota) VALUES ({session["idUsuario"]}, {id_group}, {percentage}, {note})')
-       mysql.connection.commit()
+    if note != None and percentage != None and id_group != None and note != "None" and percentage != "None" and id_group != "None" and is_update != None and is_update != "None":
+    #    if repeated != uuid:
+        is_update = int(is_update)
+        if is_update == 1:
+            id_nota = request.args.get("id_nota")
+            db.execute(f'UPDATE grupoNotas set nota = {note} WHERE idNota = {id_nota} AND idUsuario = {session["idUsuario"]}')
+            mysql.connection.commit()
+            print("--------------------- Actualizado con éxito -----------------------------")
+        else:
+            db.execute(f'INSERT INTO grupoNotas (idUsuario, numGrupo, porcentaje, nota) VALUES ({session["idUsuario"]}, {id_group}, {percentage}, {note})')
+            mysql.connection.commit()
+            print("--------------------- Insertado con éxito -----------------------------")
+        # repeated = uuid
 
     # Recuperar las notas
     db.execute("SELECT * FROM grupoNotas ORDER BY numGrupo")
