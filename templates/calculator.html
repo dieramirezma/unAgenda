@@ -74,10 +74,36 @@
                                             <script>
 
                                                 var removeButton = document.getElementById('{{n["idNota"]}}');
+                                                // const ul_groups = document.getElementById('groupNotes');
 
-                                                removeButton.addEventListener("click", function () {
-         
-                                                window.location.href = "/calculator?deletedEvent=" + this.id;
+                                                removeButton.addEventListener("click", function (e) {
+                                                    e.preventDefault();
+                                                    this.parentNode.parentNode.parentNode.childNodes.forEach(child => {
+                                                        if(child.nodeName === '#text'){
+                                                            this.parentNode.parentNode.parentNode.removeChild(child);
+                                                        }
+                                                    });
+
+                                                    ul.childNodes.forEach(child => {
+                                                        if(child.nodeName === '#text'){
+                                                            ul.removeChild(child);
+                                                        }
+                                                    });
+
+                                                    console.log(ul.childNodes);
+
+                                                    let id_group = this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.id.split('li')[1];
+
+                                                    if(this.parentNode.parentNode.parentNode.childNodes.length === 1) {
+                                                        window.location.href = "/calculator?deletedEvent=" + this.id + '&delete_group=' + id_group + '&lengthUl=' + ul.childNodes.length;
+                                                    } else {
+                                                        window.location.href = "/calculator?deletedEvent=" + this.id;
+                                                    }
+
+                                                    // console.log(real_child);
+                                                    // console.log(this.parentNode.parentNode.parentNode.childNodes);
+
+                                                // window.location.href = "/calculator?deletedEvent=" + this.id;
 
                                                 });
 

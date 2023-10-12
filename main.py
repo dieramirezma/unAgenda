@@ -9,7 +9,7 @@ app = Flask(__name__, template_folder='templates')
 # Configuración de la conexión a la base de datos MySQL
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = '22446688Rengifo'
+app.config['MYSQL_PASSWORD'] = 'AMUnae54'
 app.config['MYSQL_DB'] = 'prFlask'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -325,6 +325,8 @@ def calculator():
     is_update_group = request.args.get("isUpdateGroup")
     id_nota = request.args.get("id_nota")
     deletedEvent = request.args.get("deletedEvent")
+    delete_group = request.args.get("delete_group")
+    lengthUl = request.args.get('lengthUl')
     # if uuid == None:
     #     repeated = 0
 
@@ -332,10 +334,22 @@ def calculator():
     # print(repeated)
     print(f"nota: {note} {type(note)} {note != 'None'}, porcentaje: {percentage} {type(percentage)} {percentage != None}, id: {id_group} {type(id_group)} {id_group != None}, id de usuario: {session['idUsuario']}, isUpdate: {is_update} {type(is_update)} isUpdateGroup: {is_update_group} {type(is_update_group)}")
 
-    if deletedEvent != None:
+    if deletedEvent != None and delete_group == None:
         _idUsuarioActual = session['idUsuario']
         db.execute('DELETE FROM grupoNotas WHERE idNota = %s AND idUsuario = %s', (deletedEvent, _idUsuarioActual,))
         mysql.connection.commit()
+    elif deletedEvent != None and delete_group != None and lengthUl != None:
+        if int(delete_group) < int(lengthUl) - 1:
+            _idUsuarioActual = session['idUsuario']
+            db.execute('DELETE FROM grupoNotas WHERE idNota = %s AND idUsuario = %s', (deletedEvent, _idUsuarioActual,))
+            mysql.connection.commit()
+            for i in range(int(delete_group) + 1, int(lengthUl)):
+                db.execute(f'UPDATE grupoNotas set numGrupo = {i - 1} WHERE numGrupo = {i} AND idUsuario = {session["idUsuario"]}')
+                mysql.connection.commit()
+        else:
+            _idUsuarioActual = session['idUsuario']
+            db.execute('DELETE FROM grupoNotas WHERE idNota = %s AND idUsuario = %s', (deletedEvent, _idUsuarioActual,))
+            mysql.connection.commit()
 
     if note != None and percentage != None and id_group != None and note != "None" and percentage != "None" and id_group != "None" and is_update != None and is_update != "None":
     #    if repeated != uuid:
