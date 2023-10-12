@@ -9,8 +9,11 @@ const btns_edit_group = document.querySelectorAll(".edit-group")
 const btns_confirm_group = document.querySelectorAll(".confirm-group")
 const btns_confirm = document.querySelectorAll('.confirmNote');
 const btn_delete_group = document.querySelector('#deleteGroupNotes');
+const btns_delete_group = document.querySelectorAll(".delete-group")
 const modal_container_delete = document.querySelector("#modal-container-eliminar");
 const btn_close_delete = document.querySelector("#close-eliminar");
+const btn_send = document.querySelector("#send");
+
 // console.log(document.querySelectorAll('.confirmNote'));
 
 let varId = Number(document.querySelector('#group-id').textContent) + 1;
@@ -345,20 +348,75 @@ btns_edit_group.forEach(boton => {
 
 const confirm_group_event = function(e) {
     e.preventDefault();
-    id_group = Number(this.parentNode.previousSibling.previousSibling.textContent.split('Grupo ')[1]) - 1
-    percentage = this.previousSibling.previousSibling.previousSibling.previousSibling.previousSibling.value
+    const input_group = this.previousSibling.previousSibling.previousSibling.previousSibling.previousSibling;
+    const btn_edit = this.previousSibling.previousSibling;
+
+    input_group.readOnly = true;
+    btn_edit.style.display= "block";
+    this.style.display = "none"
+    // console.log(this.previousSibling.previousSibling)
+    id_group = Number(this.parentNode.previousSibling.previousSibling.textContent.split('Grupo ')[1]) - 1;
+    percentage = this.previousSibling.previousSibling.previousSibling.previousSibling.previousSibling.value;
     // console.log(this.parentNode.previousSibling.previousSibling.textContent.split('Grupo ')[1]);
     // console.log(this.previousSibling.previousSibling.previousSibling.previousSibling.previousSibling);
     isUpdate = 0;
     let _isUpdateGroup = isUpdateGroup;
     isUpdateGroup = 0;
-    window.location.href = "/calculator?note=" + "None" + "&percentage=" + percentage + "&id_group=" + id_group + '&uuid=' + generateUUID() + "&isUpdate=" + isUpdate + "&id_nota=" + "None" + "&isUpdateGroup=" + _isUpdateGroup;
+    // window.location.href = "/calculator?note=" + "None" + "&percentage=" + percentage + "&id_group=" + id_group + '&uuid=' + generateUUID() + "&isUpdate=" + isUpdate + "&id_nota=" + "None" + "&isUpdateGroup=" + _isUpdateGroup;
 }
 
 btns_confirm_group.forEach(boton => {
     boton.addEventListener('click', confirm_group_event);
 });
 
+const enviar_grupo = function(e) {
+    e.preventDefault();
+    let percentages = [];
+    let id_groups = [];
+
+    let group = this.previousSibling.previousSibling;
+    group.childNodes.forEach(child => {
+        if(child.nodeName === '#text'){
+            group.removeChild(child);
+        } else {
+            console.log(child.firstChild.nextSibling.nextSibling.nextSibling.firstChild.nextSibling);
+        }
+    });
+
+    group.childNodes.forEach(child => {
+        percentages.push(Number(child.firstChild.nextSibling.nextSibling.nextSibling.firstChild.nextSibling.value));
+        id_groups.push(child.firstChild.nextSibling.textContent.split("Grupo ")[1] -1);
+    });
+
+    console.log(percentages);
+    console.log(id_groups);
+
+    window.location.href = "/calculator?percs=" + percentages + "&id_groups=" + id_groups;
+}
+
+btn_send.addEventListener("click", enviar_grupo);
+
+const del_event = function(e) {
+    e.preventDefault();
+    const id_group_del = this.parentNode.previousSibling.previousSibling.textContent.split("Grupo ")[1] - 1;
+    const porc_del = this.previousSibling.previousSibling.previousSibling.value;
+    const child_ul = this.parentNode.parentNode.parentNode.childNodes;
+
+    child_ul.forEach(element => {
+        if(element.nodeName === '#text'){
+            element.parentNode.removeChild(element);
+        }
+    });
+    // modal_container.classList.add('show');
+
+    window.location.href = "/calculator?id_group_del=" + id_group_del + "&porc_del=" + porc_del + "&len=" + child_ul.length;
+
+    console.log(child_ul);
+}
+
+btns_delete_group.forEach(btn => {
+    btn.addEventListener('click', del_event);
+});
 
 {/* <div class="container-note-percentage" >
     <div contenteditable="true" class="percentage">

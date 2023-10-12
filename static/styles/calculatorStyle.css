@@ -359,7 +359,7 @@ input[type=number]::-webkit-outer-spin-button {
     justify-content: center;
 }
 
-.edit-group, .confirm-group, .delete-group, #close, #close-eliminar {
+.edit-group, .confirm-group, .delete-group, #close, #close-eliminar, #send {
     color: black;
     border-radius: 5px;
     padding: 5px 15px;
@@ -378,6 +378,11 @@ input[type=number]::-webkit-outer-spin-button {
     background-color: #6efa10e7;
     border: #05fa7f solid 2px;
     display: none;
+}
+
+#send {
+    background-color: #6efa10e7;
+    border: #05fa7f solid 2px;
 }
 
 .delete-group {
