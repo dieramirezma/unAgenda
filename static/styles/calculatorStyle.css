@@ -170,7 +170,7 @@
 .percentage {
     /* float: left;    
     position: relative; */
-    color: white;
+    color: black;
     display: flex;
     align-items: center;
     border-radius: 5px;
@@ -341,6 +341,28 @@ input[type=number]::-webkit-outer-spin-button {
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     text-align: center;
+}
+
+.modal-adv {
+    background-color: rgba(190, 62, 83, 0.829);
+    width: 250px;
+    max-width: 100%;
+    padding: 30px 50px;
+    border-radius: 10px;
+    border: red solid 2px;
+    color: white;
+    font-size: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+#close-adv {
+    color: white;
+    border-radius: 5px;
+    padding: 5px 15px;
+    background-color: rgb(212, 68, 68);
+    border: red solid 2px;
+    margin-top: 5px;
 }
 
 .show {

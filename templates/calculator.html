@@ -60,6 +60,7 @@
                         <div  class="percentage">
                             {{ nota[0]["porcentaje"] }}%
                         </div>
+                    
                         <div class="container-notes">
                             <ul>
                                 {% for n in nota %}
@@ -73,7 +74,6 @@
                                             <button class="deletNote" id='{{n["idNota"]}}'><img class='img-editNote' src="{{url_for('static', filename='img/icons/borrarNota.png')}}" alt="Borrar nota"></button>
 
                                             <script>
-
                                                 var removeButton = document.getElementById('{{n["idNota"]}}');
                                                 // const ul_groups = document.getElementById('groupNotes');
 
@@ -133,7 +133,7 @@
 
                                         </div>    
                                     </li>
-                                {% endfor %}      
+                                {% endfor %}    
                             </ul>
                             <div>
                                 <button class="addNote">Añadir nota</button>
@@ -143,6 +143,36 @@
                 </li>
             {% endfor %}
         </ul>
+        <script>
+                const COLORES = [
+                    "#FFC0CB",
+                    "#87CEEB",
+                    "#98FB98",
+                    "#FFFF99",
+                    "#E6E6FA",
+                    "#AFEEEE",
+                    "#FFD700",
+                    "#00FFFF",
+                    "#FFDAB9",
+                    "#FFFACD",
+                    "#D8BFD8",
+                    "#98FF98",
+                    "#FFF0F5",
+                    "#DFFFBF",
+                    "#D3D3D3",
+                    "#A1CAF1",
+                    "#FFFFB3",
+                    "#FFF0F5",
+                    "#DFFFBF",
+                    "#FF6F61",
+                ];
+                const percentages_div = document.querySelectorAll(".percentage")
+
+                percentages_div.forEach(per => {
+                    per.style.backgroundColor = COLORES[Math.floor(Math.random() * COLORES.length)];
+                });
+                console.log(percentages_div);
+            </script>  
         <div id="finalAverage">
 
             <h4>Tu promedio final es:</h4>
@@ -184,6 +214,13 @@
                 {% endfor %}
                 </ul>
                 <button id="close-eliminar">Cerrar</button>
+            </div>
+        </div>
+        <div class="modal-container" id="modal-container-adv">
+            <div class="modal-adv">
+                <h2>Error</h1>
+                <p id="p-adv"></p>
+                <button id="close-adv">Ok</button>
             </div>
         </div>
     </div>

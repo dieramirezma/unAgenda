@@ -13,6 +13,10 @@ const btns_delete_group = document.querySelectorAll(".delete-group")
 const modal_container_delete = document.querySelector("#modal-container-eliminar");
 const btn_close_delete = document.querySelector("#close-eliminar");
 const btn_send = document.querySelector("#send");
+const advertencia = document.querySelector("#modal-container-adv");
+const btn_ok = document.querySelector("#close-adv");
+const p_adv = document.querySelector("#p-adv");
+
 
 // console.log(document.querySelectorAll('.confirmNote'));
 
@@ -20,6 +24,35 @@ let varId = Number(document.querySelector('#group-id').textContent) + 1;
 
 let isUpdate = 0;
 let isUpdateGroup = 0;
+
+const input_validation = function(value){
+    if(value === ""){
+        return 0;
+    } else if(Number(value) > 5){
+        return 1;
+    } else if(Number(value) < 0){
+        return 1;
+    }    
+    return 2;
+}
+
+const form_validation = function(inputs){
+    let sum = 0;
+    inputs.forEach(input => {
+        if(input === ""){
+            return 0;
+        } else {
+            console.log(input);
+            sum += Number(input);
+        }
+    });
+
+    if(sum !== 100){
+        return 1;
+    } else {
+        return 2;
+    }
+}
 
 function generateUUID() { // Public Domain/MIT
     var d = new Date().getTime();//Timestamp
@@ -84,6 +117,7 @@ addBtnGroup.addEventListener('click', (e) => {
         div_percentage.textContent = '100%';
     } else {
         ul_child_nodes.forEach(child => {
+            console.log(child);
             let act_perc = Number(child.firstChild.nextSibling.firstChild.nextSibling.textContent.split("%")[0]);
             let act_id = Number(child.id.split("li")[1]);
 
@@ -155,18 +189,25 @@ addBtnGroup.addEventListener('click', (e) => {
         id_group = Number(button_confirm_note.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.id.split('li')[1]);
         // console.log(this.parentNode.parentNode.parentNode.parentNode.parentNode.firstChild.nextSibling.nextSibling.nextSibling.firstChild.nextSibling);
 
-        button_add_note.disabled = false;
-        addBtnGroup.disabled = false;
-        button_edit_note.style.display = "block";
-        button_confirm_note.style.display = "none";
-        input_note.readOnly = true;
-
+        if(input_validation(note) === 2) {
         // alert(note + " " + percentage + " " + id_group)
-        if(ul_child_nodes.length === 1) {
-            window.location.href = "/calculator?note=" + note + "&percentage=" + percentage + "&id_group=" + id_group + '&uuid=' + generateUUID() + "&isUpdate=" + isUpdate;
+            button_add_note.disabled = false;
+            addBtnGroup.disabled = false;
+            button_edit_note.style.display = "block";
+            button_confirm_note.style.display = "none";
+            input_note.readOnly = true;
+            if(ul_child_nodes.length === 1) {
+                window.location.href = "/calculator?note=" + note + "&percentage=" + percentage + "&id_group=" + id_group + '&uuid=' + generateUUID() + "&isUpdate=" + isUpdate;
+            } else {
+                window.location.href = "/calculator?note=" + note + "&percentage=" + new_perc + "&id_group=" + id_group + '&uuid=' + generateUUID() + "&isUpdate=" + isUpdate + "&li_id=" + li_id + "&new_perc=" + new_perc;
+                console.log("Hola");
+            }
+        } else if (input_validation(note) === 0) {
+            advertencia.classList.add('show');
+            p_adv.textContent = "Tiene que llenar todas las celdas."
         } else {
-            window.location.href = "/calculator?note=" + note + "&percentage=" + new_perc + "&id_group=" + id_group + '&uuid=' + generateUUID() + "&isUpdate=" + isUpdate + "&li_id=" + li_id + "&new_perc=" + new_perc;
-            console.log("Hola");
+            advertencia.classList.add('show');
+            p_adv.textContent = "El valor tiene que estar entre 0 y 5."
         }
         // console.log(ul_child_nodes.length);
     });
@@ -280,15 +321,22 @@ const add_note_event = function(e) {
         id_group = Number(button_confirm_note.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.id.split('li')[1]);
         // console.log(this.parentNode.parentNode.parentNode.parentNode.parentNode.firstChild.nextSibling.nextSibling.nextSibling.firstChild.nextSibling);
 
+        if(input_validation(note) === 2) {
         this.disabled = false;
-        addBtnGroup.disabled = false;
-        button_edit_note.style.display = "block";
-        button_confirm_note.style.display = "none";
-        input_note.readOnly = true;
+            addBtnGroup.disabled = false;
+            button_edit_note.style.display = "block";
+            button_confirm_note.style.display = "none";
+            input_note.readOnly = true;
 
-        // alert(note + " " + percentage + " " + id_group)
-        window.location.href = "/calculator?note=" + note + "&percentage=" + percentage + "&id_group=" + id_group + '&uuid=' + generateUUID() + "&isUpdate=" + isUpdate;
-    
+            // alert(note + " " + percentage + " " + id_group)
+            window.location.href = "/calculator?note=" + note + "&percentage=" + percentage + "&id_group=" + id_group + '&uuid=' + generateUUID() + "&isUpdate=" + isUpdate;
+        } else if (input_validation(note) === 0) {
+            advertencia.classList.add('show');
+            p_adv.textContent = "Tiene que llenar todas las celdas."
+        } else {
+            advertencia.classList.add('show');
+            p_adv.textContent = "El valor tiene que estar entre 0 y 5."
+        }
     });
 
     button_edit_note.appendChild(img_edit);
@@ -335,18 +383,26 @@ const confirm_event = function(event) {
     id_nota = input_note.id.split("nota ")[1]
     // console.log(this.parentNode.parentNode.parentNode.parentNode.parentNode.firstChild.nextSibling.nextSibling.nextSibling.firstChild.nextSibling);
 
-    button_add_note.disabled = false;
-    addBtnGroup.disabled = false;
-    button_edit_note.style.display = "block";
-    this.style.display = "none";
-    input_note.readOnly = true;
+    if(input_validation(note) === 2) {
+        button_add_note.disabled = false;
+        addBtnGroup.disabled = false;
+        button_edit_note.style.display = "block";
+        this.style.display = "none";
+        input_note.readOnly = true;
 
-    let _isUpdate = isUpdate;
-    isUpdate = 0;
+        let _isUpdate = isUpdate;
+        isUpdate = 0;
 
-    // alert(note + " " + percentage + " " + id_group)
-    window.location.href = "/calculator?note=" + note + "&percentage=" + percentage + "&id_group=" + id_group + '&uuid=' + generateUUID() + "&isUpdate=" + _isUpdate + "&id_nota=" + id_nota;
-    // console.log(e);
+        // alert(note + " " + percentage + " " + id_group)
+        window.location.href = "/calculator?note=" + note + "&percentage=" + percentage + "&id_group=" + id_group + '&uuid=' + generateUUID() + "&isUpdate=" + _isUpdate + "&id_nota=" + id_nota;
+        // console.log(e);
+    } else if (input_validation(note) === 0) {
+        advertencia.classList.add('show');
+        p_adv.textContent = "Tiene que llenar todas las celdas."
+    } else {
+        advertencia.classList.add('show');
+        p_adv.textContent = "El valor tiene que estar entre 0 y 5."
+    }
 }
 
 btns_confirm.forEach(btn => {
@@ -430,8 +486,15 @@ const enviar_grupo = function(e) {
 
     console.log(percentages);
     console.log(id_groups);
-
-    window.location.href = "/calculator?percs=" + percentages + "&id_groups=" + id_groups;
+    if(form_validation(percentages) === 2) {
+        window.location.href = "/calculator?percs=" + percentages + "&id_groups=" + id_groups;
+    } else if(form_validation(percentages) === 0) {
+        advertencia.classList.add('show');
+        p_adv.textContent = "Tiene que llenar todos los campos."
+    } else {
+        advertencia.classList.add('show');
+        p_adv.textContent = "La suma total de los porcentajes tiene que ser 100."
+    }
 }
 
 btn_send.addEventListener("click", enviar_grupo);
@@ -472,6 +535,9 @@ btns_delete_group.forEach(btn => {
     btn.addEventListener('click', del_event);
 });
 
+btn_ok.addEventListener('click', () => {
+    advertencia.classList.remove('show');
+});
 {/* <div class="container-note-percentage" >
     <div contenteditable="true" class="percentage">
         40%

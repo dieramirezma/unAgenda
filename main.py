@@ -358,8 +358,12 @@ def calculator():
             for i in range(int(delete_group) + 1, int(lengthUl)):
                 db.execute(f'UPDATE grupoNotas set numGrupo = {i - 1} WHERE numGrupo = {i} AND idUsuario = {session["idUsuario"]}')
                 mysql.connection.commit()
-            db.execute(f'UPDATE grupoNotas set porcentaje = {n_perc} WHERE numGrupo = {int(id_updt) - 1} AND idUsuario = {session["idUsuario"]}')
-            mysql.connection.commit()
+            if int(delete_group) <= int(id_updt):
+                db.execute(f'UPDATE grupoNotas set porcentaje = {n_perc} WHERE numGrupo = {int(id_updt) - 1} AND idUsuario = {session["idUsuario"]}')
+                mysql.connection.commit()
+            else:
+                db.execute(f'UPDATE grupoNotas set porcentaje = {n_perc} WHERE numGrupo = {int(id_updt)} AND idUsuario = {session["idUsuario"]}')
+                mysql.connection.commit()
         else:
             _idUsuarioActual = session['idUsuario']
             db.execute('DELETE FROM grupoNotas WHERE idNota = %s AND idUsuario = %s', (deletedEvent, _idUsuarioActual,))
@@ -374,8 +378,13 @@ def calculator():
             for i in range(int(id_group_del) + 1, int(len_ul)):
                 db.execute(f'UPDATE grupoNotas set numGrupo = {i - 1} WHERE numGrupo = {i} AND idUsuario = {session["idUsuario"]}')
                 mysql.connection.commit()
-            db.execute(f'UPDATE grupoNotas set porcentaje = {n_perc} WHERE numGrupo = {int(id_updt) - 1} AND idUsuario = {session["idUsuario"]}')
-            mysql.connection.commit()
+            if int(id_group_del) <= int(id_updt):
+                db.execute(f'UPDATE grupoNotas set porcentaje = {n_perc} WHERE numGrupo = {int(id_updt) - 1} AND idUsuario = {session["idUsuario"]}')
+                mysql.connection.commit()
+            else:
+                db.execute(f'UPDATE grupoNotas set porcentaje = {n_perc} WHERE numGrupo = {int(id_updt)} AND idUsuario = {session["idUsuario"]}')
+                mysql.connection.commit()
+
         else:
             db.execute(f'UPDATE grupoNotas set porcentaje = {n_perc} WHERE numGrupo = {int(id_updt)} AND idUsuario = {session["idUsuario"]}')
             mysql.connection.commit()
