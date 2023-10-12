@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <form class="formControl" action="loginAccess" method="POST">
+    <form class="formControl" action="loginAccess" method="POST" >
         <h1 style="margin-bottom: 20px;">Iniciar Sesión</h1>
         <div class="form-group">
           <label for="exampleInputEmail1" style="margin-bottom: 10px;">Correo Electrónico</label>
@@ -11,6 +11,11 @@
           <label for="exampleInputPassword1" style="margin-bottom: 10px;">Contraseña</label>
           <input type="password" class="form-control" id="exampleInputPassword1" name="txtPassword" required>
         </div>
+        {% if error_message %}
+        <div class="alert alert-danger" role="alert">
+            {{ error_message }}
+        </div>
+        {% endif %}
         <div style="text-align: center; margin-bottom: 40px;">
             <button type="submit" class="btn btn-primary">Ingresar</button>
         </div>
@@ -19,4 +24,6 @@
             <label class="registerNew" for="exampleRegister">¿Eres nuevo? ¡Regístrate! | <a style="text-decoration: none;" href="/register">Nuevo Usuario</a></label>
         </div>
     </form>
+    
+    
 {% endblock %}

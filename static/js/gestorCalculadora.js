@@ -3,11 +3,14 @@ const ul = document.querySelector('#groupNotes');
 const btns_edit = document.querySelectorAll('.editNote');
 const btns_add_note = document.querySelectorAll('.addNote');
 const btn_edit_group = document.querySelector("#editGroupNotes");
-const modal_container = document.querySelector(".modal-container");
+const modal_container = document.querySelector("#modal-container");
 const btn_close_edit = document.querySelector("#close");
 const btns_edit_group = document.querySelectorAll(".edit-group")
 const btns_confirm_group = document.querySelectorAll(".confirm-group")
-let btns_confirm = document.querySelectorAll('.confirmNote');
+const btns_confirm = document.querySelectorAll('.confirmNote');
+const btn_delete_group = document.querySelector('#deleteGroupNotes');
+const modal_container_delete = document.querySelector("#modal-container-eliminar");
+const btn_close_delete = document.querySelector("#close-eliminar");
 // console.log(document.querySelectorAll('.confirmNote'));
 
 let varId = Number(document.querySelector('#group-id').textContent) + 1;
@@ -286,7 +289,7 @@ const confirm_event = function(event) {
     percentage = Number(this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.firstChild.nextSibling.textContent.split('%')[0]);
     // console.log(this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode)
     id_group = Number(this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.id.split('li')[1]);
-    id_nota = input_note.id
+    id_nota = input_note.id.split("nota ")[1]
     // console.log(this.parentNode.parentNode.parentNode.parentNode.parentNode.firstChild.nextSibling.nextSibling.nextSibling.firstChild.nextSibling);
 
     button_add_note.disabled = false;
@@ -313,6 +316,14 @@ btn_edit_group.addEventListener('click', () => {
 
 btn_close_edit.addEventListener('click', () => {
     modal_container.classList.remove('show');
+});
+
+btn_delete_group.addEventListener('click', () => {
+    modal_container_delete.classList.add('show');
+});
+
+btn_close_delete.addEventListener('click', () => {
+    modal_container_delete.classList.remove('show');
 });
 
 const edit_group_event = function(e) {

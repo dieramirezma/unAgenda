@@ -225,7 +225,8 @@ def login():
             return render_template('admin.html', username = session['nombre'])
         else:
             # Si no se encuentra un usuario, redirigir de nuevo a la página de inicio
-            return render_template('index.html')
+            error_message = "Credenciales incorrectas"
+            return render_template('index.html', error_message=error_message)
 
 @app.route('/preguntas')
 def preguntas():
@@ -247,7 +248,8 @@ def register():
         existing_user = cur.fetchone()
 
         if existing_user:
-            return render_template('register.html', message='El correo ya está en uso.')
+            error_message = "El correo ya está en uso"
+            return render_template('register.html',error_message=error_message)
 
         cur.execute('INSERT INTO usuario (nombre, correo, contraseña) VALUES (%s, %s, %s)', (_nombre, _correo, _contraseña))
         mysql.connection.commit()

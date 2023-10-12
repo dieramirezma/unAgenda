@@ -69,6 +69,29 @@ CREATE TABLE grupoNotas (
 SELECT * FROM grupoNotas;
 DELETE FROM grupoNotas WHERE idNota < 100;
 
+DROP TABLE IF EXISTS `respuestas_seguridad`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `respuestas_seguridad` (
+  `idRespuesta` int(11) NOT NULL AUTO_INCREMENT,
+  `idUsuario` int(11) DEFAULT NULL,
+  `respuesta1` varchar(255) NOT NULL,
+  `respuesta2` varchar(255) NOT NULL,
+  `respuesta3` varchar(255) NOT NULL,
+  PRIMARY KEY (`idRespuesta`),
+  KEY `idUsuario` (`idUsuario`),
+  CONSTRAINT `respuestas_seguridad_ibfk_1` FOREIGN KEY (`idUsuario`) REFERENCES `usuario` (`idusuario`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `respuestas_seguridad`
+--
+
+LOCK TABLES `respuestas_seguridad` WRITE;
+/*!40000 ALTER TABLE `respuestas_seguridad` DISABLE KEYS */;
+/*!40000 ALTER TABLE `respuestas_seguridad` ENABLE KEYS */;
+UNLOCK TABLES;
 -- CREACIÓN DE LOS EVENTOS DEL HORARIO --
 DROP TABLE IF EXISTS `horario`;
 
