@@ -9,7 +9,7 @@ app = Flask(__name__, template_folder='templates')
 # Configuración de la conexión a la base de datos MySQL
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = '22446688Rengifo'
+app.config['MYSQL_PASSWORD'] = 'root'
 app.config['MYSQL_DB'] = 'prFlask'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -248,7 +248,8 @@ def register():
         existing_user = cur.fetchone()
 
         if existing_user:
-            return render_template('register.html', message='El correo ya está en uso.')
+            error_message = "El correo ya está en uso"
+            return render_template('register.html',error_message=error_message)
 
         cur.execute('INSERT INTO usuario (nombre, correo, contraseña) VALUES (%s, %s, %s)', (_nombre, _correo, _contraseña))
         mysql.connection.commit()
