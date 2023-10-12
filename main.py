@@ -225,7 +225,8 @@ def login():
             return render_template('admin.html', username = session['nombre'])
         else:
             # Si no se encuentra un usuario, redirigir de nuevo a la página de inicio
-            return render_template('index.html')
+            error_message = "Credenciales incorrectas"
+            return render_template('index.html', error_message=error_message)
 
 @app.route('/preguntas')
 def preguntas():
