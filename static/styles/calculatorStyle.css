@@ -189,7 +189,7 @@
 
 .container-notes {
     /* position: relative; */
-    /* float: left; */
+    float: left;
     width: 80%;
 }
 
@@ -388,4 +388,26 @@ input[type=number]::-webkit-outer-spin-button {
     padding: 5px 10px;
 }
 
+#groupNotes
+{
+
+    float:left;
+    margin-left: 3rem;
+    margin-right: 3rem;
+
+}
+
+#finalAverage
+{
+
+    margin-right: 4rem;
+    background-color: #bbbbbb;
+    float:right;
+    width: auto;
+    padding: 2rem;
+    border-radius: 15px;
+
+    text-align: center;
+
+}
 

@@ -65,11 +65,24 @@
                                     <li>
                                         <div class="container-button-notes">
                                             <form method="post">
-                                                <input type="number" id='{{n["idNota"]}}' readonly class="note" value="{{n['nota']}}">
+                                                <input type="number" id='nota' readonly class="note" value="{{n['nota']}}">
                                                 <button class="confirmNote"><img class='img-editNote' src="{{url_for('static', filename='img/icons/confirm_note.png')}}" alt="Editar nota"></button>
                                                 <button class="editNote"><img class='img-editNote' src="{{url_for('static', filename='img/icons/editarNota.png')}}" alt="Editar nota"></button>
-                                                <button class="deletNote"><img class='img-editNote' src="{{url_for('static', filename='img/icons/borrarNota.png')}}" alt="Borrar nota"></button>
                                             </form>
+                                            <button class="deletNote" id='{{n["idNota"]}}'><img class='img-editNote' src="{{url_for('static', filename='img/icons/borrarNota.png')}}" alt="Borrar nota"></button>
+
+                                            <script>
+
+                                                var removeButton = document.getElementById('{{n["idNota"]}}');
+
+                                                removeButton.addEventListener("click", function () {
+         
+                                                window.location.href = "/calculator?deletedEvent=" + this.id;
+
+                                                });
+
+                                            </script>
+
                                         </div>    
                                     </li>
                                 {% endfor %}      
@@ -82,6 +95,12 @@
                 </li>
             {% endfor %}
         </ul>
+        <div id="finalAverage">
+
+            <h4>Tu promedio final es:</h4>
+            <p> {{promedioFinal}}</p>
+
+        </div>
 
         <div class="modal-container" id="modal-container">
             <div class="modal">

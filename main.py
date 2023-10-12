@@ -9,7 +9,7 @@ app = Flask(__name__, template_folder='templates')
 # Configuración de la conexión a la base de datos MySQL
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'AMUnae54'
+app.config['MYSQL_PASSWORD'] = '22446688Rengifo'
 app.config['MYSQL_DB'] = 'prFlask'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -324,12 +324,18 @@ def calculator():
     is_update = request.args.get("isUpdate")
     is_update_group = request.args.get("isUpdateGroup")
     id_nota = request.args.get("id_nota")
+    deletedEvent = request.args.get("deletedEvent")
     # if uuid == None:
     #     repeated = 0
 
     db = mysql.connection.cursor()
     # print(repeated)
     print(f"nota: {note} {type(note)} {note != 'None'}, porcentaje: {percentage} {type(percentage)} {percentage != None}, id: {id_group} {type(id_group)} {id_group != None}, id de usuario: {session['idUsuario']}, isUpdate: {is_update} {type(is_update)} isUpdateGroup: {is_update_group} {type(is_update_group)}")
+
+    if deletedEvent != None:
+        _idUsuarioActual = session['idUsuario']
+        db.execute('DELETE FROM grupoNotas WHERE idNota = %s AND idUsuario = %s', (deletedEvent, _idUsuarioActual,))
+        mysql.connection.commit()
 
     if note != None and percentage != None and id_group != None and note != "None" and percentage != "None" and id_group != "None" and is_update != None and is_update != "None":
     #    if repeated != uuid:
@@ -366,10 +372,50 @@ def calculator():
         
         nota_ordenadas[nota["numGrupo"]].append(nota)
 
+    #PROMEDIAR LAS NOTAS
+
+    db.execute(f"SELECT * FROM grupoNotas WHERE idUsuario = {session['idUsuario']} ORDER BY numGrupo")
+    notas = db.fetchall()
+
+    numGrupo = [resultado['numGrupo'] for resultado in notas]
+    porcentaje = [resultado['porcentaje'] for resultado in notas]
+    nota = [resultado['nota'] for resultado in notas]
+
+    gruposSinDuplicados = list(set(numGrupo))
+    
+    n = 0
+
+    arregloPromedio = []
+
+    while n < len(gruposSinDuplicados):
+        
+        db.execute(f"SELECT * FROM grupoNotas WHERE idUsuario = {session['idUsuario']} AND numGrupo = {gruposSinDuplicados[n]} ORDER BY numGrupo")
+        nuevasnotas = db.fetchall()
+
+        notaGrupo = [resultado['nota'] for resultado in nuevasnotas]
+        porcentajeGrupo = [resultado['porcentaje'] for resultado in nuevasnotas]
+
+
+        valorPorcentaje = porcentajeGrupo[0] / 100
+
+
+        promedioInicial = (sum(notaGrupo))/len(notaGrupo)
+        promedioGrupo = promedioInicial*valorPorcentaje
+
+        arregloPromedio.append(promedioGrupo)
+
+        n = n+1
+    
+    print(arregloPromedio)
+
+
+
+
+
 
     #print(nota_ordenadas)
 
-    return render_template('calculator.html', nota_ordenadas=nota_ordenadas, len_group=len(nota_ordenadas))
+    return render_template('calculator.html', nota_ordenadas=nota_ordenadas, len_group=len(nota_ordenadas), promedioFinal = sum(arregloPromedio))
 
 # Configuración de la clave secreta para las sesiones de usuario
 if __name__ == '__main__':
