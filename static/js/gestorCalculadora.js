@@ -57,6 +57,7 @@ addBtnGroup.addEventListener('click', (e) => {
     const button_add_note = document.createElement('button');
     const img_confirm = document.createElement('img');
     const button_confirm_note = document.createElement("button");
+    const ul_child_nodes = ul.childNodes;
 
     div_container_note_percentage.classList.add('container-note-percentage');
     
@@ -68,7 +69,41 @@ addBtnGroup.addEventListener('click', (e) => {
     addBtnGroup.disabled = "true";
     
     div_percentage.classList.add('percentage');
-    div_percentage.textContent = '40%';
+    
+    let max_perc = 0;
+    let li_id = 0;
+    let new_perc = 0;
+
+    ul_child_nodes.forEach(child => {
+        if(child.nodeName === "#text"){
+            ul.removeChild(child);
+        }
+    });
+
+    if(ul_child_nodes.length === 0) {
+        div_percentage.textContent = '100%';
+    } else {
+        ul_child_nodes.forEach(child => {
+            let act_perc = Number(child.firstChild.nextSibling.firstChild.nextSibling.textContent.split("%")[0]);
+            let act_id = Number(child.id.split("li")[1]);
+
+            if(act_perc >= max_perc){
+                max_perc = act_perc;
+                li_id = act_id;
+            }
+        });
+
+        new_perc = max_perc / 2;
+        console.log(li_id);
+        div_percentage.textContent = new_perc + '%';
+        ul_child_nodes.forEach(child => {
+            if(Number(child.id.split("li")[1]) === li_id){
+                child.firstChild.nextSibling.firstChild.nextSibling.textContent = new_perc + "%"
+            }
+        });
+    }
+
+    console.log(ul_child_nodes);
 
     div_container_notes.classList.add("container-notes");
 
@@ -127,8 +162,13 @@ addBtnGroup.addEventListener('click', (e) => {
         input_note.readOnly = true;
 
         // alert(note + " " + percentage + " " + id_group)
-        window.location.href = "/calculator?note=" + note + "&percentage=" + percentage + "&id_group=" + id_group + '&uuid=' + generateUUID() + "&isUpdate=" + isUpdate;
-        // console.log(e);
+        if(ul_child_nodes.length === 1) {
+            window.location.href = "/calculator?note=" + note + "&percentage=" + percentage + "&id_group=" + id_group + '&uuid=' + generateUUID() + "&isUpdate=" + isUpdate;
+        } else {
+            window.location.href = "/calculator?note=" + note + "&percentage=" + new_perc + "&id_group=" + id_group + '&uuid=' + generateUUID() + "&isUpdate=" + isUpdate + "&li_id=" + li_id + "&new_perc=" + new_perc;
+            console.log("Hola");
+        }
+        // console.log(ul_child_nodes.length);
     });
 
     button_add_note.classList.add("addNote");
@@ -398,18 +438,32 @@ btn_send.addEventListener("click", enviar_grupo);
 
 const del_event = function(e) {
     e.preventDefault();
-    const id_group_del = this.parentNode.previousSibling.previousSibling.textContent.split("Grupo ")[1] - 1;
+    const id_group_del = Number(this.parentNode.previousSibling.previousSibling.textContent.split("Grupo ")[1]) - 1;
     const porc_del = this.previousSibling.previousSibling.previousSibling.value;
     const child_ul = this.parentNode.parentNode.parentNode.childNodes;
+    let max_perc_g = 0;
+    let id_updt = 0;
 
     child_ul.forEach(element => {
         if(element.nodeName === '#text'){
             element.parentNode.removeChild(element);
         }
     });
+
+    child_ul.forEach(element => {
+        curr_id = Number(element.firstChild.nextSibling.textContent.split("Grupo ")[1]) - 1;
+        curr = Number(element.firstChild.nextSibling.nextSibling.nextSibling.firstChild.nextSibling.value);
+        if (curr >= max_perc_g && curr_id != id_group_del) {
+            max_perc_g = curr;
+            id_updt = curr_id;
+        }
+        console.log(element.firstChild.nextSibling.nextSibling.nextSibling.firstChild.nextSibling);
+    });
+
+    let n_perc = max_perc_g + Number(porc_del);
     // modal_container.classList.add('show');
 
-    window.location.href = "/calculator?id_group_del=" + id_group_del + "&porc_del=" + porc_del + "&len=" + child_ul.length;
+    window.location.href = "/calculator?id_group_del=" + id_group_del + "&porc_del=" + porc_del + "&len=" + child_ul.length +"&n_perc=" + n_perc + "&id_updt=" + id_updt;
 
     console.log(child_ul);
 }

@@ -335,6 +335,10 @@ def calculator():
     id_group_del = request.args.get('id_group_del')
     porc_del = request.args.get('porc_del')
     len_ul = request.args.get('len')
+    li_id = request.args.get('li_id')
+    new_perc = request.args.get('new_perc')
+    n_perc = request.args.get("n_perc")
+    id_updt = request.args.get("id_updt")
     # if uuid == None:
     #     repeated = 0
 
@@ -354,9 +358,13 @@ def calculator():
             for i in range(int(delete_group) + 1, int(lengthUl)):
                 db.execute(f'UPDATE grupoNotas set numGrupo = {i - 1} WHERE numGrupo = {i} AND idUsuario = {session["idUsuario"]}')
                 mysql.connection.commit()
+            db.execute(f'UPDATE grupoNotas set porcentaje = {n_perc} WHERE numGrupo = {int(id_updt) - 1} AND idUsuario = {session["idUsuario"]}')
+            mysql.connection.commit()
         else:
             _idUsuarioActual = session['idUsuario']
             db.execute('DELETE FROM grupoNotas WHERE idNota = %s AND idUsuario = %s', (deletedEvent, _idUsuarioActual,))
+            mysql.connection.commit()
+            db.execute(f'UPDATE grupoNotas set porcentaje = {n_perc} WHERE numGrupo = {int(id_updt)} AND idUsuario = {session["idUsuario"]}')
             mysql.connection.commit()
     elif id_group_del != None and porc_del != None and len_ul != None:
         _idUsuarioActual = session['idUsuario']
@@ -366,6 +374,11 @@ def calculator():
             for i in range(int(id_group_del) + 1, int(len_ul)):
                 db.execute(f'UPDATE grupoNotas set numGrupo = {i - 1} WHERE numGrupo = {i} AND idUsuario = {session["idUsuario"]}')
                 mysql.connection.commit()
+            db.execute(f'UPDATE grupoNotas set porcentaje = {n_perc} WHERE numGrupo = {int(id_updt) - 1} AND idUsuario = {session["idUsuario"]}')
+            mysql.connection.commit()
+        else:
+            db.execute(f'UPDATE grupoNotas set porcentaje = {n_perc} WHERE numGrupo = {int(id_updt)} AND idUsuario = {session["idUsuario"]}')
+            mysql.connection.commit()
 
     if note != None and percentage != None and id_group != None and note != "None" and percentage != "None" and id_group != "None" and is_update != None and is_update != "None":
     #    if repeated != uuid:
@@ -374,6 +387,13 @@ def calculator():
             db.execute(f'UPDATE grupoNotas set nota = {note} WHERE idNota = {id_nota} AND idUsuario = {session["idUsuario"]}')
             mysql.connection.commit()
             print("--------------------- Actualizado con éxito -----------------------------")
+        elif li_id != None and new_perc != None:
+            db.execute(f'INSERT INTO grupoNotas (idUsuario, numGrupo, porcentaje, nota) VALUES ({session["idUsuario"]}, {id_group}, {percentage}, {note})')
+            mysql.connection.commit()
+            print(new_perc, li_id)
+            db.execute(f'UPDATE grupoNotas set porcentaje = {new_perc} WHERE numGrupo = {li_id} AND idUsuario = {session["idUsuario"]}')
+            mysql.connection.commit()
+            print("--------------------- Actualizado e insertado con éxito -----------------------------")
         else:
             db.execute(f'INSERT INTO grupoNotas (idUsuario, numGrupo, porcentaje, nota) VALUES ({session["idUsuario"]}, {id_group}, {percentage}, {note})')
             mysql.connection.commit()

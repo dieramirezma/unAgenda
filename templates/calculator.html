@@ -79,6 +79,11 @@
 
                                                 removeButton.addEventListener("click", function (e) {
                                                     e.preventDefault();
+                                                    let max_perc_g = 0;
+                                                    let id_updt = 0;
+                                                    let id_group = this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.id.split('li')[1];
+                                                    let current_perc = Number(this.parentNode.parentNode.parentNode.parentNode.previousSibling.previousSibling.textContent.split("%")[0]);
+
                                                     this.parentNode.parentNode.parentNode.childNodes.forEach(child => {
                                                         if(child.nodeName === '#text'){
                                                             this.parentNode.parentNode.parentNode.removeChild(child);
@@ -91,12 +96,28 @@
                                                         }
                                                     });
 
-                                                    console.log(ul.childNodes);
+                                                    console.log(this.parentNode.parentNode.parentNode.parentNode.previousSibling.previousSibling.textContent.split("%")[0]);
 
-                                                    let id_group = this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.id.split('li')[1];
+                                                    ul.childNodes.forEach(child => {
+                                                        curr = Number(child.firstChild.nextSibling.firstChild.nextSibling.textContent.split('%')[0]);
+                                                        curr_id = child.id.split("li")[1]
+                                                        if (curr >= max_perc_g && curr_id != id_group) {
+                                                            max_perc_g = curr;
+                                                            id_updt = curr_id;
+                                                        }
+                                                        console.log(child.firstChild.nextSibling.firstChild.nextSibling.textContent.split('%')[0])
+                                                    });
+
+                                                    let n_perc = max_perc_g + current_perc;
+
+                                                    console.log(max_perc_g);
+                                                    console.log(id_updt);
+
+
+                                                    // console.log(this.parentNode.parentNode.parentNode.parentNode.previousSibling.previousSibling.textContent.split);
 
                                                     if(this.parentNode.parentNode.parentNode.childNodes.length === 1) {
-                                                        window.location.href = "/calculator?deletedEvent=" + this.id + '&delete_group=' + id_group + '&lengthUl=' + ul.childNodes.length;
+                                                        window.location.href = "/calculator?deletedEvent=" + this.id + '&delete_group=' + id_group + '&lengthUl=' + ul.childNodes.length +"&n_perc=" + n_perc + "&id_updt=" + id_updt;
                                                     } else {
                                                         window.location.href = "/calculator?deletedEvent=" + this.id;
                                                     }
