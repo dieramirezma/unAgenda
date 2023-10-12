@@ -298,12 +298,12 @@ def recuperar_contraseña():
 
         cur = mysql.connection.cursor()
 
-        cur.execute('SELECT idUsuario FROM respuestas_seguridad WHERE idUsuario = (SELECT idUsuario FROM usuario WHERE nombre = %s) AND respuesta1 = %s AND respuesta2 = %s AND respuesta3 = %s',
+        cur.execute('SELECT idUsuario FROM respuestas_seguridad WHERE idUsuario = (SELECT idUsuario FROM usuario WHERE correo = %s) AND respuesta1 = %s AND respuesta2 = %s AND respuesta3 = %s',
                     (_nombreUsuario, _respuesta1, _respuesta2, _respuesta3))
         usuario_coincidente = cur.fetchone()
 
         if usuario_coincidente:
-            cur.execute('UPDATE usuario SET contraseña = %s WHERE nombre = %s', (_nuevaContraseña, _nombreUsuario))
+            cur.execute('UPDATE usuario SET contraseña = %s WHERE correo = %s', (_nuevaContraseña, _nombreUsuario))
             mysql.connection.commit()
             return redirect(url_for('homepage'))  # Redirige al usuario a la página de inicio
         else:
