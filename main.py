@@ -307,7 +307,8 @@ def recuperar_contraseña():
             mysql.connection.commit()
             return redirect(url_for('homepage'))  # Redirige al usuario a la página de inicio
         else:
-            return render_template('error_recuperación_contraseña.html')
+            error_message = "Los datos no coiciden"
+            return render_template('recuperar_contraseña.html', error_message=error_message)
 
     return render_template('recuperar_contraseña.html')
 
