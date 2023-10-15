@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+         <h1>Iniciar sesión</h1>
+         <form class="formControl" action="loginAccess" method="POST" >
+            <input type="email" id="exampleInputEmail1" aria-describedby="emailHelp"  name="txtEmail" placeholder="Correo electrónico" required="required" />
+            <input type="password" id="exampleInputPassword1" name="txtPassword" placeholder="Contraseña" required="required" />
+            {% if error_message %}
+            <div class="alert alert-danger" role="alert">
+                {{ error_message }}
+            </div>
+            {% endif %}
+            <button type="submit" class="btn btn-primary btn-block btn-large">Ingresar</button>
+         </form>
+         <div>
+            <a class="recuper" for="emailHelp" href="/recuperacion">Recuperar contraseña</a> |
+            <a class="registerNew" for="exampleRegister" href="/register">Registrarme</a>
+         </div>
+         {% endblock %}

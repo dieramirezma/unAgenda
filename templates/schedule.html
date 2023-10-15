@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="es">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>unAgenda - Horario</title>
+      <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&display=swap" rel="stylesheet">
+      <link rel="stylesheet" href="{{url_for('static', filename='styles/scheduleStyle.css')}}">
+      <script src="static/js/gestorHorario.js"></script>
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
+   </head>
+   <body>
+      <div class="mainContainer">
+         <!-- Contiene a todo el código, dado que es el header el que contiene el fondo de pantalla. Si se coloca alguna división después de esta, aparecerá -->
+         <!-- debajo del fondo, lo cual obviamente no queremos.                                                                                              -->
+         <div class="sideMenuContainer">
+            <!-- MENU LATERAL -->
+            <br>
+            <a href="admin">
+            <img id="unAgendaLabel" src="{{url_for('static', filename='img/unAgenda1.png')}}" width="100" />
+            </a>
+            <br><br>
+            <a href="admin">
+               <div class="iconBox">
+                  <img class="iconImage" src="{{url_for('static', filename='img/mainmenumini.png')}}" width="100" />
+               </div>
+            </a>
+            <a href="schedule">
+               <div class="iconBox">
+                  <img class="iconImage" src="{{url_for('static', filename='img/scheduleindexmini.png')}}"
+                     width="100" />
+               </div>
+            </a>
+            <a href="calculator">
+               <div class="iconBox">
+                  <img class="iconImage" src="{{url_for('static', filename='img/calculatorindexmini.png')}}"
+                     width="100" />
+               </div>
+            </a>
+         </div>
+         <div class="contentContainer">
+            <div class="titleContainer">
+               <br><br>
+               <h1 id="instrucionLabel1">Tu Horario de la Semana</h1>
+               <h3 id="instructionLabel2">Revisa tus eventos semanales programados o<br> añade alguno nuevo: </h3>
+               <br><br>
+               <div id="imagen"></div>
+            </div>
+            <div class="buttonsContainer">
+               <div class="button" id="addButton" onclick="mostrarVentana()">
+                  <img id="addButtonImage" src="{{url_for('static', filename='img/icons/add_event.png')}}"
+                     width="100">
+               </div>
+               <div class="button" onclick="mostrarVentanaRemove()">
+                  <img id="removeButtonImage" src="{{url_for('static', filename='img/icons/elim_event.png')}}"
+                     width="100">
+               </div>
+               <div class="button2 " onclick="mostrarVentanaEdit()">
+                  <img id="searchButtonImage" src="{{url_for('static', filename='img/icons/search.png')}}"
+                     width="100">
+               </div>
+               <div class="button2" onclick="mostrarVentanaDescarga()">
+                  <img id="captureButtonImage" src="{{url_for('static', filename='img/icons/capture.png')}}"
+                     width="100">
+               </div>
+            </div>
+            <div class="scheduleContainer" id="scheduleCont">
+               <table id="schedule">
+                  <tr>
+                     <th class="scheduleHeader">Hora:</th>
+                     <th class="scheduleHeader">LUNES</th>
+                     <th class="scheduleHeader">MARTES</th>
+                     <th class="scheduleHeader">MIÉRCOLES</th>
+                     <th class="scheduleHeader">JUEVES</th>
+                     <th class="scheduleHeader">VIERNES</th>
+                     <th class="scheduleHeader">SÁBADO</th>
+                     <th class="scheduleHeader">DOMINGO</th>
+                  </tr>
+                  <tr>
+                     <td class="scheduleBody1">7:00 - 8:00</th>
+                     <td class="scheduleBody1">
+                        </th>
+                     <td class="scheduleBody1">
+                        </th>
+                     <td class="scheduleBody1">
+                        </th>
+                     <td class="scheduleBody1">
+                        </th>
+                     <td class="scheduleBody1">
+                        </th>
+                     <td class="scheduleBody1">
+                        </th>
+                     <td class="scheduleBody1">
+                        </th>
+                  </tr>
+                  <tr>
+                     <td class="scheduleBody2">8:00 - 9:00</th>
+                     <td class="scheduleBody2">
+                        </th>
+                     <td class="scheduleBody2">
+                        </th>
+                     <td class="scheduleBody2">
+                        </th>
+                     <td class="scheduleBody2">
+                        </th>
+                     <td class="scheduleBody2">
+                        </th>
+                     <td class="scheduleBody2">
+                        </th>
+                     <td class="scheduleBody2">
+                        </th>
+                  </tr>
+                  <tr>
+                     <td class="scheduleBody1">9:00 - 10:00</th>
+                     <td class="scheduleBody1">
+                        </th>
+                     <td class="scheduleBody1">
+                        </th>
+                     <td class="scheduleBody1">
+                        </th>
+                     <td class="scheduleBody1">
+                        </th>
+                     <td class="scheduleBody1">
+                        </th>
+                     <td class="scheduleBody1">
+                        </th>
+                     <td class="scheduleBody1">
+                        </th>
+                  </tr>
+                  <tr>
+                     <td class="scheduleBody2">10:00 - 11:00</th>
+                     <td class="scheduleBody2">
+                        </th>
+                     <td class="scheduleBody2">
+                        </th>
+                     <td class="scheduleBody2">
+                        </th>
+                     <td class="scheduleBody2">
+                        </th>
+                     <td class="scheduleBody2">
+                        </th>
+                     <td class="scheduleBody2">
+                        </th>
+                     <td class="scheduleBody2">
+                        </th>
+                  </tr>
+                  <tr>
+                     <td class="scheduleBody1">11:00 - 12:00</th>
+                     <td class="scheduleBody1">
+                        </th>
+                     <td class="scheduleBody1">
+                        </th>
+                     <td class="scheduleBody1">
+                        </th>
+                     <td class="scheduleBody1">
+                        </th>
+                     <td class="scheduleBody1">
+                        </th>
+                     <td class="scheduleBody1">
+                        </th>
+                     <td class="scheduleBody1">
+                        </th>
+                  </tr>
+                  <tr>
+                     <td class="scheduleBody2">12:00 - 13:00</th>
+                     <td class="scheduleBody2">
+                        </th>
+                     <td class="scheduleBody2">
+                        </th>
+                     <td class="scheduleBody2">
+                        </th>
+                     <td class="scheduleBody2">
+                        </th>
+                     <td class="scheduleBody2">
+                        </th>
+                     <td class="scheduleBody2">
+                        </th>
+                     <td class="scheduleBody2">
+                        </th>
+                  </tr>
+                  <tr>
+                     <td class="scheduleBody1">13:00 - 14:00</th>
+                     <td class="scheduleBody1">
+                        </th>
+                     <td class="scheduleBody1">
+                        </th>
+                     <td class="scheduleBody1">
+                        </th>
+                     <td class="scheduleBody1">
+                        </th>
+                     <td class="scheduleBody1">
+                        </th>
+                     <td class="scheduleBody1">
+                        </th>
+                     <td class="scheduleBody1">
+                        </th>
+                  </tr>
+                  <tr>
+                     <td class="scheduleBody2">14:00 - 15:00</th>
+                     <td class="scheduleBody2">
+                        </th>
+                     <td class="scheduleBody2">
+                        </th>
+                     <td class="scheduleBody2">
+                        </th>
+                     <td class="scheduleBody2">
+                        </th>
+                     <td class="scheduleBody2">
+                        </th>
+                     <td class="scheduleBody2">
+                        </th>
+                     <td class="scheduleBody2">
+                        </th>
+                  </tr>
+                  <tr>
+                     <td class="scheduleBody1">15:00 - 16:00</th>
+                     <td class="scheduleBody1">
+                        </th>
+                     <td class="scheduleBody1">
+                        </th>
+                     <td class="scheduleBody1">
+                        </th>
+                     <td class="scheduleBody1">
+                        </th>
+                     <td class="scheduleBody1">
+                        </th>
+                     <td class="scheduleBody1">
+                        </th>
+                     <td class="scheduleBody1">
+                        </th>
+                  </tr>
+                  <tr>
+                     <td class="scheduleBody2">16:00 - 17:00</th>
+                     <td class="scheduleBody2">
+                        </th>
+                     <td class="scheduleBody2">
+                        </th>
+                     <td class="scheduleBody2">
+                        </th>
+                     <td class="scheduleBody2">
+                        </th>
+                     <td class="scheduleBody2">
+                        </th>
+                     <td class="scheduleBody2">
+                        </th>
+                     <td class="scheduleBody2">
+                        </th>
+                  </tr>
+                  <tr>
+                     <td class="scheduleBody1">17:00 - 18:00</th>
+                     <td class="scheduleBody1">
+                        </th>
+                     <td class="scheduleBody1">
+                        </th>
+                     <td class="scheduleBody1">
+                        </th>
+                     <td class="scheduleBody1">
+                        </th>
+                     <td class="scheduleBody1">
+                        </th>
+                     <td class="scheduleBody1">
+                        </th>
+                     <td class="scheduleBody1">
+                        </th>
+                  </tr>
+                  <tr>
+                     <td class="scheduleBody2">18:00 - 19:00</th>
+                     <td class="scheduleBody2">
+                        </th>
+                     <td class="scheduleBody2">
+                        </th>
+                     <td class="scheduleBody2">
+                        </th>
+                     <td class="scheduleBody2">
+                        </th>
+                     <td class="scheduleBody2">
+                        </th>
+                     <td class="scheduleBody2">
+                        </th>
+                     <td class="scheduleBody2">
+                        </th>
+                  </tr>
+                  <tr>
+                     <td class="scheduleBody1">19:00 - 20:00</th>
+                     <td class="scheduleBody1">
+                        </th>
+                     <td class="scheduleBody1">
+                        </th>
+                     <td class="scheduleBody1">
+                        </th>
+                     <td class="scheduleBody1">
+                        </th>
+                     <td class="scheduleBody1">
+                        </th>
+                     <td class="scheduleBody1">
+                        </th>
+                     <td class="scheduleBody1">
+                        </th>
+                  </tr>
+               </table>
+               <br><br><br><br>
+            </div>
+         </div>
+         <div class="addEventWindow" id="addEventWindow">
+            <div id="addEventForm">
+               <div id="formBody">
+                  <form action="/eventAdd" method="POST">
+                     <h2 id="addEventTitle">Agrega un nuevo Evento:</h2>
+                     <br>
+                     <label for="nombreEvento" style="margin-bottom: 10px;">Nombre del Evento:</label>
+                     <br>
+                     <input class="inputText" type="text" id="nombreEvento" aria-describedby="text"
+                        name="nombreEvento" required>
+                     <br><br><br>
+                     <label for="diaSemana" style="margin-bottom: 10px;">Día de la Semana:</label>
+                     <select id="diaSemana" class="selector" name="diaSemanal">
+                        <option value="1" class="opcion">Lunes</option>
+                        <option value="2" class="opcion">Martes</option>
+                        <option value="3" class="opcion">Miércoles</option>
+                        <option value="4" class="opcion">Jueves</option>
+                        <option value="5" class="opcion">Viernes</option>
+                        <option value="6" class="opcion">Sábado</option>
+                        <option value="7" class="opcion">Domingo</option>
+                     </select>
+                     <br><br>
+                     <label for="horaInicio" style="margin-bottom: 10px;">Hora de Inicio:</label>
+                     <select id="horaInicio" class="selector" name="horaInicio" required>
+                        <option value="7" class="opcion">7:00</option>
+                        <option value="8" class="opcion">8:00</option>
+                        <option value="9" class="opcion">9:00</option>
+                        <option value="10" class="opcion">10:00</option>
+                        <option value="11" class="opcion">11:00</option>
+                        <option value="12" class="opcion">12:00</option>
+                        <option value="13" class="opcion">13:00</option>
+                        <option value="14" class="opcion">14:00</option>
+                        <option value="15" class="opcion">15:00</option>
+                        <option value="16" class="opcion">16:00</option>
+                        <option value="17" class="opcion">17:00</option>
+                        <option value="18" class="opcion">18:00</option>
+                        <option value="19" class="opcion">19:00</option>
+                     </select>
+                     <br><br>
+                     <label for="horaFin" style="margin-bottom: 10px;">Hora de Fin:</label>
+                     <select id="horaFin" class="selector" name=horaFin required>
+                        <option value="8" class="opcion">8:00</option>
+                        <option value="9" class="opcion">9:00</option>
+                        <option value="10" class="opcion">10:00</option>
+                        <option value="11" class="opcion">11:00</option>
+                        <option value="12" class="opcion">12:00</option>
+                        <option value="13" class="opcion">13:00</option>
+                        <option value="14" class="opcion">14:00</option>
+                        <option value="15" class="opcion">15:00</option>
+                        <option value="16" class="opcion">16:00</option>
+                        <option value="17" class="opcion">17:00</option>
+                        <option value="18" class="opcion">18:00</option>
+                        <option value="19" class="opcion">19:00</option>
+                        <option value="20" class="opcion">20:00</option>
+                     </select>
+                     <br><br>
+                     <div id="addEventWindowButtons">
+                        <button id="formButtonAccept" type="submit">ACEPTAR</button>
+                        <button id="formButtonDecline" onclick="ocultarVentana()">CANCELAR</button>
+                     </div>
+                  </form>
+               </div>
+            </div>
+         </div>
+         <div class="removeEventWindow" id="removeEventWindow">
+            <div id="removeEventContent">
+               <h2>
+               ¿Qué evento deseas borrar?</h1>
+               <br>
+            </div>
+         </div>
+         <div class="editEventWindow" id="editEventWindow">
+            <div id="editEventContent">
+               <h2>
+               ¿Qué evento deseas modificar?</h1>
+               <br>
+            </div>
+         </div>
+         <div id="downloadEventWindow" class="downloadEventWindow">
+            <div id="downloadEventContent" class="downloadEventContent">
+               <div id="textHeader">
+                  <h2>Vista Previa de descarga</h2>
+                  <img id="downBtn" src="static\img\icons\download.png" alt="download">
+                  <img id="cerrarDownBtn" src="static\img\icons\exit.png" alt="download">
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- CARGAR LOS DATOS DE LA BASE DE DATOS -->
+      <script>
+         document.addEventListener("DOMContentLoaded", function () {
+         
+             var schedule = document.getElementById("schedule");
+         
+             var evento = JSON.parse('{{ eventosList | tojson | safe }}');
+             var diaSemanaList = JSON.parse('{{ diaSemanaList | tojson | safe }}');
+             var horaInicioList = JSON.parse('{{ horaInicioList | tojson | safe }}');
+             var horaFinList = JSON.parse('{{ horaFinList | tojson | safe }}');
+         
+         
+             var j = 0;
+         
+             while (j < evento.length) {
+                 editarCelda(evento, diaSemanaList, horaInicioList, horaFinList, j);
+                 j++;
+         
+             }
+         });
+      </script>
+      <!-- CREAR DIVS CON LOS DATOS DE LA BASE DE DATOS PARA EL MENÚ DE BORRAR EVENTO -->
+      <script>
+         function displayEventos() {
+         
+             var displayDiv = document.createElement("div");
+             displayDiv.className = "removeBoxEventDiv";
+             displayDiv.id = "removeFullContent";
+         
+             var removeEventContent = document.getElementById("removeEventContent");
+             removeEventContent.appendChild(displayDiv);
+         
+             var eventoList = JSON.parse('{{ eventosList | tojson | safe }}');
+             var diaSemanaList = JSON.parse('{{ diaSemanaList | tojson | safe }}');
+             var horaInicioList = JSON.parse('{{ horaInicioList | tojson | safe }}');
+             var horaFinList = JSON.parse('{{ horaFinList | tojson | safe }}');
+         
+             var j = 0;
+         
+             while (j < eventoList.length) {
+         
+                 var dataDiv = document.createElement("div");
+                 dataDiv.className = "removeBoxContentDiv";
+         
+         
+                 var individualEventDiv = document.createElement("div");
+                 individualEventDiv.className = "individualEventDiv";
+         
+                 var eventTitle = document.createElement("h3");
+                 eventTitle.id = j + "evento";
+         
+                 var eventDetailsDay = document.createElement("span");
+                 eventDetailsDay.className = "removeBoxEventDetails";
+                 eventDetailsDay.id = j + "dia";
+         
+                 var eventDetailsBegin = document.createElement("span");
+                 eventDetailsBegin.className = "removeBoxEventDetails";
+                 eventDetailsBegin.id = j + "horaInicio";
+         
+                 var eventDetailsGuion = document.createElement("span");
+                 eventDetailsGuion.className = "removeBoxEventDetails";
+                 var eventDetailsEnd = document.createElement("span");
+                 eventDetailsEnd.className = "removeBoxEventDetails";
+         
+         
+                 createEventRemovalGUI(eventTitle, eventDetailsDay, eventoList, diaSemanaList, horaInicioList, horaFinList, j, eventDetailsBegin, eventDetailsGuion);
+         
+                 individualEventDiv.appendChild(eventTitle);
+                 individualEventDiv.appendChild(eventDetailsDay);
+                 individualEventDiv.appendChild(eventDetailsBegin);
+                 individualEventDiv.appendChild(eventDetailsGuion);
+                 individualEventDiv.appendChild(eventDetailsEnd);
+                 dataDiv.appendChild(individualEventDiv);
+         
+                 var removeButton = document.createElement("button");
+                 removeButton.className = "removeButton";
+                 removeButton.id = j;
+                 removeButton.type = "button";
+                 removeButton.textContent = "ELIMINAR"
+         
+                 //<!-- BORRAR EL EVENTO DE LA BASE DE DATOS -->//
+         
+                 removeButton.addEventListener("click", function () {
+         
+                     console.log(document.getElementById(this.id + "evento").textContent);
+                     console.log(document.getElementById(this.id + "dia").textContent);
+                     console.log(document.getElementById(this.id + "horaInicio").textContent);
+         
+                     var eventoSTR = document.getElementById(this.id + "evento").textContent;
+                     var diaSTR = document.getElementById(this.id + "dia").textContent;
+                     var horaInicioSTR = document.getElementById(this.id + "horaInicio").textContent;
+         
+                     window.location.href = "/eventRemove?eventoSTR=" + eventoSTR + "&diaSTR=" + diaSTR + "&horaInicioSTR=" + horaInicioSTR;
+         
+         
+         
+                 });
+         
+         
+         
+                 dataDiv.appendChild(removeButton);
+         
+         
+                 displayDiv.appendChild(dataDiv);
+         
+                 j++;
+         
+             }
+         
+         
+             var acceptButton = document.createElement("button");
+             acceptButton.className = "acceptButton";
+             acceptButton.type = "button";
+             acceptButton.textContent = "VOLVER"
+         
+             var removeEventWindowDiv = document.getElementById("removeEventContent");
+             removeEventWindowDiv.appendChild(acceptButton);
+         
+             acceptButton.addEventListener("click", function () {
+         
+                 var fullDataDiv = document.getElementById("removeFullContent");
+                 fullDataDiv.remove();
+         
+                 this.remove();
+         
+                 var ventanaEmergente = document.getElementById("removeEventWindow");
+                 ventanaEmergente.style.display = "none";
+         
+         
+         
+             });
+         
+         }
+         
+      </script>
+      <!-- CREAR VENTANA DE EDITAR EVENTO -->
+      <script>
+         function displayEventosEdit() {
+         
+             var displayDiv = document.createElement("div");
+             displayDiv.className = "editBoxEventDiv";
+             displayDiv.id = "editFullContent";
+         
+             var removeEventContent = document.getElementById("editEventContent");
+             removeEventContent.appendChild(displayDiv);
+         
+             var eventoList = JSON.parse('{{ eventosList | tojson | safe }}');
+             var diaSemanaList = JSON.parse('{{ diaSemanaList | tojson | safe }}');
+             var horaInicioList = JSON.parse('{{ horaInicioList | tojson | safe }}');
+             var horaFinList = JSON.parse('{{ horaFinList | tojson | safe }}');
+         
+             var j = 0;
+         
+             while (j < eventoList.length) {
+         
+                 var dataDiv = document.createElement("div");
+                 dataDiv.className = "editBoxContentDiv";
+         
+         
+                 var individualEventDiv = document.createElement("div");
+                 individualEventDiv.className = "individualEventDiv";
+         
+                 var eventTitle = document.createElement("h3");
+                 eventTitle.id = j + "evento";
+         
+                 var eventDetailsDay = document.createElement("span");
+                 eventDetailsDay.className = "editBoxEventDetails";
+                 eventDetailsDay.id = j + "dia";
+         
+                 var eventDetailsBegin = document.createElement("span");
+                 eventDetailsBegin.className = "editBoxEventDetails";
+                 eventDetailsBegin.id = j + "horaInicio";
+         
+                 var eventDetailsGuion = document.createElement("span");
+                 eventDetailsGuion.className = "editBoxEventDetails";
+                 var eventDetailsEnd = document.createElement("span");
+                 eventDetailsEnd.className = "editBoxEventDetails";
+         
+         
+                 createEventRemovalGUI(eventTitle, eventDetailsDay, eventoList, diaSemanaList, horaInicioList, horaFinList, j, eventDetailsBegin, eventDetailsGuion);
+         
+                 individualEventDiv.appendChild(eventTitle);
+                 individualEventDiv.appendChild(eventDetailsDay);
+                 individualEventDiv.appendChild(eventDetailsBegin);
+                 individualEventDiv.appendChild(eventDetailsGuion);
+                 individualEventDiv.appendChild(eventDetailsEnd);
+                 dataDiv.appendChild(individualEventDiv);
+         
+                 var editButton = document.createElement("button");
+                 editButton.className = "editButton";
+                 editButton.id = j;
+                 editButton.type = "button";
+                 editButton.textContent = "EDITAR"
+         
+                 //<!-- BORRAR EL EVENTO DE LA BASE DE DATOS -->//
+         
+                 editButton.addEventListener("click", function () {
+         
+                     console.log(document.getElementById(this.id + "evento").textContent);
+                     console.log(document.getElementById(this.id + "dia").textContent);
+                     console.log(document.getElementById(this.id + "horaInicio").textContent);
+         
+                     var eventoSTR = document.getElementById(this.id + "evento").textContent;
+                     var diaSTR = document.getElementById(this.id + "dia").textContent;
+                     var horaInicioSTR = document.getElementById(this.id + "horaInicio").textContent;
+         
+                     window.location.href = "/eventRemove2?eventoSTR=" + eventoSTR + "&diaSTR=" + diaSTR + "&horaInicioSTR=" + horaInicioSTR;
+         
+                 });
+         
+         
+         
+                 dataDiv.appendChild(editButton);
+         
+         
+                 displayDiv.appendChild(dataDiv);
+         
+                 j++;
+         
+             }
+         
+         
+             var acceptButton = document.createElement("button");
+             acceptButton.className = "acceptButton";
+             acceptButton.type = "button";
+             acceptButton.textContent = "VOLVER"
+         
+             var removeEventWindowDiv = document.getElementById("editEventContent");
+             removeEventWindowDiv.appendChild(acceptButton);
+         
+             acceptButton.addEventListener("click", function () {
+         
+                 var fullDataDiv = document.getElementById("editFullContent");
+                 fullDataDiv.remove();
+         
+                 this.remove();
+         
+                 var ventanaEmergente = document.getElementById("editEventWindow");
+                 ventanaEmergente.style.display = "none";
+         
+         
+         
+             });
+         
+         }
+         
+      </script>
+      <!-- EDITAR EL EVENTO COMO TAL -->
+      <script>
+         document.addEventListener("DOMContentLoaded", function () {
+         
+             var editEvent = "{{ editEvent }}";
+         
+             if (editEvent == "1") {
+         
+                 horaInicio = document.getElementById("horaInicio");
+                 horaFin = document.getElementById("horaFin");
+                 var ventanaEmergente = document.getElementById("addEventWindow");
+         
+                 ventanaEmergente.style.display = "flex";
+         
+                 horaInicio.addEventListener("change", function () {
+                     let opcionesHoraFin = horaFin.options;
+                     let horaInicioSel = parseInt(horaInicio.value);
+                     for (let i = 0; i < opcionesHoraFin.length; i++) {
+                         if (parseInt(opcionesHoraFin[i].value) <= horaInicioSel) {
+                             opcionesHoraFin[i].style.display = "none";
+                         } else {
+                             opcionesHoraFin[i].style.display = "";
+                         }
+                     }
+         
+                     horaFin.value = toString(horaInicioSel + 1);
+                 });
+         
+                 var nombreEventoLabel = document.getElementById("nombreEvento");
+                 nombreEventoLabel.value = "{{ editEventName }}";
+         
+                 var diaEventoLabel = document.getElementById("diaSemana");
+                 diaEventoLabel.value = "{{ editEventDay }}";
+         
+                 horaInicio.value = "";
+                 horaFin.value = "";
+         
+                 var addTitle = document.getElementById("addEventTitle");
+                 addTitle.textContent = "Edita el nuevo Evento"
+         
+                 var cancelButton = document.getElementById("formButtonDecline");
+                 cancelButton.remove();
+         
+         
+             }
+         
+         });
+         
+      </script>
+   </body>

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora</title>
+    <link rel="stylesheet" href="{{url_for('static', filename = 'styles/calculatorStyle.css')}}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="header">
+        <div class = "sideMenuContainer"> <!-- MENU LATERAL -->
+
+            <br>
+            <a href = "admin">
+                <img id = "unAgendaLabel" src = "{{url_for('static', filename='img/unAgenda1.png')}}" width="100"/>
+            </a>
+
+            <br><br>
+
+            <a href = "admin">
+                <div class = "iconBox">
+                    <img class = "iconImage" src = "{{url_for('static', filename='img/mainmenumini.png')}}" width="100"/>
+                </div>
+            </a>
+            <a href = "schedule">
+                <div class = "iconBox">
+                    <img class = "iconImage" src = "{{url_for('static', filename='img/scheduleindexmini.png')}}" width="100"/>
+                </div>
+            </a>
+            <a href = "calculator">
+                <div class = "iconBox">
+                    <img class = "iconImage" src = "{{url_for('static', filename='img/calculatorindexmini.png')}}" width="100"/>
+                </div>
+            </a>
+
+        </div>
+
+
+        <div class = "welcomeText">
+            <h1>Calculadora de Promedios</h1>
+        </div> 
+        <div id="botones">
+            <button id="addGroupNotes"><img class="img-editNote" src="{{url_for('static', filename='img/icons/anadirGrupoNotas.png')}}" alt="Añadir grupo de notas"></button>
+            <button id="editGroupNotes"><img class="img-editNote" src="{{url_for('static', filename='img/icons/editarGrupo.png')}}" alt="Editar grupo de notas"></button>
+            <button id="deleteGroupNotes"><img class="img-editNote" src="{{url_for('static', filename='img/icons/borrarNota.png')}}" alt="Eliminar grupo de notas"></button>
+        </div>    
+        <div style="display: none;" id="group-id">
+            {% if len_group == 0 %}
+                -1
+            {% else %}
+                {{ len_group - 1}}
+            {% endif %}
+        </div>
+        
+        <ul id="groupNotes">
+            {% for nota in nota_ordenadas %}
+                <li class="li-notes" id="li{{ nota[0]['numGrupo'] }}">
+                    <div class="container-note-percentage" >
+                        <div  class="percentage">
+                            {{ nota[0]["porcentaje"] }}%
+                        </div>
+                    
+                        <div class="container-notes">
+                            <ul>
+                                {% for n in nota %}
+                                    <li>
+                                        <div class="container-button-notes">
+                                            <form method="post">
+                                                <input type="number" id='nota {{n["idNota"]}}' readonly class="note" value="{{n['nota']}}">
+                                                <button class="confirmNote"><img class='img-editNote' src="{{url_for('static', filename='img/icons/confirm_note.png')}}" alt="Editar nota"></button>
+                                                <button class="editNote"><img class='img-editNote' src="{{url_for('static', filename='img/icons/editarNota.png')}}" alt="Editar nota"></button>
+                                            </form>
+                                            <button class="deletNote" id='{{n["idNota"]}}'><img class='img-editNote' src="{{url_for('static', filename='img/icons/borrarNota.png')}}" alt="Borrar nota"></button>
+
+                                            <script>
+                                                var removeButton = document.getElementById('{{n["idNota"]}}');
+                                                // const ul_groups = document.getElementById('groupNotes');
+
+                                                removeButton.addEventListener("click", function (e) {
+                                                    e.preventDefault();
+                                                    let max_perc_g = 0;
+                                                    let id_updt = 0;
+                                                    let id_group = this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.id.split('li')[1];
+                                                    let current_perc = Number(this.parentNode.parentNode.parentNode.parentNode.previousSibling.previousSibling.textContent.split("%")[0]);
+
+                                                    this.parentNode.parentNode.parentNode.childNodes.forEach(child => {
+                                                        if(child.nodeName === '#text'){
+                                                            this.parentNode.parentNode.parentNode.removeChild(child);
+                                                        }
+                                                    });
+
+                                                    ul.childNodes.forEach(child => {
+                                                        if(child.nodeName === '#text'){
+                                                            ul.removeChild(child);
+                                                        }
+                                                    });
+
+                                                    console.log(this.parentNode.parentNode.parentNode.parentNode.previousSibling.previousSibling.textContent.split("%")[0]);
+
+                                                    ul.childNodes.forEach(child => {
+                                                        curr = Number(child.firstChild.nextSibling.firstChild.nextSibling.textContent.split('%')[0]);
+                                                        curr_id = child.id.split("li")[1]
+                                                        if (curr >= max_perc_g && curr_id != id_group) {
+                                                            max_perc_g = curr;
+                                                            id_updt = curr_id;
+                                                        }
+                                                        console.log(child.firstChild.nextSibling.firstChild.nextSibling.textContent.split('%')[0])
+                                                    });
+
+                                                    let n_perc = max_perc_g + current_perc;
+
+                                                    console.log(max_perc_g);
+                                                    console.log(id_updt);
+
+
+                                                    // console.log(this.parentNode.parentNode.parentNode.parentNode.previousSibling.previousSibling.textContent.split);
+
+                                                    if(this.parentNode.parentNode.parentNode.childNodes.length === 1) {
+                                                        window.location.href = "/calculator?deletedEvent=" + this.id + '&delete_group=' + id_group + '&lengthUl=' + ul.childNodes.length +"&n_perc=" + n_perc + "&id_updt=" + id_updt;
+                                                    } else {
+                                                        window.location.href = "/calculator?deletedEvent=" + this.id;
+                                                    }
+
+                                                    // console.log(real_child);
+                                                    // console.log(this.parentNode.parentNode.parentNode.childNodes);
+
+                                                // window.location.href = "/calculator?deletedEvent=" + this.id;
+
+                                                });
+
+                                            </script>
+
+                                        </div>    
+                                    </li>
+                                {% endfor %}    
+                            </ul>
+                            <div>
+                                <button class="addNote">Añadir nota</button>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+        <script>
+                const COLORES = [
+                    "#FFC0CB",
+                    "#87CEEB",
+                    "#98FB98",
+                    "#FFFF99",
+                    "#E6E6FA",
+                    "#AFEEEE",
+                    "#FFD700",
+                    "#00FFFF",
+                    "#FFDAB9",
+                    "#FFFACD",
+                    "#D8BFD8",
+                    "#98FF98",
+                    "#FFF0F5",
+                    "#DFFFBF",
+                    "#D3D3D3",
+                    "#A1CAF1",
+                    "#FFFFB3",
+                    "#FFF0F5",
+                    "#DFFFBF",
+                    "#FF6F61",
+                ];
+                const percentages_div = document.querySelectorAll(".percentage")
+
+                percentages_div.forEach(per => {
+                    per.style.backgroundColor = COLORES[Math.floor(Math.random() * COLORES.length)];
+                });
+                console.log(percentages_div);
+            </script>  
+        <div id="finalAverage">
+
+            <h4>Tu promedio final es:</h4>
+            <p> {{promedioFinal}}</p>
+
+        </div>
+
+        <div class="modal-container" id="modal-container">
+            <div class="modal">
+                <h2>¿Cuál porcentaje quieres cambiar?</h1>
+                <ul>
+                {% for nota in nota_ordenadas %}
+                    <li class="li-edit-group">
+                        <h3>Grupo {{ nota[0]["numGrupo"] + 1 }}</h2>
+                        <form action="" method="post" class="form-group">
+                            <input type="number" class="input-group" readonly value="{{nota[0]['porcentaje']}}"><p>%</p>
+                            <button class="edit-group">Editar</button>
+                            <button class="confirm-group">Confirmar</button>
+                        </form>
+                    </li>
+                {% endfor %}
+                </ul>
+                <button id="send" >Enviar</button>
+                <button id="close">Cerrar</button>
+            </div>
+        </div>
+        <div class="modal-container" id="modal-container-eliminar">
+            <div class="modal">
+                <h2>¿Cuál grupo quieres eliminar?</h1>
+                <ul>
+                {% for nota in nota_ordenadas %}
+                    <li class="li-edit-group">
+                        <h3>Grupo {{ nota[0]["numGrupo"] + 1 }}</h2>
+                        <form action="" method="post" class="form-group">
+                            <input type="number" class="input-group" readonly value="{{nota[0]['porcentaje']}}"><p>%</p>
+                            <button class="delete-group">Eliminar</button>
+                        </form>
+                    </li>
+                {% endfor %}
+                </ul>
+                <button id="close-eliminar">Cerrar</button>
+            </div>
+        </div>
+        <div class="modal-container" id="modal-container-adv">
+            <div class="modal-adv">
+                <h2>Error</h1>
+                <p id="p-adv"></p>
+                <button id="close-adv">Ok</button>
+            </div>
+        </div>
+    </div>
+    <script src="{{url_for('static', filename='js/gestorCalculadora.js')}}"></script>
+</body>
+</html>
