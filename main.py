@@ -64,7 +64,7 @@ def recuperacion():
 
         msg = Message(
             "Recuperación de contraseña",
-            sender="tu_correo@gmail.com",
+            sender="unagenda.of@gmail.com",
             recipients=[recipient],
         )
         msg.body = f"Utilice este enlace para restablecer su contraseña: {reset_link}"
