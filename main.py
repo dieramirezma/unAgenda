@@ -10,10 +10,10 @@ from datetime import datetime, timedelta
 # Crear una instancia de la aplicación Flask
 app = Flask(__name__, template_folder="templates")
 # Configuración de la conexión a la base de datos MySQL
-app.config["MYSQL_HOST"] = "localhost"
-app.config["MYSQL_USER"] = "root"
-app.config["MYSQL_PASSWORD"] = "root"
-app.config["MYSQL_DB"] = "prFlask"
+app.config["MYSQL_HOST"] = "bk9yaw96cgi2zyhqfvda-mysql.services.clever-cloud.com"
+app.config["MYSQL_USER"] = "uu2geebwmidfiq4r"
+app.config["MYSQL_PASSWORD"] = "KCoFaNpyzpIfKEXrjAgx"
+app.config["MYSQL_DB"] = "bk9yaw96cgi2zyhqfvda"
 app.config["MYSQL_CURSORCLASS"] = "DictCursor"
 
 # Configuración de Flask-Mail
