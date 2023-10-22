@@ -4,16 +4,16 @@ import string
 import random
 from flask_mail import Mail, Message
 from flask_mysqldb import MySQL, MySQLdb
-import secrets
 from datetime import datetime, timedelta
 
 # Crear una instancia de la aplicación Flask
 app = Flask(__name__, template_folder="templates")
+
 # Configuración de la conexión a la base de datos MySQL
-app.config["MYSQL_HOST"] = "bk9yaw96cgi2zyhqfvda-mysql.services.clever-cloud.com"
-app.config["MYSQL_USER"] = "uu2geebwmidfiq4r"
+app.config["MYSQL_HOST"] = "unagenda.mysql.pythonanywhere-services.com"
+app.config["MYSQL_USER"] = "unagenda"
 app.config["MYSQL_PASSWORD"] = "KCoFaNpyzpIfKEXrjAgx"
-app.config["MYSQL_DB"] = "bk9yaw96cgi2zyhqfvda"
+app.config["MYSQL_DB"] = "unagenda$default"
 app.config["MYSQL_CURSORCLASS"] = "DictCursor"
 
 # Configuración de Flask-Mail
@@ -31,19 +31,10 @@ mysql = MySQL(app)
 
 mail = Mail(app)
 
-# Crear el objeto Message, recipients debe ser una lista
-# msg = Message(subject, recipients=recipients)
-# Cuerpo del mensaje a enviar
-# msg.body = message_body
-# Enviar el mensaje
-# mail.send(msg)
-
-
 def generate_random_token(length=32):
     characters = string.ascii_letters + string.digits
     token = "".join(random.choice(characters) for _ in range(length))
     return token
-
 
 @app.route("/recuperacion", methods=["GET", "POST"])
 def recuperacion():
