@@ -19,7 +19,7 @@
 -- Table structure for table `gruponotas`
 --
 
-DROP TABLE IF EXISTS `gruponotas`;
+DROP TABLE IF EXISTS `grupoNotas`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `gruponotas` (
@@ -109,7 +109,7 @@ CREATE TABLE `usuario` (
   `idUsuario` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(50) NOT NULL,
   `correo` varchar(50) NOT NULL,
-  `contrasena` varchar(102) NOT NULL,
+  `contrasena` varchar(200) NOT NULL,
   `codigo_verificacion` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`idUsuario`),
   UNIQUE KEY `correo` (`correo`)
