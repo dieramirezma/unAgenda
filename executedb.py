@@ -2,10 +2,10 @@ import mysql.connector
 from werkzeug.security import generate_password_hash
 
 conection = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="db12dieramirezma",
-    database="prflask",
+    host = "bk9yaw96cgi2zyhqfvda-mysql.services.clever-cloud.com",
+    user = "uu2geebwmidfiq4r",
+    password = "KCoFaNpyzpIfKEXrjAgx",
+    database = "bk9yaw96cgi2zyhqfvda"
 
 )
 # Función para ejecutar un script SQL sin usar Mysql Workbench

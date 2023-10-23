@@ -1,5 +1,3 @@
-CREATE  SCHEMA IF NOT EXISTS prflask;
-use prflask;
 -- MySQL dump 10.13  Distrib 8.0.13, for Win64 (x86_64)
 --
 -- Host: localhost    Database: prflask
