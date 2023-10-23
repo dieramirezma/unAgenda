@@ -1,5 +1,3 @@
-CREATE  SCHEMA IF NOT EXISTS prflask;
-use prflask;
 -- MySQL dump 10.13  Distrib 8.0.13, for Win64 (x86_64)
 --
 -- Host: localhost    Database: prflask
@@ -111,7 +109,7 @@ CREATE TABLE `usuario` (
   `idUsuario` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(50) NOT NULL,
   `correo` varchar(50) NOT NULL,
-  `contrasena` varchar(102) NOT NULL,
+  `contrasena` varchar(200) NOT NULL,
   `codigo_verificacion` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`idUsuario`),
   UNIQUE KEY `correo` (`correo`)
