@@ -11,10 +11,10 @@ from werkzeug.security import generate_password_hash, check_password_hash
 app = Flask(__name__, template_folder="templates")
 
 # Configuración de la conexión a la base de datos MySQL
-app.config["MYSQL_HOST"] = "bk9yaw96cgi2zyhqfvda-mysql.services.clever-cloud.com"
-app.config["MYSQL_USER"] = "uu2geebwmidfiq4r"
+app.config["MYSQL_HOST"] = "unagenda.mysql.pythonanywhere-services.com"
+app.config["MYSQL_USER"] = "unagenda"
 app.config["MYSQL_PASSWORD"] = "KCoFaNpyzpIfKEXrjAgx"
-app.config["MYSQL_DB"] = "bk9yaw96cgi2zyhqfvda"
+app.config["MYSQL_DB"] = "unagenda$default"
 app.config["MYSQL_CURSORCLASS"] = "DictCursor"
 # app.config["MYSQL_HOST"] = "localhost"
 # app.config["MYSQL_USER"] = "root"
@@ -109,7 +109,7 @@ def reset_password():
     if request.method == "POST":
         new_password = request.form.get("new_password")
         email = data["email"]
-        
+
         password_hash = generate_password_hash(new_password)
 
         cur.execute(
@@ -394,8 +394,9 @@ def login():
         )
         # Obtener la primera fila (si existe) que coincide con la consulta
         account = cur.fetchone()
-        
-        
+
+        print(account)
+
 
         # Si se encuentra un usuario con éxito
         if account and check_password_hash(account["contrasena"], _contrasena):
@@ -432,7 +433,7 @@ def register():
         if existing_user:
             error_message = "El correo ya está en uso"
             return render_template("register.html", error_message=error_message)
-        
+
         password_hash = generate_password_hash(_contrasena)
         cur.execute(
             "INSERT INTO usuario (nombre, correo, contrasena) VALUES (%s, %s, %s)",
@@ -698,8 +699,8 @@ def calculator():
 
 
 # Configuración de la clave secreta para las sesiones de usuario
-if __name__ == "__main__":
-    app.secret_key = "prFlask"
+#if __name__ == "__main__":
+app.secret_key = "prFlask"
 
 # Ejecución de la aplicación Flask
-app.run(debug=True, host="0.0.0.0", port=5000, threaded=True)
+#app.run(debug=True, host="0.0.0.0", port=5000, threaded=True)

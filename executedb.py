@@ -2,11 +2,10 @@ import mysql.connector
 from werkzeug.security import generate_password_hash
 
 conection = mysql.connector.connect(
-    host = "bk9yaw96cgi2zyhqfvda-mysql.services.clever-cloud.com",
-    user = "uu2geebwmidfiq4r",
+    host = "unagenda.mysql.pythonanywhere-services.com",
+    user = "unagenda",
     password = "KCoFaNpyzpIfKEXrjAgx",
-    database = "bk9yaw96cgi2zyhqfvda"
-
+    database = "unagenda$default"
 )
 # Función para ejecutar un script SQL sin usar Mysql Workbench
 def create_db(filename):
@@ -27,7 +26,7 @@ def create_db(filename):
             cursor.execute(command)
         except Exception as e:
             print(f"Error executing SQL command: {e}")
-    
+
     # Commit the changes
     conection.commit()
 
