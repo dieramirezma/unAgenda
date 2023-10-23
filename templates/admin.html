@@ -5,7 +5,7 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>unAgenda</title>
       <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&display=swap" rel="stylesheet">
-      <link rel = "stylesheet" href = "{{url_for('static', filename='styles/menustyle.css')}}">
+      <link rel = "stylesheet" href = "{{url_for('static', filename='styles/menuStyle.css')}}">
    </head>
    <body>
       <div class="header">
@@ -59,3 +59,57 @@
       </div>
    </body>
 </html>
+
+<!--
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="{{url_for('static', filename='assets/js/black-dashboard.min.js')}}"></script>
+    <link rel="stylesheet" href="{{url_for('static', filename = 'assets/css/black-dashboard.css')}}">
+</head>
+<body class="">
+
+    <div class="wrapper">
+        {% include 'includes/sidebar.html' %}
+        <div class="main-panel">
+             <div class="content">
+               <h3>¡Es bueno verte de nuevo, {{ username }}!</h3>
+               <h5 id ="instructionLabel">Selecciona una de las opciones a continuación<br> y elige qué actividad deseas hacer: </h5>
+                 <div class="row">
+                     <div class="col-lg-4">
+                         <div class="card card-chart">
+                             <div class="card-header">
+                                 <h4> Gestor de horarios</h4>
+                             </div>
+                             <div class="card-body">
+                                 <div class="chart-area">
+                                    <img id = "calendarImage" src = "{{url_for('static', filename='img/calendar.jpg')}}"/>
+                                 </div>
+                             </div>
+                         </div>
+                     </div>
+                     <div class="col-lg-4">
+                         <div class="card card-chart">
+                             <div class="card-header">
+                                 <h4> Calculadora de promedios</h4>
+                             </div>
+                             <div class="card-body">
+                                 <div class="chart-area">
+                                    <img id = "calendarImage" src = "{{url_for('static', filename='img/calculator.jpg')}}"/>
+                                 </div>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+         <script>
+             $(document).ready(function () {
+                 // Javascript method's body can be found in assets/js/demos.js
+                 demo.initDashboardPageCharts();
+
+             });
+         </script>
+      </body>
+</html> -->
