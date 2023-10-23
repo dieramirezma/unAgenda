@@ -27,7 +27,7 @@ def create_db(filename):
             cursor.execute(command)
         except Exception as e:
             print(f"Error executing SQL command: {e}")
-    
+
     # Commit the changes
     conection.commit()
 
