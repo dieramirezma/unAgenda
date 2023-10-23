@@ -5,15 +5,16 @@ import random
 from flask_mail import Mail, Message
 from flask_mysqldb import MySQL, MySQLdb
 from datetime import datetime, timedelta
+from werkzeug.security import generate_password_hash, check_password_hash
 
 # Crear una instancia de la aplicación Flask
 app = Flask(__name__, template_folder="templates")
 
 # Configuración de la conexión a la base de datos MySQL
-app.config["MYSQL_HOST"] = "unagenda.mysql.pythonanywhere-services.com"
-app.config["MYSQL_USER"] = "unagenda"
-app.config["MYSQL_PASSWORD"] = "KCoFaNpyzpIfKEXrjAgx"
-app.config["MYSQL_DB"] = "unagenda$default"
+app.config["MYSQL_HOST"] = "localhost"
+app.config["MYSQL_USER"] = "root"
+app.config["MYSQL_PASSWORD"] = "db12dieramirezma"
+app.config["MYSQL_DB"] = "prFlask"
 app.config["MYSQL_CURSORCLASS"] = "DictCursor"
 
 # Configuración de Flask-Mail
@@ -103,9 +104,12 @@ def reset_password():
     if request.method == "POST":
         new_password = request.form.get("new_password")
         email = data["email"]
+        
+        password_hash = generate_password_hash(new_password)
+
         cur.execute(
-            "UPDATE usuario SET contraseña = %s WHERE correo = %s",
-            (new_password, email),
+            "UPDATE usuario SET contrasena = %s WHERE correo = %s",
+            (password_hash, email),
         )
         mysql.connection.commit()
         cur.close()
@@ -373,22 +377,23 @@ def login():
     ):
         # Obtener el correo y la contraseña proporcionados por el usuario
         _correo = request.form["txtEmail"]
-        _contraseña = request.form["txtPassword"]
+        _contrasena = request.form["txtPassword"]
 
         # Crear un cursor para la base de datos MySQL
         cur = mysql.connection.cursor()
 
-        # Ejecutar una consulta SQL para buscar un usuario con el correo y contraseña proporcionados
+        # Ejecutar una consulta SQL para buscar un usuario con el correo y contrasena proporcionados
         cur.execute(
-            "SELECT * FROM usuario WHERE correo = %s AND contraseña = %s",
-            (_correo, _contraseña),
+            "SELECT * FROM usuario WHERE correo = %s",
+            (_correo,),
         )
-
         # Obtener la primera fila (si existe) que coincide con la consulta
         account = cur.fetchone()
+        
+        
 
         # Si se encuentra un usuario con éxito
-        if account:
+        if account and check_password_hash(account["contrasena"], _contrasena):
             # Establecer una sesión de usuario marcándolo como logueado y almacenando su ID de usuario
             session["logueado"] = True
             session["idUsuario"] = account["idUsuario"]
@@ -411,7 +416,7 @@ def register():
         and "txtPassword" in request.form
     ):
         _correo = request.form["txtEmail"]
-        _contraseña = request.form["txtPassword"]
+        _contrasena = request.form["txtPassword"]
         _nombre = request.form["txtNombre"]
 
         cur = mysql.connection.cursor()
@@ -422,16 +427,17 @@ def register():
         if existing_user:
             error_message = "El correo ya está en uso"
             return render_template("register.html", error_message=error_message)
-
+        
+        password_hash = generate_password_hash(_contrasena)
         cur.execute(
-            "INSERT INTO usuario (nombre, correo, contraseña) VALUES (%s, %s, %s)",
-            (_nombre, _correo, _contraseña),
+            "INSERT INTO usuario (nombre, correo, contrasena) VALUES (%s, %s, %s)",
+            (_nombre, _correo, password_hash),
         )
         mysql.connection.commit()
 
         cur.execute(
-            "SELECT * FROM usuario WHERE correo = %s AND contraseña = %s",
-            (_correo, _contraseña),
+            "SELECT * FROM usuario WHERE correo = %s AND contrasena = %s",
+            (_correo, password_hash),
         )
         new_user = cur.fetchone()
 

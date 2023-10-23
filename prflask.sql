@@ -1,3 +1,5 @@
+CREATE  SCHEMA IF NOT EXISTS prflask;
+use prflask;
 -- MySQL dump 10.13  Distrib 8.0.13, for Win64 (x86_64)
 --
 -- Host: localhost    Database: prflask
@@ -109,7 +111,7 @@ CREATE TABLE `usuario` (
   `idUsuario` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(50) NOT NULL,
   `correo` varchar(50) NOT NULL,
-  `contraseña` varchar(50) NOT NULL,
+  `contrasena` varchar(102) NOT NULL,
   `codigo_verificacion` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`idUsuario`),
   UNIQUE KEY `correo` (`correo`)
@@ -122,7 +124,7 @@ CREATE TABLE `usuario` (
 
 LOCK TABLES `usuario` WRITE;
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
-INSERT INTO `usuario` VALUES (1,'Usuario1','usuario1@example.com','pass1','abc'),(2,'Usuario2','usuario2@example.com','pass2','abc'),(3,'Usuario3','usuario3@example.com','pass3','abc'),(4,'Usuario4','usuario4@example.com','pass4',NULL),(5,'Andres','ainfanteh@unal.edu.co','XYHphd68',NULL);
+
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
