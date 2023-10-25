@@ -697,6 +697,9 @@ def calculator():
         promedioFinal=sum(arregloPromedio),
     )
 
+@app.route("/cuaderno")
+def cuaderno():
+    return render_template("cuaderno.html")
 
 # Configuración de la clave secreta para las sesiones de usuario
 if __name__ == "__main__":
