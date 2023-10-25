@@ -6,21 +6,23 @@ from flask_mail import Mail, Message
 from flask_mysqldb import MySQL, MySQLdb
 from datetime import datetime, timedelta
 from werkzeug.security import generate_password_hash, check_password_hash
+import os
+
+# Cargar variables de entorno para las credenciales
+MYSQL_PASSWORD = os.environ.get("MYSQL_PASSWORD_UNAGENDA")
+EMAIL_PASSWORD = os.environ.get("EMAIL_PASSWORD_UNAGENDA")
 
 # Crear una instancia de la aplicación Flask
 app = Flask(__name__, template_folder="templates")
 
+
 # Configuración de la conexión a la base de datos MySQL
 app.config["MYSQL_HOST"] = "bk9yaw96cgi2zyhqfvda-mysql.services.clever-cloud.com"
 app.config["MYSQL_USER"] = "uu2geebwmidfiq4r"
-app.config["MYSQL_PASSWORD"] = "KCoFaNpyzpIfKEXrjAgx"
+app.config["MYSQL_PASSWORD"] = MYSQL_PASSWORD
 app.config["MYSQL_DB"] = "bk9yaw96cgi2zyhqfvda"
 app.config["MYSQL_CURSORCLASS"] = "DictCursor"
-# app.config["MYSQL_HOST"] = "localhost"
-# app.config["MYSQL_USER"] = "root"
-# app.config["MYSQL_PASSWORD"] = "db12dieramirezma"
-# app.config["MYSQL_DB"] = "prFlask"
-# app.config["MYSQL_CURSORCLASS"] = "DictCursor"
+
 
 # Configuración de Flask-Mail
 app.config["MAIL_SERVER"] = "smtp.gmail.com"
@@ -29,7 +31,7 @@ app.config["MAIL_USE_TLS"] = True
 app.config["MAIL_USE_SSL"] = False
 
 app.config["MAIL_USERNAME"] = "unagenda.of@gmail.com"
-app.config["MAIL_PASSWORD"] = "ogqt byfi qveh tufx"
+app.config["MAIL_PASSWORD"] = EMAIL_PASSWORD
 app.config["MAIL_DEFAULT_SENDER"] = "unagenda.of@gmail.com"
 
 # Inicialización de la extensión MySQL

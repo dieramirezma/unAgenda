@@ -1,10 +1,12 @@
 import mysql.connector
 from werkzeug.security import generate_password_hash
 
+MYSQL_PASSWORD = os.environ.get("MYSQL_PASSWORD_UNAGENDA")
+
 conection = mysql.connector.connect(
     host = "bk9yaw96cgi2zyhqfvda-mysql.services.clever-cloud.com",
     user = "uu2geebwmidfiq4r",
-    password = "KCoFaNpyzpIfKEXrjAgx",
+    password = MYSQL_PASSWORD,
     database = "bk9yaw96cgi2zyhqfvda"
 
 )
