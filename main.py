@@ -6,14 +6,21 @@ from flask_mail import Mail, Message
 from flask_mysqldb import MySQL, MySQLdb
 from datetime import datetime, timedelta
 from werkzeug.security import generate_password_hash, check_password_hash
+import os
 
+# Cargar variables de entorno para las credenciales
+MYSQL_PASSWORD = os.environ.get("MYSQL_PASSWORD_UNAGENDA")
+EMAIL_PASSWORD = os.environ.get("EMAIL_PASSWORD_UNAGENDA")
+
+print(MYSQL_PASSWORD)
+print(EMAIL_PASSWORD)
 # Crear una instancia de la aplicación Flask
 app = Flask(__name__, template_folder="templates")
 
 # Configuración de la conexión a la base de datos MySQL
 app.config["MYSQL_HOST"] = "unagenda.mysql.pythonanywhere-services.com"
 app.config["MYSQL_USER"] = "unagenda"
-app.config["MYSQL_PASSWORD"] = "KCoFaNpyzpIfKEXrjAgx"
+app.config["MYSQL_PASSWORD"] = MYSQL_PASSWORD
 app.config["MYSQL_DB"] = "unagenda$default"
 app.config["MYSQL_CURSORCLASS"] = "DictCursor"
 # app.config["MYSQL_HOST"] = "localhost"
@@ -29,7 +36,7 @@ app.config["MAIL_USE_TLS"] = True
 app.config["MAIL_USE_SSL"] = False
 
 app.config["MAIL_USERNAME"] = "unagenda.of@gmail.com"
-app.config["MAIL_PASSWORD"] = "ogqt byfi qveh tufx"
+app.config["MAIL_PASSWORD"] = EMAIL_PASSWORD
 app.config["MAIL_DEFAULT_SENDER"] = "unagenda.of@gmail.com"
 
 # Inicialización de la extensión MySQL
@@ -385,6 +392,7 @@ def login():
         _contrasena = request.form["txtPassword"]
 
         # Crear un cursor para la base de datos MySQL
+
         cur = mysql.connection.cursor()
 
         # Ejecutar una consulta SQL para buscar un usuario con el correo y contrasena proporcionados
