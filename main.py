@@ -12,22 +12,25 @@ import os
 MYSQL_PASSWORD = os.environ.get("MYSQL_PASSWORD_UNAGENDA")
 EMAIL_PASSWORD = os.environ.get("EMAIL_PASSWORD_UNAGENDA")
 
+
+# Cargar variables de entorno para las credenciales
+MYSQL_PASSWORD = os.environ.get("MYSQL_PASSWORD_UNAGENDA")
+EMAIL_PASSWORD = os.environ.get("EMAIL_PASSWORD_UNAGENDA")
+
 print(MYSQL_PASSWORD)
 print(EMAIL_PASSWORD)
 # Crear una instancia de la aplicación Flask
 app = Flask(__name__, template_folder="templates")
 
+
 # Configuración de la conexión a la base de datos MySQL
+
 app.config["MYSQL_HOST"] = "unagenda.mysql.pythonanywhere-services.com"
 app.config["MYSQL_USER"] = "unagenda"
 app.config["MYSQL_PASSWORD"] = MYSQL_PASSWORD
 app.config["MYSQL_DB"] = "unagenda$default"
 app.config["MYSQL_CURSORCLASS"] = "DictCursor"
-# app.config["MYSQL_HOST"] = "localhost"
-# app.config["MYSQL_USER"] = "root"
-# app.config["MYSQL_PASSWORD"] = "db12dieramirezma"
-# app.config["MYSQL_DB"] = "prFlask"
-# app.config["MYSQL_CURSORCLASS"] = "DictCursor"
+
 
 # Configuración de Flask-Mail
 app.config["MAIL_SERVER"] = "smtp.gmail.com"
@@ -705,10 +708,11 @@ def calculator():
         promedioFinal=sum(arregloPromedio),
     )
 
+@app.route("/cuaderno")
+def cuaderno():
+    return render_template("cuaderno.html")
 
 # Configuración de la clave secreta para las sesiones de usuario
-#if __name__ == "__main__":
 app.secret_key = "prFlask"
 
-# Ejecución de la aplicación Flask
-#app.run(debug=True, host="0.0.0.0", port=5000, threaded=True)
+

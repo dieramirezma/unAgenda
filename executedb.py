@@ -1,11 +1,14 @@
 import mysql.connector
 from werkzeug.security import generate_password_hash
 
+MYSQL_PASSWORD = os.environ.get("MYSQL_PASSWORD_UNAGENDA")
+
 conection = mysql.connector.connect(
-    host = "unagenda.mysql.pythonanywhere-services.com",
-    user = "unagenda",
-    password = "KCoFaNpyzpIfKEXrjAgx",
-    database = "unagenda$default"
+    host = "bk9yaw96cgi2zyhqfvda-mysql.services.clever-cloud.com",
+    user = "uu2geebwmidfiq4r",
+    password = MYSQL_PASSWORD,
+    database = "bk9yaw96cgi2zyhqfvda"
+
 )
 # Función para ejecutar un script SQL sin usar Mysql Workbench
 def create_db(filename):

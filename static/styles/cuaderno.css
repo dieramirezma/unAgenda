@@ -1,0 +1,214 @@
+*
+{
+
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+
+}
+
+.header
+{
+
+    width: 100%;
+    height: 100vh;
+
+    max-width: 100%;
+    max-height: 100%;
+    background-image: url("../img/background.png");
+    background-position: center;
+    background-size: cover;
+    /* scroll-behavior: smooth; */
+    overflow-y: scroll;
+
+}
+
+.menuSideBar
+{
+
+    background-color: rgba(169, 169, 169, .5);
+    width: 30%;
+    height: 100%;
+
+    float: left;
+    text-align: center;
+
+
+}
+
+#unAgendaLabel
+{
+
+    max-width: 100%;
+
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-top: 2rem;
+
+}
+
+.selectedIndexBox
+{
+
+    max-width: 100%;
+    margin: auto;
+
+    transition: background-color 0.3s ease;
+
+    width: 300px;
+
+    padding-left: 1%;
+    padding-right: 1rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    border-radius: 10px;
+
+    text-align: center;
+
+}
+
+.selectedIndexBox:hover
+{
+
+    background-color: rgba(0, 0, 0, 0.2);
+
+}
+
+.iconMenu
+{
+
+    max-width: 100%;
+    margin: auto;
+
+}
+
+.welcomeText
+{
+    
+    color: white;
+    text-align: center;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+
+}
+.sideMenuContainer
+{
+
+    background-color: rgba(169, 169, 169, .5);
+
+    width: 10%;
+    height: 100%;
+
+    max-height: 100vh;
+
+    float: left;
+    text-align: center;
+    overflow-y: auto;
+
+}
+
+#unAgendaLabel
+{
+
+    max-width: 100%;
+    max-height: 100%;
+
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+    padding-top: 0.25rem;
+
+}
+
+.iconBox
+{
+
+    max-height: 100%;
+
+    width: 80%;
+    margin-right: 10%;
+    margin-left: 10%;
+
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    border-radius: 10px;
+
+    transition: background-color 0.3s ease;
+
+}
+
+.iconBox:hover
+{
+
+    background-color: rgba(0, 0, 0, 0.2);
+
+}
+
+.iconImage
+{
+    
+
+    max-width: 100%;
+    max-height: 100%;
+
+
+}
+
+.notebook {
+    margin: 10px 15px;
+    float: left;
+    width: 87%;
+    height: 100%;
+    display: flex;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-left: 10px;
+    justify-content: space-evenly;
+    height: 100px;
+    align-items: center;
+}
+
+form {
+    height: 100%;
+    width: 85%;
+}
+.btn {
+    margin-bottom: 5px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    padding: 5px 10px;
+}
+
+.btn-cambiar {
+    color: rgb(64, 109, 192);
+    border: rgb(64, 109, 192) solid 2px;
+}
+
+.btn-guardar {
+    color: rgb(89, 236, 108);
+    border: rgb(89, 236, 108) solid 2px;
+}
+
+.btn-cambiar:hover {
+    background-color: rgb(64, 109, 192);
+    color: white;
+}
+
+.btn-guardar:hover {
+    background-color: rgb(89, 236, 108);
+    color: white;
+}
+
+.justify {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 15%;
+}

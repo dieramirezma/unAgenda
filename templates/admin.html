@@ -32,28 +32,77 @@
                   <img class = "iconMenu" src = "{{url_for('static', filename='img/calculatorindex.png')}}" width="300"/>
                </div>
             </a>
+            <a href = "cuaderno">
+               <div class = "selectedIndexBox">
+                  <img class = "iconMenu" src = "{{url_for('static', filename='img/notebookindex.png')}}" width="300"/>
+               </div>
+            </a>
          </div>
-         <div class = "welcomeText">
-            <br><br>
-            <h1 id = "welcomeBackLabel">¡Es bueno verte de nuevo, {{ username }}!</h1>
-            <br><br>
-            <h3 id ="instructionLabel">Selecciona una de las opciones a continuación<br> y elige qué actividad deseas hacer: </h3>
-         </div>
-         <div class = "buttonsArea">
-            <br>
-            <div class = "buttonCalendar">
-               <br>
-               <img id = "calendarImage" src = "{{url_for('static', filename='img/calendar.jpg')}}"/>
+         <div class = "nonMenuContent">
+            <div class = "welcomeText">
                <br><br>
-               <p>GESTIONAR HORARIO</p>
+               <h1 id = "welcomeBackLabel">¡Es bueno verte de nuevo, {{ username }}!</h1>
                <br><br>
             </div>
-            <div class = "buttonCalculator">
+            <div class = "buttonsArea">
+               <h3 id ="instructionLabel">Selecciona una de las opciones a continuación<br> y elige qué actividad deseas hacer: </h3>
                <br>
-               <img id = "calendarImage" src = "{{url_for('static', filename='img/calculator.jpg')}}"/>
+               <div class = "buttonsFirstRow">
+                  <div class = "buttonCalendar">
+                     <br>
+                     <img id = "calendarImage" src = "{{url_for('static', filename='img/calendar.jpg')}}"/>
+                     <br><br>
+                     <p>GESTIONAR HORARIO</p>
+                     <br><br>
+                  </div>
+                  <div class = "buttonCalculator">
+                     <br>
+                     <img id = "calendarImage" src = "{{url_for('static', filename='img/calculator.jpg')}}"/>
+                     <br><br>
+                     <p>CALCULADORA DE PROMEDIOS</p>
+                     <br>
+                  </div>
+               </div>
+               <div class = "buttonsSecondRow">
+
+                  <div class = "buttonNotes">
+                     <br>
+                     <img id = "calendarImage" src = "{{url_for('static', filename='img/notebook.jpg')}}"/>
+                     <br><br>
+                     <p>MIS NOTAS</p>
+                     <br>
+                  </div>
+
+               </div>
+            </div>
+            <div class = "separator"><p></p></div>
+            <div class = "alertsArea">
+
+               <h3 id ="instructionLabel2">Estos son los eventos que tienes programados<br>esta semana: </h3>
+               <br>
+               <div class = "alertsButtons">
+
+                  <h4 id="newAlert">AGREGAR RECORDATORIO +</h4>
+                  <h4 id="deleteAlert">QUITAR RECORDATORIO -</h4>
+
+               </div>
                <br><br>
-               <p>CALCULADORA DE PROMEDIOS</p>
-               <br>
+               <script>
+
+                  //ESTE ESPACIO CORRESPONDE AL SCRIPT QUE VA A IR CARGANDO DE MANERA SUCESIVA LOS EVENTOS DEL USUARIO.
+                  //
+                  //PARA UNA GUÍA DE REFERENCIA, SE PUEDE VER EL CÓDIGO QUE GENERA LOS EVENTOS DEL HORARIO AL PRESIONAR EL BOTÓN DE "BORRAR EVENTO", PUES
+                  //SE HACE TAMBIÉN DE MANERA PROCEDURAL.
+
+               </script>
+
+               <div class = "lastAlertBox">
+
+                  <p>No tiene más eventos programados para esta semana...</p>
+                  
+               </div>
+               <h4 id = "seeAlerts">VER TODOS LOS EVENTOS</h4>
+
             </div>
          </div>
       </div>
