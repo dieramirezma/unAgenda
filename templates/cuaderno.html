@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuaderno</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='styles/cuaderno.css')}}">
+    <script src="https://cdn.tiny.cloud/1/cyo40kyuazintmua0qe935k28ieyfp6y2rxnqthey7zgklrw/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+        tinymce.init({
+          selector: '#mytextarea',
+          height: "100%",
+          toolbar: 'undo redo | styles | bold italic underline | alignleft aligncenter alignright alignjustify | fontfamily fontsizeinput fontsize forecolor | link image'
+        });
+    </script>
+</head>
+<body>
+    <div class="header">
+        <div class = "sideMenuContainer"> <!-- MENU LATERAL -->
+
+            <br>
+            <a href = "admin">
+                <img id = "unAgendaLabel" src = "{{url_for('static', filename='img/unAgenda1.png')}}" width="100"/>
+            </a>
+
+            <br><br>
+
+            <a href = "admin">
+                <div class = "iconBox">
+                    <img class = "iconImage" src = "{{url_for('static', filename='img/mainmenumini.png')}}" width="100"/>
+                </div>
+            </a>
+            <a href = "schedule">
+                <div class = "iconBox">
+                    <img class = "iconImage" src = "{{url_for('static', filename='img/scheduleindexmini.png')}}" width="100"/>
+                </div>
+            </a>
+            <a href = "calculator">
+                <div class = "iconBox">
+                    <img class = "iconImage" src = "{{url_for('static', filename='img/calculatorindexmini.png')}}" width="100"/>
+                </div>
+            </a>
+            <a href = "cuaderno">
+                <div class = "iconBox">
+                    <img class = "iconImage" src = "{{url_for('static', filename='img/calculatorindexmini.png')}}" width="100"/>
+                </div>
+            </a>
+
+        </div>
+        <div class="notebook">
+            <form method="post">
+                <textarea id="mytextarea"></textarea>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
