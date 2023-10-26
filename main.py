@@ -12,13 +12,6 @@ import os
 MYSQL_PASSWORD = os.environ.get("MYSQL_PASSWORD_UNAGENDA")
 EMAIL_PASSWORD = os.environ.get("EMAIL_PASSWORD_UNAGENDA")
 
-
-# Cargar variables de entorno para las credenciales
-MYSQL_PASSWORD = os.environ.get("MYSQL_PASSWORD_UNAGENDA")
-EMAIL_PASSWORD = os.environ.get("EMAIL_PASSWORD_UNAGENDA")
-
-print(MYSQL_PASSWORD)
-print(EMAIL_PASSWORD)
 # Crear una instancia de la aplicación Flask
 app = Flask(__name__, template_folder="templates")
 
