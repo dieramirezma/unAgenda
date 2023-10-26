@@ -19,20 +19,6 @@
 -- Table structure for table `gruponotas`
 --
 
-DROP TABLE IF EXISTS `recordatorios`;
- SET character_set_client = utf8mb4 ;
-
- CREATE TABLE `recordatorios` (
-  `idRecordatorio` int(11) NOT NULL AUTO_INCREMENT,
-  `idUsuario` int(11) DEFAULT NULL,
-  `nombreRecordatorio` varchar(255) NOT NULL,
-  `y` int(11) DEFAULT NOT NULL,
-  `mm` int(11) DEFAULT NOT NULL,
-  `h` int(11) DEFAULT NOT NULL,
-  `m` int(11) DEFAULT NOT NULL,
-
- )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
 DROP TABLE IF EXISTS `grupoNotas`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
