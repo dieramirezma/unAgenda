@@ -15,7 +15,7 @@ EMAIL_PASSWORD = os.environ.get("EMAIL_PASSWORD_UNAGENDA")
 # Crear una instancia de la aplicación Flask
 app = Flask(__name__, template_folder="templates")
 
-
+print(MYSQL_PASSWORD)
 # Configuración de la conexión a la base de datos MySQL
 app.config["MYSQL_HOST"] = "bk9yaw96cgi2zyhqfvda-mysql.services.clever-cloud.com"
 app.config["MYSQL_USER"] = "uu2geebwmidfiq4r"
@@ -43,6 +43,8 @@ def generate_random_token(length=32):
     characters = string.ascii_letters + string.digits
     token = "".join(random.choice(characters) for _ in range(length))
     return token
+
+
 
 @app.route("/recuperacion", methods=["GET", "POST"])
 def recuperacion():
@@ -124,6 +126,12 @@ def reset_password():
 
     return render_template("reset.html", data=data)
 
+@app.route("/logout", methods=["POST"])
+def logout():
+    session.pop("logueado", None)
+    session.pop("idUsuario", None)
+    session.pop("nombre", None)
+    return render_template("index.html")  # Redirige al usuario a la página de inicio o a donde desees
 
 @app.route("/")
 def homepage():
