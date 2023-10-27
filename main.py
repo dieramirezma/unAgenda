@@ -7,7 +7,7 @@ from flask_mysqldb import MySQL, MySQLdb
 from datetime import datetime, timedelta
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
-
+from functools import wraps
 # Cargar variables de entorno para las credenciales
 MYSQL_PASSWORD = os.environ.get("MYSQL_PASSWORD_UNAGENDA")
 EMAIL_PASSWORD = os.environ.get("EMAIL_PASSWORD_UNAGENDA")
@@ -45,6 +45,13 @@ def generate_random_token(length=32):
     return token
 
 
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if "nombre" not in session or "idUsuario" not in session:
+            return render_template("index.html")
+        return f(*args, **kwargs)
+    return decorated_function
 
 @app.route("/recuperacion", methods=["GET", "POST"])
 def recuperacion():
@@ -127,11 +134,13 @@ def reset_password():
     return render_template("reset.html", data=data)
 
 @app.route("/logout", methods=["POST"])
+
 def logout():
     session.pop("logueado", None)
     session.pop("idUsuario", None)
     session.pop("nombre", None)
     return render_template("index.html")  # Redirige al usuario a la página de inicio o a donde desees
+    
 
 @app.route("/")
 def homepage():
@@ -139,6 +148,7 @@ def homepage():
 
 
 @app.route("/admin")
+@login_required
 def admin():
     print(session["nombre"])
     now = datetime.now()
@@ -191,6 +201,7 @@ def admin():
 
 
 @app.route("/schedule")
+@login_required
 def schedule():
 
     _idUsuarioActual = session["idUsuario"]
@@ -514,6 +525,7 @@ def register():
 
 
 @app.route("/calculator", methods=["POST", "GET"])
+@login_required
 def calculator():
     # if request.method == 'POST':
     #     print("--------------------- Entro -----------------------------")
@@ -753,10 +765,16 @@ def calculator():
         len_group=len(nota_ordenadas),
         promedioFinal=sum(arregloPromedio),
     )
-
+dark_mode = False
 @app.route("/cuaderno")
 def cuaderno():
-    return render_template("cuaderno.html")
+    return render_template("cuaderno.html",dark_mode=dark_mode)
+
+@app.route('/toggle_dark_mode')
+def toggle_dark_mode():
+    global dark_mode
+    dark_mode = not dark_mode
+    return redirect(url_for('cuaderno', dark_mode=dark_mode))
 
 # Configuración de la clave secreta para las sesiones de usuario
 if __name__ == "__main__":
