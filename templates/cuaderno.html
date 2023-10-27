@@ -47,6 +47,7 @@
             </a>
 
         </div>
+        
         <div class="notebook">
             <form method="post">
                 <textarea id="mytextarea"></textarea>
@@ -55,6 +56,15 @@
                 <div class="buttons">
                     <button class="btn btn-cambiar">Cambiar cuaderno</button>
                     <button class="btn btn-guardar">Guardar cuaderno</button>
+                    <div class="switch-container">
+                        <label class="switch">
+                          <input type="checkbox" id="darkModeToggle" {% if dark_mode %}checked{% endif %}>
+                          <span class="slider round"></span>
+                        </label>
+                        <span class="mode-label">Modo Oscuro</span>
+                      </div>
+                      <a href="{{ url_for('toggle_dark_mode') }}">Cambiar al Modo Oscuro</a>
+
                 </div>
             </div>    
         </div>
