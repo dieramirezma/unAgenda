@@ -136,9 +136,7 @@ def reset_password():
 @app.route("/logout", methods=["POST"])
 
 def logout():
-    session.pop("logueado", None)
-    session.pop("idUsuario", None)
-    session.pop("nombre", None)
+    session.clear()
     return render_template("index.html")  # Redirige al usuario a la página de inicio o a donde desees
     
 
