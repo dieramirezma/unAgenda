@@ -471,8 +471,54 @@ def login():
             session["idUsuario"] = account["idUsuario"]
             session["nombre"] = account["nombre"]
 
+            now = datetime.now()
+            formatted_date = now.strftime("%Y-%m-%d %H:%M:%S")
+            currentYear = now.strftime("%Y")
+            currentMonth = now.strftime("%m")
+            currentDay = now.strftime("%d")
+            currentHour = now.strftime("%H")
+            currentMinute = now.strftime("%M")
+
+            currentTime = (currentYear, currentMonth, currentDay, currentHour, currentMinute)
+
+            cur = mysql.connection.cursor()
+            _idUsuarioActual = session["idUsuario"]
+
+            cur.execute("SELECT nombreRecordatorio FROM recordatorios WHERE idUsuario = %s", (_idUsuarioActual,))
+            resultados = cur.fetchall()
+            nombreRecordatorio = [resultado["nombreRecordatorio"] for resultado in resultados]
+
+            cur.execute("SELECT y FROM recordatorios WHERE idUsuario = %s", (_idUsuarioActual,))
+            resultados = cur.fetchall()
+            year = [resultado["y"] for resultado in resultados]
+
+            cur.execute("SELECT mm FROM recordatorios WHERE idUsuario = %s", (_idUsuarioActual,))
+            resultados = cur.fetchall()
+            month = [resultado["mm"] for resultado in resultados]
+
+            cur.execute("SELECT d FROM recordatorios WHERE idUsuario = %s", (_idUsuarioActual,))
+            resultados = cur.fetchall()
+            day = [resultado["d"] for resultado in resultados]
+
+            cur.execute("SELECT h FROM recordatorios WHERE idUsuario = %s", (_idUsuarioActual,))
+            resultados = cur.fetchall()
+            hour = [resultado["h"] for resultado in resultados]
+
+            cur.execute("SELECT m FROM recordatorios WHERE idUsuario = %s", (_idUsuarioActual,))
+            resultados = cur.fetchall()
+            minute = [resultado["m"] for resultado in resultados]
+
             # Redirigir al usuario a la página de administrador
-            return render_template("admin.html", username=session["nombre"])
+            return render_template("admin.html", 
+            username=session["nombre"],
+            currentTimeList = currentTime,
+            nombreRecordatorioList = nombreRecordatorio,
+            yearList = year,
+            monthList = month,
+            dayList = day,
+            hourList = hour,
+            minuteList = minute ,
+            )   
         else:
             # Si no se encuentra un usuario, redirigir de nuevo a la página de inicio
             error_message = "Credenciales incorrectas"

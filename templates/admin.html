@@ -6,6 +6,9 @@
       <title>unAgenda</title>
       <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&display=swap" rel="stylesheet">
       <link rel = "stylesheet" href = "{{url_for('static', filename='styles/menuStyle.css')}}">
+      <script src="static/js/gestorMainMenu.js"></script>
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
    </head>
    <body>
       <div class="header">
@@ -107,8 +110,29 @@
                   <p>No tiene más eventos programados para esta semana...</p>
                   
                </div>
-               <h4 id = "seeAlerts">VER TODOS LOS EVENTOS</h4>
+               <h4 id = "seeAlerts" onclick="mostrarVentana()">VER TODOS LOS EVENTOS</h4>
 
+            </div>
+         </div>
+         <div class="seeEventsWindow" id="seeEventsWindow">
+            <div id = "seeEventsContent">
+               <h3>Eventos Programados</h3>
+               <br>
+               <div id="eventsList">
+                  <script>
+
+                     //CARGAR LOS DATOS DE LA BASE DE DATOS
+                     var currentTimeList = JSON.parse('{{ currentTimeList | tojson | safe }}');
+                     var nombreRecordatorioList = JSON.parse('{{ nombreRecordatorioList | tojson | safe }}');
+                     var yearList = JSON.parse('{{ yearList | tojson | safe }}');
+                     var monthList = JSON.parse('{{ monthList | tojson | safe }}');
+                     var dayList = JSON.parse('{{ dayList | tojson | safe }}');
+                     var hourList = JSON.parse('{{ hourList | tojson | safe }}');
+                     var minuteList = JSON.parse('{{ minuteList | tojson | safe }}');
+                     cargarEventos(nombreRecordatorioList, yearList, monthList, dayList, hourList, minuteList);
+
+                  </script>
+               </div>
             </div>
          </div>
       </div>
