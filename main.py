@@ -812,6 +812,8 @@ def calculator():
 dark_mode = False
 @app.route("/cuaderno")
 def cuaderno():
+    hola = request.args.get("hola")
+    print(hola)
     return render_template("cuaderno.html",dark_mode=dark_mode)
 
 @app.route('/toggle_dark_mode')

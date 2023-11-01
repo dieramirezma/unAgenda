@@ -84,9 +84,10 @@
 
                     tinymce.init({
                         selector: '#mytextarea',
+                        plugins: "lists",
                         height: "100%",
                         skin: 'oxide-dark',
-                        toolbar: 'undo redo | styles | bold italic underline | alignleft aligncenter alignright alignjustify | fontfamily fontsizeinput fontsize forecolor | link image',
+                        toolbar: 'undo redo | styles | bold italic underline | alignleft aligncenter alignright alignjustify | fontfamily fontsizeinput fontsize forecolor | link image | bullist numlist',
                         content_css: "{{url_for('static', filename='styles/cuaderno-dark.css')}}"
                     });
                 } 
@@ -103,8 +104,9 @@
                     
                 tinymce.init({
                 selector: '#mytextarea',
+                plugins: "lists",
                 height: "100%",
-                toolbar: 'undo redo | styles | bold italic underline | alignleft aligncenter alignright alignjustify | fontfamily fontsizeinput fontsize forecolor | link image',
+                toolbar: 'undo redo | styles | bold italic underline | alignleft aligncenter alignright alignjustify | fontfamily fontsizeinput fontsize forecolor | link image | bullist numlist',
                 setup: function(editorInstance) {
                     editor = editorInstance;
                 }
@@ -115,8 +117,9 @@
 
             tinymce.init({
                 selector: '#mytextarea',
+                plugins: "lists",
                 height: "100%",
-                toolbar: 'undo redo | styles | bold italic underline | alignleft aligncenter alignright alignjustify | fontfamily fontsizeinput fontsize forecolor | link image',
+                toolbar: 'undo redo | styles | bold italic underline | alignleft aligncenter alignright alignjustify | fontfamily fontsizeinput fontsize forecolor | link image | bullist numlist',
                 setup: function(editorInstance) {
                     editor = editorInstance;
                 }
@@ -124,5 +127,6 @@
             
         });
     </script>
+    <script src="{{url_for('static', filename='js/gestorCuaderno.js')}}"></script>
 </body>
 </html>
