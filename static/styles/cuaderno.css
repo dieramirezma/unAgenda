@@ -279,13 +279,18 @@ form {
     margin-left: 10px;
   }
   
-  /* Cambio de estilo cuando el interruptor está activado */
-  .switch input:checked + .slider {
-    background-color: #2196F3;
-  }
-  
-  .switch input:checked + .slider:before {
-    -webkit-transform: translateX(26px);
-    -ms-transform: translateX(26px);
-    transform: translateX(26px);
-  }
+/* Estilo para el botón de modo oscuro */
+.dark-mode-button {
+    border: none;
+    border-radius: 20px;
+    padding: 10px 20px;
+    background-color: #333; /* Color de fondo oscuro */
+    color: #fff; /* Texto en color blanco */
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.dark-mode-button:hover {
+    background-color: #555; /* Cambio de color de fondo al pasar el cursor */
+}
