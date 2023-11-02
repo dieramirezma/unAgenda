@@ -53,7 +53,7 @@
                        <button class="btn btn-cambiar">Cambiar cuaderno</button>
                        <button class="btn btn-guardar">Guardar cuaderno</button>
                        <!-- <textarea id="mytextarea"></textarea> -->
-                       <button type="button" id="toggleDarkMode">Cambiar Modo</button>
+                       <button type="button" id="toggleDarkMode" class="dark-mode-button">Cambiar Modo</button>
             
                     
 
@@ -69,52 +69,27 @@
             let isDarkMode = false;
             let editor;
             let darkStylesheet = document.getElementById('dark-stylesheet');
-
+    
             function toggleDarkMode() {
                 isDarkMode = !isDarkMode;
-
+                darkStylesheet.disabled = !isDarkMode;
+    
                 if (editor) {
                     editor.destroy();
                 }
-                
-
-                if (isDarkMode) {
-                    
-                    darkStylesheet.disabled = false;
-
-                    tinymce.init({
-                        selector: '#mytextarea',
-                        plugins: "lists",
-                        height: "100%",
-                        skin: 'oxide-dark',
-                        toolbar: 'undo redo | styles | bold italic underline | alignleft aligncenter alignright alignjustify | fontfamily fontsizeinput fontsize forecolor | link image | bullist numlist',
-                        content_css: "{{url_for('static', filename='styles/cuaderno-dark.css')}}"
-                    });
-                } 
-
-                
-                
-                else {
-
-
-
-                    darkStylesheet.disabled = true;
-                }    
-
-                    
                 tinymce.init({
-                selector: '#mytextarea',
-                plugins: "lists",
-                height: "100%",
-                toolbar: 'undo redo | styles | bold italic underline | alignleft aligncenter alignright alignjustify | fontfamily fontsizeinput fontsize forecolor | link image | bullist numlist',
-                setup: function(editorInstance) {
-                    editor = editorInstance;
-                }
-            });
+                    selector: '#mytextarea',
+                    plugins: "lists",
+                    height: "100%",
+                    toolbar: 'undo redo | styles | bold italic underline | alignleft aligncenter alignright alignjustify | fontfamily fontsizeinput fontsize forecolor | link image | bullist numlist',
+                    skin: isDarkMode ? 'oxide-dark' : 'oxide',
+                    content_css: isDarkMode ? "{{url_for('static', filename='styles/cuaderno-dark.css')}}" : "{{url_for('static', filename='styles/cuaderno.css')}}",
+                    setup: function(editorInstance) {
+                        editor = editorInstance;
+                    }
+                });
             }
-
             document.getElementById('toggleDarkMode').addEventListener('click', toggleDarkMode);
-
             tinymce.init({
                 selector: '#mytextarea',
                 plugins: "lists",
@@ -124,9 +99,11 @@
                     editor = editorInstance;
                 }
             });
-            
         });
+
     </script>
+    
+    
     <script src="{{url_for('static', filename='js/gestorCuaderno.js')}}"></script>
 </body>
 </html>
