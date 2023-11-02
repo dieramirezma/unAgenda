@@ -812,9 +812,45 @@ def calculator():
 dark_mode = False
 @app.route("/cuaderno")
 def cuaderno():
-    hola = request.args.get("hola")
-    print(hola)
-    return render_template("cuaderno.html",dark_mode=dark_mode)
+    contenido = request.args.get("contenido")
+    db = mysql.connection.cursor()
+    print("Contenido 1: ", contenido)
+    if contenido != None:
+        contenido = contenido.replace(',', '\n')
+        contenido = contenido.replace('5hjis6754', '&')
+        contenido = contenido.replace('5hjdf4754', ',')
+
+        db.execute(
+        f"SELECT * FROM cuaderno WHERE id_usuario = {session['idUsuario']}"
+        )
+        comparacion = db.fetchall()
+
+        if len(comparacion) > 0:
+            db.execute(
+                f'UPDATE cuaderno set contenido = "{contenido}" WHERE id_usuario = {session["idUsuario"]} and id_cuaderno = {comparacion[0]["id_cuaderno"]}'
+            )
+            mysql.connection.commit()
+
+        else:
+            print("Contenido 2: ", contenido)
+            db.execute(
+                    f'INSERT INTO cuaderno (id_usuario, nombreCuaderno, contenido) VALUES ({session["idUsuario"]}, "Ingeniería de software", "{contenido}")'
+            )
+            mysql.connection.commit()
+
+            print("---------- Se ha insertado exitosamente ----------")
+
+    # print(contenido)
+
+    db.execute(
+        f"SELECT * FROM cuaderno WHERE id_usuario = {session['idUsuario']}"
+    )
+    cuaderno = db.fetchall()
+    if len(cuaderno) == 0:
+        cuaderno = cuaderno + tuple({"contenido": ""})
+    print(cuaderno)
+
+    return render_template("cuaderno.html",dark_mode=dark_mode, cuaderno=cuaderno[0])
 
 @app.route('/toggle_dark_mode')
 def toggle_dark_mode():
