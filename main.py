@@ -15,7 +15,6 @@ EMAIL_PASSWORD = os.environ.get("EMAIL_PASSWORD_UNAGENDA")
 # Crear una instancia de la aplicación Flask
 app = Flask(__name__, template_folder="templates")
 
-print(MYSQL_PASSWORD)
 # Configuración de la conexión a la base de datos MySQL
 app.config["MYSQL_HOST"] = "bk9yaw96cgi2zyhqfvda-mysql.services.clever-cloud.com"
 app.config["MYSQL_USER"] = "uu2geebwmidfiq4r"
@@ -38,6 +37,9 @@ app.config["MAIL_DEFAULT_SENDER"] = "unagenda.of@gmail.com"
 mysql = MySQL(app)
 
 mail = Mail(app)
+
+def obtener_fecha_hora(sublista):
+    return datetime(sublista[1], sublista[2], sublista[3], sublista[4], sublista[5])
 
 def generate_random_token(length=32):
     characters = string.ascii_letters + string.digits
@@ -185,6 +187,11 @@ def admin():
     cur.execute("SELECT m FROM recordatorios WHERE idUsuario = %s", (_idUsuarioActual,))
     resultados = cur.fetchall()
     minute = [resultado["m"] for resultado in resultados]
+
+    for i in range(len(year)):
+        fecha = datetime(int(year[i]), int(month[i]), int(day[i]), int(hour[i]), int(minute[i]))
+        if fecha >= now and abs(fecha-now) <= timedelta(days=3):
+            print(nombreRecordatorio[i])
 
     return render_template("admin.html", 
         username=session["nombre"],
@@ -508,6 +515,24 @@ def login():
             resultados = cur.fetchall()
             minute = [resultado["m"] for resultado in resultados]
 
+            todayReminders = []
+            tomorrowReminders = []
+            otherReminders = []
+
+            for i in range(len(year)):
+                fecha = datetime(int(year[i]), int(month[i]), int(day[i]), int(hour[i]), int(minute[i]))
+                if fecha >= now and abs(fecha-now) <= timedelta(days=7):
+                    if fecha.day == now.day:
+                        todayReminders.append([nombreRecordatorio[i], year[i], month[i], day[i], hour[i], minute[i]])
+                    elif abs(fecha-now) < timedelta(hours=24):
+                        tomorrowReminders.append([nombreRecordatorio[i], year[i], month[i], day[i], hour[i], minute[i]])
+                    else:
+                        otherReminders.append([nombreRecordatorio[i], year[i], month[i], day[i], hour[i], minute[i]])
+            
+            todayReminders = sorted(todayReminders, key=obtener_fecha_hora)
+            tomorrowReminders = sorted(tomorrowReminders, key=obtener_fecha_hora)
+            otherReminders = sorted(otherReminders, key=obtener_fecha_hora)
+
             # Redirigir al usuario a la página de administrador
             return render_template("admin.html", 
             username=session["nombre"],
@@ -518,6 +543,9 @@ def login():
             dayList = day,
             hourList = hour,
             minuteList = minute ,
+            todayReminders = todayReminders,
+            tomorrowReminders = tomorrowReminders,
+            otherReminders = otherReminders,
             )   
         else:
             # Si no se encuentra un usuario, redirigir de nuevo a la página de inicio

@@ -389,3 +389,36 @@
     cursor: pointer;
 
 }
+
+.custom-span {
+    /* Aquí puedes definir los estilos personalizados para los elementos span */
+    color: rgb(100, 206, 200);
+    /* Ejemplo: color de texto en rojo */
+    font-weight: normal;
+    /* Ejemplo: estilo de fuente normal */
+}
+
+.individualRemindDiv {
+    text-align: left;
+    margin: 0 4%;
+}
+
+.individualRemindDiv h3 {
+    font-weight: 500;
+}
+
+.spanDiv {
+    text-align: right;
+}	
+
+.nearRemind {
+    margin: 0 5%;
+    /* Margen izquierdo y derecho del 10% del ancho del div padre (que se ajustará al contenido) */
+}
+
+
+.nearBoxContentDiv {
+    background-color: rgb(153, 153, 153, 0.7);
+    border-radius: 10px;
+    margin-bottom: 3px;
+}

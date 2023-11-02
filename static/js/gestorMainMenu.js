@@ -4,6 +4,35 @@ document.addEventListener("DOMContentLoaded", function () {
     divAgregarEvento.style.display = "none";
 });
 
+function createRemindGUI(remindTitle, remindDetailsDay,remindDetailsBegin, remindDetailsBeginMin, remindersList, j, type)
+{
+
+    const name = remindersList[j][0];
+    const year = remindersList[j][1];
+    const month = remindersList[j][2];
+    const day = remindersList[j][3];
+    const hour = remindersList[j][4];
+    const minutes = remindersList[j][5];
+    let dayString = "";
+
+    if (type == "today") {
+        dayString = "HOY";
+    } else if (type == "tomorrow") {
+        dayString = "MAÑANA";
+    } else if (type == "other") {
+        dayString = "EL " + day + "/" + month + "/" + year;
+    }
+    let extraMinutes = "";
+    if (minutes < 10) {
+        extraMinutes = "0";
+    }
+
+    remindTitle.textContent = name;
+    remindDetailsDay.textContent = dayString + " a las ";
+    remindDetailsBegin.textContent = hour;
+    remindDetailsBeginMin.textContent = ":" + extraMinutes + minutes;
+}
+
 
 
 function mostrarVentana() 

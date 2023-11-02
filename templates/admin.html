@@ -86,16 +86,8 @@
             </div>
             <div class = "separator"><p></p></div>
             <div class = "alertsArea">
-
                <h3 id ="instructionLabel2">Estos son los eventos que tienes programados<br>esta semana: </h3>
-               <br>
-               <div class = "alertsButtons">
-
-                  <h4 id="newAlert">AGREGAR RECORDATORIO +</h4>
-                  <h4 id="deleteAlert">QUITAR RECORDATORIO -</h4>
-
-               </div>
-               <br><br>
+               <div id="nearRemindContent" class="nearRemind"></div>
                <script>
 
                   //ESTE ESPACIO CORRESPONDE AL SCRIPT QUE VA A IR CARGANDO DE MANERA SUCESIVA LOS EVENTOS DEL USUARIO.
@@ -103,6 +95,73 @@
                   //PARA UNA GUÍA DE REFERENCIA, SE PUEDE VER EL CÓDIGO QUE GENERA LOS EVENTOS DEL HORARIO AL PRESIONAR EL BOTÓN DE "BORRAR EVENTO", PUES
                   //SE HACE TAMBIÉN DE MANERA PROCEDURAL.
 
+                  function createRemindElements(remindersList, displayDiv, type) {
+                     var j = 0;
+
+                     while (j < remindersList.length) {
+
+                        var dataDiv = document.createElement("div");
+                        dataDiv.className = "nearBoxContentDiv";
+
+
+                        var individualRemindDiv = document.createElement("div");
+                        individualRemindDiv.className = "individualRemindDiv";
+
+                        var remindTitle = document.createElement("h3");
+                        remindTitle.id = j + "evento";
+
+                        var spanDiv = document.createElement("div");
+                        spanDiv.className = "spanDiv";
+
+                        var remindDetailsDay = document.createElement("span");
+                        remindDetailsDay.className = "nearBoxRemindDetails custom-span";
+                        remindDetailsDay.id = j + "dia";
+
+                        var remindDetailsBegin = document.createElement("span");
+                        remindDetailsBegin.className = "nearBoxRemindDetails custom-span";
+                        remindDetailsBegin.id = j + "hora";
+
+                        var remindDetailsBeginMin = document.createElement("span");
+                        remindDetailsBeginMin.className = "nearBoxRemindDetails custom-span";
+                        remindDetailsBeginMin.id = j + "minutos";
+
+                        createRemindGUI(remindTitle, remindDetailsDay, remindDetailsBegin, remindDetailsBeginMin, remindersList, j, type);
+
+                        individualRemindDiv.appendChild(remindTitle);
+                        spanDiv.appendChild(remindDetailsDay);
+                        spanDiv.appendChild(remindDetailsBegin);
+                        spanDiv.appendChild(remindDetailsBeginMin);
+                        individualRemindDiv.appendChild(spanDiv);
+
+                        dataDiv.appendChild(individualRemindDiv);
+
+                        displayDiv.appendChild(dataDiv);
+
+                        j++;
+
+                     }
+                  }
+                  function displayRecordatorios() {
+
+                        var displayDiv = document.createElement("div");
+                        displayDiv.className = "nearBoxRemindDiv";
+                        displayDiv.id = "showFullContent";
+
+                        var nearRemindContent = document.getElementById("nearRemindContent");
+                        nearRemindContent.appendChild(displayDiv);
+
+                        var todayReminders = JSON.parse('{{ todayReminders | tojson | safe }}');
+                        var tomorrowReminders = JSON.parse('{{ tomorrowReminders | tojson | safe }}');
+                        var otherReminders = JSON.parse('{{ otherReminders | tojson | safe }}');
+                        
+                        createRemindElements(todayReminders, displayDiv, "today");
+                        createRemindElements(tomorrowReminders, displayDiv, "tomorrow");
+                        createRemindElements(otherReminders, displayDiv, "other");
+                     }
+
+                     document.addEventListener("DOMContentLoaded", function(event) {
+                        displayRecordatorios();
+                     });
                </script>
 
                <div class = "lastAlertBox">
@@ -110,6 +169,13 @@
                   <p>No tiene más eventos programados para esta semana...</p>
                   
                </div>
+               <div class="alertsButtons">
+               
+                  <h4 id="newAlert">AGREGAR RECORDATORIO +</h4>
+                  <h4 id="deleteAlert">QUITAR RECORDATORIO -</h4>
+               
+               </div>
+               <br><br>
                <h4 id = "seeAlerts" onclick="mostrarVentana()">VER TODOS LOS EVENTOS</h4>
 
             </div>
