@@ -188,21 +188,38 @@ def admin():
     resultados = cur.fetchall()
     minute = [resultado["m"] for resultado in resultados]
 
+    todayReminders = []
+    tomorrowReminders = []
+    otherReminders = []
+
     for i in range(len(year)):
         fecha = datetime(int(year[i]), int(month[i]), int(day[i]), int(hour[i]), int(minute[i]))
-        if fecha >= now and abs(fecha-now) <= timedelta(days=3):
-            print(nombreRecordatorio[i])
+        if fecha >= now and abs(fecha-now) <= timedelta(days=7):
+            if fecha.day == now.day:
+                todayReminders.append([nombreRecordatorio[i], year[i], month[i], day[i], hour[i], minute[i]])
+            elif abs(fecha-now) < timedelta(hours=24):
+                tomorrowReminders.append([nombreRecordatorio[i], year[i], month[i], day[i], hour[i], minute[i]])
+            else:
+                otherReminders.append([nombreRecordatorio[i], year[i], month[i], day[i], hour[i], minute[i]])
+    
+    todayReminders = sorted(todayReminders, key=obtener_fecha_hora)
+    tomorrowReminders = sorted(tomorrowReminders, key=obtener_fecha_hora)
+    otherReminders = sorted(otherReminders, key=obtener_fecha_hora)
 
+    # Redirigir al usuario a la página de administrador
     return render_template("admin.html", 
-        username=session["nombre"],
-        currentTimeList = currentTime,
-        nombreRecordatorioList = nombreRecordatorio,
-        yearList = year,
-        monthList = month,
-        dayList = day,
-        hourList = hour,
-        minuteList = minute ,
-    )
+    username=session["nombre"],
+    currentTimeList = currentTime,
+    nombreRecordatorioList = nombreRecordatorio,
+    yearList = year,
+    monthList = month,
+    dayList = day,
+    hourList = hour,
+    minuteList = minute ,
+    todayReminders = todayReminders,
+    tomorrowReminders = tomorrowReminders,
+    otherReminders = otherReminders,
+    )   
 
 
 @app.route("/schedule")
