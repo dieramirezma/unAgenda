@@ -57,14 +57,18 @@
                <div class = "buttonsFirstRow">
                   <div class = "buttonCalendar">
                      <br>
-                     <img id = "calendarImage" src = "{{url_for('static', filename='img/calendar.jpg')}}"/>
+                     <a href="schedule">
+                        <img id = "calendarImage" src = "{{url_for('static', filename='img/calendar.jpg')}}"/>
+                     </a>
                      <br><br>
                      <p>GESTIONAR HORARIO</p>
                      <br><br>
                   </div>
                   <div class = "buttonCalculator">
                      <br>
-                     <img id = "calendarImage" src = "{{url_for('static', filename='img/calculator.jpg')}}"/>
+                     <a href="calculator">
+                        <img id = "calendarImage" src = "{{url_for('static', filename='img/calculator.jpg')}}"/>
+                     </a>
                      <br><br>
                      <p>CALCULADORA DE PROMEDIOS</p>
                      <br>
@@ -74,16 +78,63 @@
 
                   <div class = "buttonNotes">
                      <br>
-                     <img id = "calendarImage" src = "{{url_for('static', filename='img/notebook.jpg')}}"/>
+                     <a href="cuaderno">
+                        <img id = "calendarImage" src = "{{url_for('static', filename='img/notebook.jpg')}}"/>
+                     </a>
                      <br><br>
                      <p>MIS NOTAS</p>
                      <br>
                   </div>
-                  
-                  
-
                </div>
             </div>
+            <!-- Add new reminder -->
+            <div class="addRemindWindow" id="addRemindWindow">
+               <div id="addRemindForm">
+                  <div id="formBody">
+                     <form action="/remindAdd" method="POST">
+                        <h2 id="addRemindTitle">Agrega un nuevo Recordatorio:</h2>
+                        <br>
+                        <label for="nameRemind" style="margin-bottom: 10px;">Nombre del Recordatorio:</label>
+                        <br>
+                        <input class="inputText" type="text" id="nameRemind" aria-describedby="text" name="nameRemind" required>
+                        <br><br><br>
+
+                        <label for="dateRemind" style="margin-bottom: 10px;">Fecha:</label>
+                        <input class="selector" type="date" id="fecha" class="selector" name="dateRemind" min="{{ currentTimeList[0]}}-{{currentTimeList[1]}}-{{currentTimeList[2] }}" required />
+                        <br><br>
+                        
+                        <label for="timeRemind" style="margin-bottom: 10px;">Hora:</label>
+                        <input class="selector" type="time" id="hora" class="selector" name="timeRemind" min="{{ currentTimeList[3] }}:{{ currentTimeList[4] }}"  required />
+                        <br><br>
+         
+                        <div id="addRemindWindowButtons">
+                           <button id="formButtonAccept" type="submit">ACEPTAR</button>
+                           <button id="formButtonDecline" onclick="ocultarVentana('addRemindWindow')">CANCELAR</button>
+                        </div>
+                     </form>
+                  </div>
+               </div>
+            </div>
+
+            <script>
+               const fechaInput = document.getElementById("fecha");
+               const horaInput = document.getElementById("hora");
+
+               // Evento para detectar cambios en el campo de fecha
+               fechaInput.addEventListener("change", () => {
+                  // Obtener la fecha seleccionada
+                  const selectedDate = fechaInput.value;
+
+                  // Si la fecha seleccionada es igual a la fecha mínima (personaliza según tus necesidades)
+                  if (selectedDate === "{{ currentTimeList[0]}}-{{currentTimeList[1]}}-{{currentTimeList[2] }}") {
+                     horaInput.min = "{{ currentTimeList[3] }}:{{ currentTimeList[4] }}";
+                  } else {
+                     // Si no es la fecha mínima, elimina la restricción de hora mínima
+                     horaInput.min = "";
+                  }
+               });
+
+            </script>
             <div class = "separator"><p></p></div>
             <div class = "alertsArea">
                <h3 id ="instructionLabel2">Estos son los eventos que tienes programados<br>esta semana: </h3>
@@ -94,7 +145,7 @@
                   //
                   //PARA UNA GUÍA DE REFERENCIA, SE PUEDE VER EL CÓDIGO QUE GENERA LOS EVENTOS DEL HORARIO AL PRESIONAR EL BOTÓN DE "BORRAR EVENTO", PUES
                   //SE HACE TAMBIÉN DE MANERA PROCEDURAL.
-
+                  
                   function createRemindElements(remindersList, displayDiv, type) {
                      var j = 0;
 
@@ -171,12 +222,12 @@
                </div>
                <div class="alertsButtons">
                
-                  <h4 id="newAlert">AGREGAR RECORDATORIO +</h4>
+                  <h4 id="newAlert" onclick="mostrarVentana('addRemindWindow')">AGREGAR RECORDATORIO +</h4>
                   <h4 id="deleteAlert">QUITAR RECORDATORIO -</h4>
                
                </div>
                <br><br>
-               <h4 id = "seeAlerts" onclick="mostrarVentana()">VER TODOS LOS EVENTOS</h4>
+               <h4 id = "seeAlerts" onclick="mostrarVentana('seeEventsWindow')">VER TODOS LOS EVENTOS</h4>
 
             </div>
          </div>
@@ -195,6 +246,7 @@
                      var dayList = JSON.parse('{{ dayList | tojson | safe }}');
                      var hourList = JSON.parse('{{ hourList | tojson | safe }}');
                      var minuteList = JSON.parse('{{ minuteList | tojson | safe }}');
+                     console.log(currentTimeList);
                      cargarEventos(nombreRecordatorioList, yearList, monthList, dayList, hourList, minuteList);
 
                   </script>

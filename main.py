@@ -903,6 +903,45 @@ def toggle_dark_mode():
     dark_mode = not dark_mode
     return redirect(url_for('cuaderno', dark_mode=dark_mode))
 
+
+# Add reminder route
+@app.route("/remindAdd", methods=["GET", "POST"])
+def addRemind():
+    # Verificar si se ha enviado un formulario POST
+    if (
+        request.method == "POST"
+        and "nameRemind" in request.form
+        and "dateRemind" in request.form
+        and "timeRemind" in request.form
+    ):  
+
+        # Obtener el Evento, las horas de inicio y fin, y el día
+        _nameRemind = request.form["nameRemind"]
+        _dateRemind = request.form["dateRemind"]
+        _timeRemind = request.form["timeRemind"]
+
+        _dateRemind = _dateRemind.split("-")
+        _timeRemind = _timeRemind.split(":")
+        
+        if _dateRemind[2][0] == "0":
+            _dateRemind[2] = _dateRemind[2][1]
+        if _timeRemind[0][0] == "0":
+            _timeRemind[0] = _timeRemind[0][1]
+        if _timeRemind[1][0] == "0":
+            _timeRemind[1] = _timeRemind[1][1]
+
+        # Crear un cursor para la base de datos MySQL
+        cur = mysql.connection.cursor()
+
+        # Insertar el nuevo Evento
+        cur.execute(
+            "INSERT INTO recordatorios (idUsuario, nombreRecordatorio, y, mm, d, h, m) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+            (session["idUsuario"], _nameRemind, _dateRemind[0], _dateRemind[1], _dateRemind[2], _timeRemind[0], _timeRemind[1]),
+        )
+        mysql.connection.commit()
+        
+        return redirect(url_for('admin'))
+        
 # Configuración de la clave secreta para las sesiones de usuario
 if __name__ == "__main__":
     app.secret_key = "prFlask"
