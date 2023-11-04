@@ -858,21 +858,24 @@ dark_mode = False
 @app.route("/cuaderno")
 def cuaderno():
     contenido = request.args.get("contenido")
+    id_cuaderno = request.args.get("id")
+    nombre_cuaderno = request.args.get("nombre")
+
     db = mysql.connection.cursor()
     print("Contenido 1: ", contenido)
-    if contenido != None:
+    if contenido != None and id_cuaderno != None and nombre_cuaderno != None:
         contenido = contenido.replace(',', '\n')
         contenido = contenido.replace('5hjis6754', '&')
         contenido = contenido.replace('5hjdf4754', ',')
 
         db.execute(
-        f"SELECT * FROM cuaderno WHERE id_usuario = {session['idUsuario']}"
+        f"SELECT * FROM cuaderno WHERE id_usuario = {session['idUsuario']} AND id_cuaderno = {id_cuaderno} AND nombreCuaderno = '{nombre_cuaderno}'"
         )
         comparacion = db.fetchall()
 
         if len(comparacion) > 0:
             db.execute(
-                f'UPDATE cuaderno set contenido = "{contenido}" WHERE id_usuario = {session["idUsuario"]} and id_cuaderno = {comparacion[0]["id_cuaderno"]}'
+                f'UPDATE cuaderno set contenido = "{contenido}" WHERE id_usuario = {session["idUsuario"]} AND id_cuaderno = {id_cuaderno} AND nombreCuaderno = "{nombre_cuaderno}"'
             )
             mysql.connection.commit()
 

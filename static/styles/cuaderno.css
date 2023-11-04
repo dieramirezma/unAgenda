@@ -294,3 +294,7 @@ form {
 .dark-mode-button:hover {
     background-color: #555; /* Cambio de color de fondo al pasar el cursor */
 }
+
+#id-cuaderno {
+    display: none;
+}

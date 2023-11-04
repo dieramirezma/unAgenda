@@ -42,23 +42,28 @@
             </a>
 
         </div>
-        
+
+        <div class = "welcomeText">
+            <h1 id="encabezado-nombre">{{cuaderno["nombreCuaderno"]}}</h1>
+        </div> 
+
+        <div id="id-cuaderno">
+            {{cuaderno["id_cuaderno"]}}
+        </div>
+
         <div class="notebook">
             <form method="post">
                 <textarea id="mytextarea">{{cuaderno["contenido"]}}</textarea>
             </form>
             
-                <div class="justify">
-                     <div class="buttons">
-                       <button class="btn btn-cambiar">Cambiar cuaderno</button>
-                       <button class="btn btn-guardar">Guardar cuaderno</button>
-                       <!-- <textarea id="mytextarea"></textarea> -->
-                       <button type="button" id="toggleDarkMode" class="dark-mode-button">Cambiar Modo</button>
-            
-                    
-
-                    </div>
-                </div>    
+            <div class="justify">
+                <div class="buttons">
+                    <button class="btn btn-cambiar">Cambiar cuaderno</button>
+                    <button class="btn btn-guardar">Guardar cuaderno</button>
+                    <!-- <textarea id="mytextarea"></textarea> -->
+                    <button type="button" id="toggleDarkMode" class="dark-mode-button">Cambiar Modo</button>
+                </div>
+            </div>    
          </div>
     </div>
     
