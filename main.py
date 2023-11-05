@@ -868,6 +868,7 @@ def cuaderno():
         contenido = contenido.replace(',', '\n')
         contenido = contenido.replace('5hjis6754', '&')
         contenido = contenido.replace('5hjdf4754', ',')
+        
 
         db.execute(
         f"SELECT * FROM cuaderno WHERE id_usuario = {session['idUsuario']} AND id_cuaderno = {id_cuaderno} AND nombreCuaderno = '{nombre_cuaderno}'"
@@ -902,6 +903,16 @@ def cuaderno():
     db.execute(f"SELECT * FROM cuaderno WHERE id_usuario = {session['idUsuario']}")
     cuaderno = db.fetchall()
 
+    db.execute(f"SELECT modoOscuro FROM cuaderno WHERE id_usuario = {session['idUsuario']}")
+    modo_oscuro = db.fetchone()
+
+    # if modo_oscuro:
+    #     modo_oscuro = modo_oscuro[0]
+    # else:
+    #     modo_oscuro = 0  # O establece el valor predeterminado que desees si no se encuentra en la base de datos
+
+    
+
     return render_template("cuaderno.html",dark_mode=dark_mode, cuaderno=cuaderno[0])
 @app.route('/obtener_cuadernos', methods=['GET'])
 def obtener_cuadernos():
@@ -924,6 +935,21 @@ def toggle_dark_mode():
     global dark_mode
     dark_mode = not dark_mode
     return redirect(url_for('cuaderno', dark_mode=dark_mode))
+
+@app.route('/actualizar_modo_oscuro', methods=['POST'])
+def actualizar_modo_oscuro():
+    data = request.get_json()
+    modo_oscuro = data.get('modoOscuro')
+
+    cur = mysql.connection.cursor()
+    
+    # Actualiza el valor de modo oscuro en la base de datos (cuaderno)
+    cur.execute("UPDATE cuaderno SET modoOscuro = %s WHERE id_usuario = %s", (modo_oscuro, session['idUsuario']))
+    mysql.connection.commit()
+    
+    cur.close()
+
+    return jsonify({'message': 'Modo oscuro actualizado con éxito'})
 
 @app.route("/cambiar_cuaderno", methods=['GET', 'POST'])
 def cambiar_cuaderno():
