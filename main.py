@@ -8,6 +8,7 @@ from datetime import datetime, timedelta
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
 from functools import wraps
+from flask import jsonify
 # Cargar variables de entorno para las credenciales
 MYSQL_PASSWORD = os.environ.get("MYSQL_PASSWORD_UNAGENDA")
 EMAIL_PASSWORD = os.environ.get("EMAIL_PASSWORD_UNAGENDA")
@@ -898,13 +899,45 @@ def cuaderno():
         cuaderno = cuaderno + tuple({"contenido": ""})
     print(cuaderno)
 
-    return render_template("cuaderno.html",dark_mode=dark_mode, cuaderno=cuaderno[0])
+    db.execute(f"SELECT * FROM cuaderno WHERE id_usuario = {session['idUsuario']}")
+    cuaderno = db.fetchall()
 
+    return render_template("cuaderno.html",dark_mode=dark_mode, cuaderno=cuaderno[0])
+@app.route('/obtener_cuadernos', methods=['GET'])
+def obtener_cuadernos():
+    # Realiza una consulta a la base de datos para obtener la lista de cuadernos
+    # Supongamos que obtienes la lista de cuadernos en una variable cuadernos
+    cuadernos = [{'nombreCuaderno': 'Cuaderno 1'}, {'nombreCuaderno': 'Cuaderno 2'},{'nombreCuaderno': 'Cuaderno 3'}]
+
+    # Devuelve la lista de cuadernos como JSON
+    return jsonify(cuadernos)
 @app.route('/toggle_dark_mode')
 def toggle_dark_mode():
     global dark_mode
     dark_mode = not dark_mode
     return redirect(url_for('cuaderno', dark_mode=dark_mode))
+
+@app.route("/cambiar_cuaderno", methods=['GET', 'POST'])
+def cambiar_cuaderno():
+    if request.method == 'POST':
+        nuevo_cuaderno_id = request.form.get("nuevo_cuaderno")
+
+        if nuevo_cuaderno_id:
+            print()
+            # Aquí debes escribir la lógica para cambiar al cuaderno seleccionado.
+            # Puedes utilizar el nuevo_cuaderno_id para cargar el cuaderno desde la base de datos.
+    # db = mysql.connection.cursor()
+    db = mysql.connection.cursor()
+    db.execute(f"SELECT * FROM cuaderno WHERE id_usuario = {session['idUsuario']}")
+    cuadernos = db.fetchall()
+    
+    
+    return render_template("cuaderno.html", cuadernos=cuadernos)
+
+@app.route("/nuevo_cuaderno")
+def nuevo_cuaderno():
+    # Lógica para crear un nuevo cuaderno y guardarlo en la base de datos
+    return render_template("cuaderno.html",dark_mode=dark_mode, cuaderno=cuaderno[0])
 
 
 # Add reminder route
