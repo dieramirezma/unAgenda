@@ -905,12 +905,20 @@ def cuaderno():
     return render_template("cuaderno.html",dark_mode=dark_mode, cuaderno=cuaderno[0])
 @app.route('/obtener_cuadernos', methods=['GET'])
 def obtener_cuadernos():
+
+    # Realiza una consulta a la base de datos para obtener la lista de cuadernos
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT nombreCuaderno FROM cuaderno WHERE id_usuario = %s", (session['idUsuario'],))
+    cuadernos = cur.fetchall()
+    cur.close()
     # Realiza una consulta a la base de datos para obtener la lista de cuadernos
     # Supongamos que obtienes la lista de cuadernos en una variable cuadernos
-    cuadernos = [{'nombreCuaderno': 'Cuaderno 1'}, {'nombreCuaderno': 'Cuaderno 2'},{'nombreCuaderno': 'Cuaderno 3'}]
+    # cuadernos = [{'nombreCuaderno': 'Cuaderno 1'}, {'nombreCuaderno': 'Cuaderno 2'},{'nombreCuaderno': 'Cuaderno 3'}]
+    cuadernos_json = [{'nombreCuaderno': cuaderno['nombreCuaderno']} for cuaderno in cuadernos]
 
     # Devuelve la lista de cuadernos como JSON
-    return jsonify(cuadernos)
+    # return jsonify(cuadernos)
+    return jsonify(cuadernos_json)
 @app.route('/toggle_dark_mode')
 def toggle_dark_mode():
     global dark_mode
