@@ -896,12 +896,13 @@ def cuaderno():
         f"SELECT * FROM cuaderno WHERE id_usuario = {session['idUsuario']}"
     )
     cuaderno = db.fetchall()
+    print("Hola 1 ", cuaderno, len(cuaderno))
     if len(cuaderno) == 0:
         cuaderno = cuaderno + tuple({"contenido": ""})
     print(cuaderno)
 
-    db.execute(f"SELECT * FROM cuaderno WHERE id_usuario = {session['idUsuario']}")
-    cuaderno = db.fetchall()
+    # db.execute(f"SELECT * FROM cuaderno WHERE id_usuario = {session['idUsuario']}")
+    # cuaderno = db.fetchall()
 
     db.execute(f"SELECT modoOscuro FROM cuaderno WHERE id_usuario = {session['idUsuario']}")
     modo_oscuro = db.fetchone()
@@ -911,7 +912,7 @@ def cuaderno():
     # else:
     #     modo_oscuro = 0  # O establece el valor predeterminado que desees si no se encuentra en la base de datos
 
-    
+    print("Hola 2 ", cuaderno, len(cuaderno))
 
     return render_template("cuaderno.html",dark_mode=dark_mode, cuaderno=cuaderno[0])
 @app.route('/obtener_cuadernos', methods=['GET'])
