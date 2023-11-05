@@ -856,8 +856,25 @@ def calculator():
         promedioFinal=sum(arregloPromedio),
     )
 dark_mode = False
-@app.route("/cuaderno")
+@app.route("/cuaderno", methods=["POST", "GET"])
 def cuaderno():
+
+    if (request.method == "POST"):
+        # Obtener el Evento, las horas de inicio y fin, y el día
+        _nombreCuaderno = request.form["nombreCuaderno"]
+
+        # Crear un cursor para la base de datos MySQL
+        cur = mysql.connection.cursor()
+
+        # Insertar el nuevo Cuaderno
+        cur.execute(
+            "INSERT INTO cuaderno (id_usuario, nombreCuaderno, contenido, modoOscuro) VALUES (%s, %s, %s, %s)",
+            (session["idUsuario"], _nombreCuaderno, "Tus Nuevos Apuntes...", 0),
+        )
+        mysql.connection.commit()
+        
+
+
     contenido = request.args.get("contenido")
     id_cuaderno = request.args.get("id")
     nombre_cuaderno = request.args.get("nombre")
@@ -871,7 +888,7 @@ def cuaderno():
         
 
         db.execute(
-        f"SELECT * FROM cuaderno WHERE id_usuario = {session['idUsuario']} AND id_cuaderno = {id_cuaderno} AND nombreCuaderno = '{nombre_cuaderno}'"
+        f"SELECT * FROM cuaderno WHERE id_usuario = {session['idUsuario']} AND id_cuaderno = {id_cuaderno} AND nombreCuaderno = {nombre_cuaderno}"
         )
         comparacion = db.fetchall()
 
@@ -968,11 +985,6 @@ def cambiar_cuaderno():
     
     
     return render_template("cuaderno.html", cuadernos=cuadernos)
-
-@app.route("/nuevo_cuaderno")
-def nuevo_cuaderno():
-    # Lógica para crear un nuevo cuaderno y guardarlo en la base de datos
-    return render_template("cuaderno.html",dark_mode=dark_mode, cuaderno=cuaderno[0])
 
 
 # Add reminder route

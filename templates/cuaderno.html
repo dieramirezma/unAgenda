@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{{url_for('static', filename='styles/cuaderno.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='styles/cuaderno-dark.css')}}" id="dark-stylesheet" disabled>
     <script src="https://cdn.tiny.cloud/1/cyo40kyuazintmua0qe935k28ieyfp6y2rxnqthey7zgklrw/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="static/js/gestorCuaderno.js"></script>
     <style>
         .menu-desplegable {
             display: none;
@@ -80,8 +81,9 @@
             </form>
             <div class="justify">
                 <div class="buttons">
-                    <button class="btn btn-cambiar" id="btnCambiarCuaderno">Cambiar cuaderno</button>
-                    <button class="btn btn-guardar">Guardar cuaderno</button>
+                    <button class="btn btn-nuevo" id="btnNuevoCuaderno" onclick = "mostrarVentana('newNotebookWindow')">Nuevo Cuaderno</button>
+                    <button class="btn btn-cambiar" id="btnCambiarCuaderno">Cambiar Cuaderno</button>
+                    <button class="btn btn-guardar">Guardar Cuaderno</button>
                     <div id="menuDesplegable" class="menu-desplegable">
                         <ul>
                             {% for cuaderno in cuadernos %}
@@ -89,11 +91,13 @@
                             {% endfor %}
                         </ul>
                     </div>
+                    <br>
                     <button type="button" id="toggleDarkMode" class="dark-mode-button">Cambiar Modo</button>
                 </div>
             </div>
         </div>
     </div>
+    
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             let isDarkMode = false;
@@ -182,5 +186,22 @@
         });
         </script>
     <script src="{{url_for('static', filename='js/gestorCuaderno.js')}}"></script>
+    <div class="newNotebookWindow" id="newNotebookWindow">
+        <div id = "newNotebookContent">
+           <h2>¡Crea un nuevo Cuaderno!</h2>
+           <div id="formBody">
+            <form action="/cuaderno" method="POST" id = "formBody2">
+               <br>
+               <label for="nombreNuevoCuaderno" style="margin-bottom: 10px;">Nombre del Cuaderno:</label>
+               <br>
+               <input class="inputText" type="text" id="nombreCuaderno" aria-describedby="text" name="nombreCuaderno" required>
+               <br><br>
+               <div id="newNotebookWindowButtons">
+                <button id="formButtonAccept" type="submit">ACEPTAR</button>
+                <button id="formButtonDecline" onclick="ocultarVentana('newNotebookWindow')">CANCELAR</button>
+                </div>
+           <br>
+        </div>
+     </div>
 </body>
 </html>

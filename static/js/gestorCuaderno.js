@@ -43,6 +43,18 @@ function change_notebook() {
     console.log("---------- Funcionó ----------")
 }
 
+function mostrarVentana(elementId) 
+{ 
+    var ventanaEmergente = document.getElementById(elementId);
+    ventanaEmergente.style.display = "flex";
+}
+
+function ocultarVentana(elementId) 
+{ 
+    var ventanaEmergente = document.getElementById(elementId);
+    ventanaEmergente.style.display = "none";
+}
+
 btn_save.addEventListener('click', save_notebook);
 btn_change.addEventListener('click', change_notebook);
 // window.addEventListener('beforeunload', save_notebook)
