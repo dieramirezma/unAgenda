@@ -8,108 +8,161 @@
     <link rel="stylesheet" href="{{url_for('static', filename='styles/cuaderno.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='styles/cuaderno-dark.css')}}" id="dark-stylesheet" disabled>
     <script src="https://cdn.tiny.cloud/1/cyo40kyuazintmua0qe935k28ieyfp6y2rxnqthey7zgklrw/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
-    
+    <style>
+        .menu-desplegable {
+            display: none;
+            position: absolute;
+            background-color: #f2f2f2; /* Tono gris */
+            border: 1px solid #ccc;
+            border-radius: 10px; /* Bordes redondeados más marcados */
+            z-index: 100;
+            opacity: 15;
+            transition: opacity 0.3s ease-in-out; /* Animación de opacidad */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra más suave */
+            min-width: 200px; /* Ancho mínimo del menú */
+        }
+
+        .menu-desplegable ul {
+            list-style: none;
+            padding: 50;
+            margin: 80;
+        }
+
+        .menu-desplegable li {
+            padding: 10px 20px; /* Mayor espaciado y tamaño del texto */
+            cursor: pointer;
+            transition: background-color 0.3s; /* Animación de cambio de color al pasar el ratón */
+        }
+
+        .menu-desplegable li:hover {
+            background-color: #e0e0e0; /* Color de fondo al pasar el ratón */
+        }
+    </style>
 </head>
 <body>
     <div class="header">
-        <div class = "sideMenuContainer"> <!-- MENU LATERAL -->
-
+        <div class="sideMenuContainer">
             <br>
-            <a href = "admin">
-                <img id = "unAgendaLabel" src = "{{url_for('static', filename='img/unAgenda1.png')}}" width="100"/>
+            <a href="admin">
+                <img id="unAgendaLabel" src="{{url_for('static', filename='img/unAgenda1.png')}}" width="100" />
             </a>
-
             <br><br>
-
-            <a href = "admin">
-                <div class = "iconBox">
-                    <img class = "iconImage" src = "{{url_for('static', filename='img/mainmenumini.png')}}" width="100"/>
+            <a href="admin">
+                <div class="iconBox">
+                    <img class="iconImage" src="{{url_for('static', filename='img/mainmenumini.png')}}" width="100" />
                 </div>
             </a>
-            <a href = "schedule">
-                <div class = "iconBox">
-                    <img class = "iconImage" src = "{{url_for('static', filename='img/scheduleindexmini.png')}}" width="100"/>
+            <a href="schedule">
+                <div class="iconBox">
+                    <img class="iconImage" src="{{url_for('static', filename='img/scheduleindexmini.png')}}" width="100" />
                 </div>
             </a>
-            <a href = "calculator">
-                <div class = "iconBox">
-                    <img class = "iconImage" src = "{{url_for('static', filename='img/calculatorindexmini.png')}}" width="100"/>
+            <a href="calculator">
+                <div class "iconBox">
+                    <img class="iconImage" src="{{url_for('static', filename='img/calculatorindexmini.png')}}" width="100" />
                 </div>
             </a>
-            <a href = "cuaderno">
-                <div class = "iconBox">
-                    <img class = "iconImage" src = "{{url_for('static', filename='img/notebookmini.png')}}" width="100"/>
+            <a href="cuaderno">
+                <div class "iconBox">
+                    <img class="iconImage" src="{{url_for('static', filename='img/notebookmini.png')}}" width="100" />
                 </div>
             </a>
-
         </div>
-
-        <div class = "welcomeText">
+        <div class="welcomeText">
             <h1 id="encabezado-nombre">{{cuaderno["nombreCuaderno"]}}</h1>
-        </div> 
-
+        </div>
         <div id="id-cuaderno">
             {{cuaderno["id_cuaderno"]}}
         </div>
-
         <div class="notebook">
             <form method="post">
                 <textarea id="mytextarea">{{cuaderno["contenido"]}}</textarea>
             </form>
-            
             <div class="justify">
                 <div class="buttons">
-                    <button class="btn btn-cambiar">Cambiar cuaderno</button>
+                    <button class="btn btn-cambiar" id="btnCambiarCuaderno">Cambiar cuaderno</button>
                     <button class="btn btn-guardar">Guardar cuaderno</button>
-                    <!-- <textarea id="mytextarea"></textarea> -->
+                    <div id="menuDesplegable" class="menu-desplegable">
+                        <ul>
+                            {% for cuaderno in cuadernos %}
+                                <li>{{ cuaderno.nombreCuaderno }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
                     <button type="button" id="toggleDarkMode" class="dark-mode-button">Cambiar Modo</button>
                 </div>
-            </div>    
-         </div>
+            </div>
+        </div>
     </div>
-    
-    
-
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            let isDarkMode = false;
-            let editor;
-            let darkStylesheet = document.getElementById('dark-stylesheet');
-    
-            function toggleDarkMode() {
-                isDarkMode = !isDarkMode;
-                darkStylesheet.disabled = !isDarkMode;
-    
-                if (editor) {
-                    editor.destroy();
-                }
-                tinymce.init({
-                    selector: '#mytextarea',
-                    plugins: "lists",
-                    height: "100%",
-                    toolbar: 'undo redo | styles | bold italic underline | alignleft aligncenter alignright alignjustify | fontfamily fontsizeinput fontsize forecolor | link image | bullist numlist',
-                    skin: isDarkMode ? 'oxide-dark' : 'oxide',
-                    content_css: isDarkMode ? "{{url_for('static', filename='styles/cuaderno-dark.css')}}" : "{{url_for('static', filename='styles/cuaderno.css')}}",
-                    setup: function(editorInstance) {
-                        editor = editorInstance;
-                    }
-                });
+    document.addEventListener('DOMContentLoaded', function() {
+        let isDarkMode = false;
+        let editor;
+        let darkStylesheet = document.getElementById('dark-stylesheet');
+        let menuDesplegable = document.getElementById('menuDesplegable');
+        let btnCambiarCuaderno = document.getElementById('btnCambiarCuaderno');
+
+        function toggleDarkMode() {
+            isDarkMode = !isDarkMode;
+            darkStylesheet.disabled = !isDarkMode;
+
+            if (editor) {
+                editor.destroy();
             }
-            document.getElementById('toggleDarkMode').addEventListener('click', toggleDarkMode);
             tinymce.init({
                 selector: '#mytextarea',
                 plugins: "lists",
                 height: "100%",
                 toolbar: 'undo redo | styles | bold italic underline | alignleft aligncenter alignright alignjustify | fontfamily fontsizeinput fontsize forecolor | link image | bullist numlist',
+                skin: isDarkMode ? 'oxide-dark' : 'oxide',
+                content_css: isDarkMode ? "{{url_for('static', filename='styles/cuaderno-dark.css')}}" : "{{url_for('static', filename='styles/cuaderno.css')}}",
                 setup: function(editorInstance) {
                     editor = editorInstance;
                 }
             });
-        });
+        }
 
-    </script>
-    
-    
+        function toggleMenu() {
+            if (menuDesplegable.style.display === 'block') {
+                menuDesplegable.style.display = 'none';
+            } else {
+                // Realiza una solicitud AJAX para obtener la lista de cuadernos
+                fetch('/obtener_cuadernos')
+                    .then(response => response.json())
+                    .then(data => {
+                        // Borra el contenido anterior del menú desplegable
+                        menuDesplegable.innerHTML = '';
+
+                        // Agrega los cuadernos obtenidos a la lista
+                        data.forEach(cuaderno => {
+                            const li = document.createElement('li');
+                            li.textContent = cuaderno.nombreCuaderno;
+                            menuDesplegable.appendChild(li);
+                        });
+
+                        // Muestra el menú
+                        menuDesplegable.style.display = 'block';
+                    })
+                    .catch(error => {
+                        console.error('Error al obtener la lista de cuadernos:', error);
+                    });
+            }
+        }
+
+        btnCambiarCuaderno.addEventListener('click', toggleMenu);
+        document.getElementById('toggleDarkMode').addEventListener('click', toggleDarkMode);
+
+        tinymce.init({
+            selector: '#mytextarea',
+            plugins: "lists",
+            height: "100%",
+            toolbar: 'undo redo | styles | bold italic underline | alignleft aligncenter alignright alignjustify | fontfamily fontsizeinput fontsize forecolor | link image | bullist numlist',
+            setup: function(editorInstance) {
+                editor = editorInstance;
+            }
+        });
+    });
+</script>
     <script src="{{url_for('static', filename='js/gestorCuaderno.js')}}"></script>
 </body>
 </html>
