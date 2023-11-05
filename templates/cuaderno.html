@@ -17,7 +17,7 @@
             border-radius: 10px; /* Bordes redondeados más marcados */
             z-index: 100;
             opacity: 15;
-            transition: opacity 0.3s ease-in-out; /* Animación de opacidad */
+            transition: opacity 0.0s ease-in-out; /* Animación de opacidad */
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra más suave */
             min-width: 200px; /* Ancho mínimo del menú */
         }
@@ -58,12 +58,12 @@
                 </div>
             </a>
             <a href="calculator">
-                <div class "iconBox">
+                <div class="iconBox">
                     <img class="iconImage" src="{{url_for('static', filename='img/calculatorindexmini.png')}}" width="100" />
                 </div>
             </a>
             <a href="cuaderno">
-                <div class "iconBox">
+                <div class="iconBox">
                     <img class="iconImage" src="{{url_for('static', filename='img/notebookmini.png')}}" width="100" />
                 </div>
             </a>
@@ -95,74 +95,92 @@
         </div>
     </div>
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        let isDarkMode = false;
-        let editor;
-        let darkStylesheet = document.getElementById('dark-stylesheet');
-        let menuDesplegable = document.getElementById('menuDesplegable');
-        let btnCambiarCuaderno = document.getElementById('btnCambiarCuaderno');
-
-        function toggleDarkMode() {
-            isDarkMode = !isDarkMode;
-            darkStylesheet.disabled = !isDarkMode;
-
-            if (editor) {
-                editor.destroy();
+        document.addEventListener('DOMContentLoaded', function() {
+            let isDarkMode = false;
+            let editor;
+            let darkStylesheet = document.getElementById('dark-stylesheet');
+            let menuDesplegable = document.getElementById('menuDesplegable');
+            let btnCambiarCuaderno = document.getElementById('btnCambiarCuaderno');
+            let toggleDarkModeButton = document.getElementById('toggleDarkMode');
+        
+            function toggleDarkMode() {
+                isDarkMode = !isDarkMode;
+                darkStylesheet.disabled = !isDarkMode;
+        
+                if (editor) {
+                    editor.destroy();
+                }
+        
+                // Realiza una solicitud AJAX para actualizar el valor en la base de datos
+                fetch('/actualizar_modo_oscuro', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ modoOscuro: isDarkMode })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Modo oscuro actualizado en la base de datos:', data.message);
+                    })
+                    .catch(error => {
+                        console.error('Error al actualizar el modo oscuro:', error);
+                    });
+        
+                tinymce.init({
+                    selector: '#mytextarea',
+                    plugins: "lists",
+                    height: "100%",
+                    toolbar: 'undo redo | styles | bold italic underline | alignleft aligncenter alignright alignjustify | fontfamily fontsizeinput fontsize forecolor | link image | bullist numlist',
+                    skin: isDarkMode ? 'oxide-dark' : 'oxide',
+                    content_css: isDarkMode ? "{{url_for('static', filename='styles/cuaderno-dark.css')}}" : "{{url_for('static', filename='styles/cuaderno.css')}}",
+                    setup: function(editorInstance) {
+                        editor = editorInstance;
+                    }
+                });
             }
+        
+            function toggleMenu() {
+                if (menuDesplegable.style.display === 'block') {
+                    menuDesplegable.style.display = 'none';
+                } else {
+                    // Realiza una solicitud AJAX para obtener la lista de cuadernos
+                    fetch('/obtener_cuadernos')
+                        .then(response => response.json())
+                        .then(data => {
+                            // Borra el contenido anterior del menú desplegable
+                            menuDesplegable.innerHTML = '';
+        
+                            // Agrega los cuadernos obtenidos a la lista
+                            data.forEach(cuaderno => {
+                                const li = document.createElement('li');
+                                li.textContent = cuaderno.nombreCuaderno;
+                                menuDesplegable.appendChild(li);
+                            });
+        
+                            // Muestra el menú
+                            menuDesplegable.style.display = 'block';
+                        })
+                        .catch(error => {
+                            console.error('Error al obtener la lista de cuadernos:', error);
+                        });
+                }
+            }
+        
+            btnCambiarCuaderno.addEventListener('click', toggleMenu);
+            toggleDarkModeButton.addEventListener('click', toggleDarkMode);
+        
             tinymce.init({
                 selector: '#mytextarea',
                 plugins: "lists",
                 height: "100%",
                 toolbar: 'undo redo | styles | bold italic underline | alignleft aligncenter alignright alignjustify | fontfamily fontsizeinput fontsize forecolor | link image | bullist numlist',
-                skin: isDarkMode ? 'oxide-dark' : 'oxide',
-                content_css: isDarkMode ? "{{url_for('static', filename='styles/cuaderno-dark.css')}}" : "{{url_for('static', filename='styles/cuaderno.css')}}",
                 setup: function(editorInstance) {
                     editor = editorInstance;
                 }
             });
-        }
-
-        function toggleMenu() {
-            if (menuDesplegable.style.display === 'block') {
-                menuDesplegable.style.display = 'none';
-            } else {
-                // Realiza una solicitud AJAX para obtener la lista de cuadernos
-                fetch('/obtener_cuadernos')
-                    .then(response => response.json())
-                    .then(data => {
-                        // Borra el contenido anterior del menú desplegable
-                        menuDesplegable.innerHTML = '';
-
-                        // Agrega los cuadernos obtenidos a la lista
-                        data.forEach(cuaderno => {
-                            const li = document.createElement('li');
-                            li.textContent = cuaderno.nombreCuaderno;
-                            menuDesplegable.appendChild(li);
-                        });
-
-                        // Muestra el menú
-                        menuDesplegable.style.display = 'block';
-                    })
-                    .catch(error => {
-                        console.error('Error al obtener la lista de cuadernos:', error);
-                    });
-            }
-        }
-
-        btnCambiarCuaderno.addEventListener('click', toggleMenu);
-        document.getElementById('toggleDarkMode').addEventListener('click', toggleDarkMode);
-
-        tinymce.init({
-            selector: '#mytextarea',
-            plugins: "lists",
-            height: "100%",
-            toolbar: 'undo redo | styles | bold italic underline | alignleft aligncenter alignright alignjustify | fontfamily fontsizeinput fontsize forecolor | link image | bullist numlist',
-            setup: function(editorInstance) {
-                editor = editorInstance;
-            }
         });
-    });
-</script>
+        </script>
     <script src="{{url_for('static', filename='js/gestorCuaderno.js')}}"></script>
 </body>
 </html>
