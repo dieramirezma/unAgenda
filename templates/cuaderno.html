@@ -105,15 +105,24 @@
             let menuDesplegable = document.getElementById('menuDesplegable');
             let btnCambiarCuaderno = document.getElementById('btnCambiarCuaderno');
             let toggleDarkModeButton = document.getElementById('toggleDarkMode');
-        
+
+            // Realiza una solicitud AJAX para obtener el valor de modo oscuro de la base de datos
+            fetch('/obtener_modo_oscuro')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.modoOscuro === 1) {
+                        isDarkMode = true;
+                    }
+                })
+
             function toggleDarkMode() {
                 isDarkMode = !isDarkMode;
-                darkStylesheet.disabled = !isDarkMode;
-        
+                darkStylesheet.disabled = isDarkMode;
+
                 if (editor) {
                     editor.destroy();
                 }
-        
+
                 // Realiza una solicitud AJAX para actualizar el valor en la base de datos
                 fetch('/actualizar_modo_oscuro', {
                     method: 'POST',
@@ -129,7 +138,7 @@
                     .catch(error => {
                         console.error('Error al actualizar el modo oscuro:', error);
                     });
-        
+
                 tinymce.init({
                     selector: '#mytextarea',
                     plugins: "lists",
@@ -142,7 +151,8 @@
                     }
                 });
             }
-        
+            toggleDarkMode(); // Llamarlo aquí para configurar el modo al cargar la página
+
             function toggleMenu() {
                 if (menuDesplegable.style.display === 'block') {
                     menuDesplegable.style.display = 'none';
@@ -153,14 +163,31 @@
                         .then(data => {
                             // Borra el contenido anterior del menú desplegable
                             menuDesplegable.innerHTML = '';
-        
+
                             // Agrega los cuadernos obtenidos a la lista
                             data.forEach(cuaderno => {
                                 const li = document.createElement('li');
                                 li.textContent = cuaderno.nombreCuaderno;
-                                menuDesplegable.appendChild(li);
+                                li.setAttribute('data-id', cuaderno.id_cuaderno);
+                                // Verifica que el contenido se obtiene correctamente
+                                console.log("Contenido:", cuaderno.contenido);
+
+                                // Agrega el título y el contenido como atributos de datos en el elemento LI
+                                li.setAttribute('data-titulo', cuaderno.nombreCuaderno);
+                                li.setAttribute('data-contenido', cuaderno.contenido);
+
+                                li.addEventListener('click', function() {
+                                   // Cuando se hace clic en un cuaderno, cargar los datos en TinyMCE
+                                   const titulo = this.getAttribute('data-titulo');
+                                   const contenido = this.getAttribute('data-contenido');
+                                   cargarCuadernoEnTinyMCE(titulo, contenido);
+                                   ocultarMenuDesplegable(); // Oculta el menú después de seleccionar un cuaderno
+                                });
+                               menuDesplegable.appendChild(li);
+                                
                             });
-        
+                            
+
                             // Muestra el menú
                             menuDesplegable.style.display = 'block';
                         })
@@ -169,10 +196,24 @@
                         });
                 }
             }
-        
+            function cargarCuadernoEnTinyMCE(titulo, contenido) {
+                console.log("Título:", titulo);
+                console.log("Contenido:", contenido);
+                // A continuación, establece el contenido en TinyMCE
+                tinymce.activeEditor.setContent(contenido);
+                document.querySelector('#encabezado-nombre').textContent = titulo;
+
+                
+                
+            }
+
+            function ocultarMenuDesplegable() {
+                menuDesplegable.style.display = 'none';
+            }
+
             btnCambiarCuaderno.addEventListener('click', toggleMenu);
             toggleDarkModeButton.addEventListener('click', toggleDarkMode);
-        
+
             tinymce.init({
                 selector: '#mytextarea',
                 plugins: "lists",
@@ -183,7 +224,7 @@
                 }
             });
         });
-        </script>
+    </script>
     <script src="{{url_for('static', filename='js/gestorCuaderno.js')}}"></script>
     <div class="newNotebookWindow" id="newNotebookWindow">
         <div id = "newNotebookContent">
