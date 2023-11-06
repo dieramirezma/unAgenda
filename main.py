@@ -857,6 +857,7 @@ def calculator():
     )
 dark_mode = False
 @app.route("/cuaderno", methods=["POST", "GET"])
+@login_required
 def cuaderno():
 
     if (request.method == "POST"):
