@@ -945,13 +945,12 @@ def obtener_cuadernos():
 
     # Realiza una consulta a la base de datos para obtener la lista de cuadernos
     cur = mysql.connection.cursor()
-    cur.execute("SELECT nombreCuaderno FROM cuaderno WHERE id_usuario = %s", (session['idUsuario'],))
+    cur.execute("SELECT nombreCuaderno, contenido  FROM cuaderno WHERE id_usuario = %s", (session['idUsuario'],))
     cuadernos = cur.fetchall()
     cur.close()
     # Realiza una consulta a la base de datos para obtener la lista de cuadernos
-    # Supongamos que obtienes la lista de cuadernos en una variable cuadernos
-    # cuadernos = [{'nombreCuaderno': 'Cuaderno 1'}, {'nombreCuaderno': 'Cuaderno 2'},{'nombreCuaderno': 'Cuaderno 3'}]
-    cuadernos_json = [{'nombreCuaderno': cuaderno['nombreCuaderno']} for cuaderno in cuadernos]
+    
+    cuadernos_json = [{'nombreCuaderno': cuaderno['nombreCuaderno'],'contenido':cuaderno['contenido'] } for cuaderno in cuadernos]
 
     # Devuelve la lista de cuadernos como JSON
     # return jsonify(cuadernos)
