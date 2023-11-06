@@ -284,9 +284,10 @@ function cargarEventosEdit(containerParent, containerChildren, nombreRecordatori
             mostrarVentana("editRemindWindow");
 
 
-            var inputDate = document.getElementById("fechaEdit");
-            var inputTime = document.getElementById("horaEdit");
-            var inputNameRemind = document.getElementById("nameRemindEdit"); 
+            var inputDateEdit = document.getElementById("fechaEdit");
+            var inputTimeEdit = document.getElementById("horaEdit");
+            var inputNameRemindEdit = document.getElementById("nameRemindEdit"); 
+            
             console.log(document.getElementById(this.id + "remind").textContent);
             console.log(document.getElementById(this.id + "detailsRemind").textContent);
 
@@ -317,9 +318,9 @@ function cargarEventosEdit(containerParent, containerChildren, nombreRecordatori
             }
 
             console.log(yearSTR + "-" + monthSTR + "-" + daySTR);
-            inputDate.value = yearSTR + "-" + monthSTR + "-" + daySTR;
-            inputTime.value = timeSTR;
-            inputNameRemind.value = remindSTR;
+            inputDateEdit.value = yearSTR + "-" + monthSTR + "-" + daySTR;
+            inputTimeEdit.value = timeSTR;
+            inputNameRemindEdit.value = remindSTR;
             
             document.getElementById("yearSTR").value = yearSTR;
             document.getElementById("monthSTR").value = monthSTR;
@@ -327,7 +328,7 @@ function cargarEventosEdit(containerParent, containerChildren, nombreRecordatori
             document.getElementById("hourSTR").value = hourSTR;
             document.getElementById("minuteSTR").value = minuteSTR;
             document.getElementById("remindSTR").value = remindSTR;
-            
+
 
         });
         

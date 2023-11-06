@@ -156,7 +156,7 @@
             
                         <label for="timeRemind" style="margin-bottom: 10px;">Hora:</label>
                         <input class="selector" type="time" id="horaEdit" class="selector" name="timeRemind"
-                           min="{{ currentTimeList[3] }}:{{ currentTimeList[4] }}" required />
+                            required />
                         <br><br>
                         
                         <input type="hidden" name="yearSTR" id="yearSTR">
@@ -175,25 +175,7 @@
                </div>
             </div>
             
-            <script>
-               fechaInput = document.getElementById("fechaEdit");
-               horaInput = document.getElementById("horaEdit");
-
-               // Evento para detectar cambios en el campo de fecha
-               fechaInput.addEventListener("change", () => {
-                  // Obtener la fecha seleccionada
-                  const selectedDate = fechaInput.value;
-
-                  // Si la fecha seleccionada es igual a la fecha mínima (personaliza según tus necesidades)
-                  if (selectedDate === "{{ currentTimeList[0]}}-{{currentTimeList[1]}}-{{currentTimeList[2] }}") {
-                     horaInput.min = "{{ currentTimeList[3] }}:{{ currentTimeList[4] }}";
-                  } else {
-                     // Si no es la fecha mínima, elimina la restricción de hora mínima
-                     horaInput.min = "";
-                  }
-               });
-
-            </script>
+            
             <div class = "separator"><p></p></div>
             <div class = "alertsArea">
                <h3 id ="instructionLabel2">Estos son los eventos que tienes programados<br>esta semana: </h3>
