@@ -44,16 +44,14 @@ function mostrarVentana(elementId)
     ventanaEmergente.style.display = "flex";
 }
 
-function cargarEventos(nombreRecordatorio, year, month, day, hour, minute)
+function cargarEventosSee(containerParent, containerChildren, nombreRecordatorio, year, month, day, hour, minute)
 {
-
-    console.log(nombreRecordatorio);
-
+    
     var displayDiv = document.createElement("div");
     displayDiv.className = "alertBoxEventDiv";
     displayDiv.id = "alertFullContent";
 
-    var seeEventsContent = document.getElementById("seeEventsContent");
+    var seeEventsContent = document.getElementById(containerChildren);
     seeEventsContent.appendChild(displayDiv);
 
     var j = 0;
@@ -72,6 +70,9 @@ function cargarEventos(nombreRecordatorio, year, month, day, hour, minute)
         var dataDiv = document.createElement("div");
         dataDiv.className = "alertBoxContentDiv";
 
+        var individualEventDiv = document.createElement("div");
+        individualEventDiv.className = "individualEventDiv";
+        
         var eventTitle = document.createElement("h3");
         eventTitle.id = j + "evento";
 
@@ -82,9 +83,11 @@ function cargarEventos(nombreRecordatorio, year, month, day, hour, minute)
         eventTitle.textContent = nombreRecordatorio[j];
         eventDetails.textContent = "PROGRAMADO PARA EL " + day[j] + "/" + month[j] + "/" + year[j] + " A LAS " + hour[j] + ":" + extraMinutes + minute[j];
 
-        dataDiv.appendChild(eventTitle);
-        dataDiv.appendChild(eventDetails);
-
+        individualEventDiv.appendChild(eventTitle);
+        individualEventDiv.appendChild(eventDetails);
+        dataDiv.appendChild(individualEventDiv)
+        
+        
         displayDiv.appendChild(dataDiv);
         j++;
 
@@ -96,12 +99,256 @@ function cargarEventos(nombreRecordatorio, year, month, day, hour, minute)
     acceptButton.type = "button";
     acceptButton.textContent = "VOLVER"
          
-    var seeAlertsWindowDiv = document.getElementById("seeEventsContent");
+    var seeAlertsWindowDiv = document.getElementById(containerChildren);
     seeAlertsWindowDiv.appendChild(acceptButton);
          
     acceptButton.addEventListener("click", function () {
          
-        var ventanaEmergente = document.getElementById("seeEventsWindow");
+        var ventanaEmergente = document.getElementById(containerParent);
+        ventanaEmergente.style.display = "none";
+         
+         
+         
+        });
+
+}
+
+
+function cargarEventosDelete(containerParent, containerChildren, nombreRecordatorio, year, month, day, hour, minute)
+{
+    
+    var displayDiv = document.createElement("div");
+    displayDiv.className = "alertBoxEventDiv";
+    displayDiv.id = "alertFullContent";
+
+    var seeEventsContent = document.getElementById(containerChildren);
+    seeEventsContent.appendChild(displayDiv);
+
+    var j = 0;
+
+    while (j < nombreRecordatorio.length)
+    {
+
+        var extraMinutes = "";
+        if (minute[j] < 10)
+        {
+
+            extraMinutes = "0";
+
+        }
+
+        var dataDiv = document.createElement("div");
+        dataDiv.className = "alertBoxContentDiv";
+
+        var individualEventDiv = document.createElement("div");
+        individualEventDiv.className = "individualEventDiv";
+        
+        var eventTitle = document.createElement("h3");
+        eventTitle.id = j + "remind";
+
+        var eventDetails = document.createElement("span");
+        eventDetails.className = "alertBoxContentDetails";
+        eventDetails.id = j + "detailsRemind";
+
+        eventTitle.textContent = nombreRecordatorio[j];
+        eventDetails.textContent = "PROGRAMADO PARA EL " + day[j] + "/" + month[j] + "/" + year[j] + " A LAS " + hour[j] + ":" + extraMinutes + minute[j];
+
+        individualEventDiv.appendChild(eventTitle);
+        individualEventDiv.appendChild(eventDetails);
+        dataDiv.appendChild(individualEventDiv)
+        
+        //  Add remove buttons
+        var removeButton = document.createElement("button");
+        removeButton.className = "removeButton";
+        removeButton.id = j;
+        removeButton.type = "button";
+        removeButton.textContent = "ELIMINAR"
+        dataDiv.appendChild(removeButton);
+
+        removeButton.addEventListener("click", function () {
+            console.log(document.getElementById(this.id + "remind").textContent);
+            console.log(document.getElementById(this.id + "detailsRemind").textContent);
+
+            var remindSTR = document.getElementById(this.id + "remind").textContent;
+            var detailSTR = document.getElementById(this.id + "detailsRemind").textContent;
+
+            var splitDetails = detailSTR.split(" ");
+
+            let dateSTR = splitDetails[3];
+            let timeSTR = splitDetails[6];
+
+            let splitDate = dateSTR.split("/");
+            let splitTime = timeSTR.split(":");
+
+            let yearSTR = splitDate[2];
+            let monthSTR = splitDate[1];
+            let daySTR = splitDate[0];
+
+            let hourSTR = splitTime[0];
+            let minuteSTR = splitTime[1];
+
+            if (minuteSTR === "00") {
+                minuteSTR = "0";
+            }
+
+            console.log("yearSTR: " + yearSTR);
+            console.log("monthSTR: " + monthSTR);
+            console.log("daySTR: " + daySTR);
+            console.log("hourSTR: " + hourSTR);
+            console.log("minuteSTR: " + minuteSTR);
+
+            window.location.href = "/remindRemove?yearSTR=" + yearSTR + "&monthSTR=" + monthSTR + "&daySTR=" + daySTR + "&hourSTR=" + hourSTR + "&minuteSTR=" + minuteSTR + "&remindSTR=" + remindSTR;
+            
+        });
+        
+        
+        displayDiv.appendChild(dataDiv);
+        j++;
+
+
+    }
+
+    var acceptButton = document.createElement("button");
+    acceptButton.className = "acceptButton";
+    acceptButton.type = "button";
+    acceptButton.textContent = "VOLVER"
+         
+    var seeAlertsWindowDiv = document.getElementById(containerChildren);
+    seeAlertsWindowDiv.appendChild(acceptButton);
+         
+    acceptButton.addEventListener("click", function () {
+         
+        var ventanaEmergente = document.getElementById(containerParent);
+        ventanaEmergente.style.display = "none";
+         
+         
+         
+        });
+
+}
+
+
+function cargarEventosEdit(containerParent, containerChildren, nombreRecordatorio, year, month, day, hour, minute)
+{
+    
+    var displayDiv = document.createElement("div");
+    displayDiv.className = "alertBoxEventDiv";
+    displayDiv.id = "alertFullContent";
+
+    var seeEventsContent = document.getElementById(containerChildren);
+    seeEventsContent.appendChild(displayDiv);
+
+    var j = 0;
+
+    while (j < nombreRecordatorio.length)
+    {
+
+        var extraMinutes = "";
+        if (minute[j] < 10)
+        {
+
+            extraMinutes = "0";
+
+        }
+
+        var dataDiv = document.createElement("div");
+        dataDiv.className = "alertBoxContentDiv";
+
+        var individualEventDiv = document.createElement("div");
+        individualEventDiv.className = "individualEventDiv";
+        
+        var eventTitle = document.createElement("h3");
+        eventTitle.id = j + "remind";
+
+        var eventDetails = document.createElement("span");
+        eventDetails.className = "alertBoxContentDetails";
+        eventDetails.id = j + "detailsRemind";
+
+        eventTitle.textContent = nombreRecordatorio[j];
+        eventDetails.textContent = "PROGRAMADO PARA EL " + day[j] + "/" + month[j] + "/" + year[j] + " A LAS " + hour[j] + ":" + extraMinutes + minute[j];
+
+        individualEventDiv.appendChild(eventTitle);
+        individualEventDiv.appendChild(eventDetails);
+        dataDiv.appendChild(individualEventDiv)
+        
+        //  Add remove buttons
+        var editButton = document.createElement("button");
+        editButton.className = "editButton";
+        editButton.id = j;
+        editButton.type = "button";
+        editButton.textContent = "EDITAR"
+        dataDiv.appendChild(editButton);
+
+        editButton.addEventListener("click", function () {
+            ocultarVentana(containerParent);
+            mostrarVentana("editRemindWindow");
+
+
+            var inputDate = document.getElementById("fechaEdit");
+            var inputTime = document.getElementById("horaEdit");
+            var inputNameRemind = document.getElementById("nameRemindEdit"); 
+            console.log(document.getElementById(this.id + "remind").textContent);
+            console.log(document.getElementById(this.id + "detailsRemind").textContent);
+
+            var remindSTR = document.getElementById(this.id + "remind").textContent;
+            var detailSTR = document.getElementById(this.id + "detailsRemind").textContent;
+
+            var splitDetails = detailSTR.split(" ");
+
+            let dateSTR = splitDetails[3];
+            let timeSTR = splitDetails[6];
+
+            
+            let splitDate = dateSTR.split("/");
+            let splitTime = timeSTR.split(":");
+            
+            let yearSTR = splitDate[2];
+            let monthSTR = splitDate[1];
+            let daySTR = splitDate[0];
+            
+            let hourSTR = splitTime[0];
+            let minuteSTR = splitTime[1];
+            
+            if (minuteSTR === "00") {
+                minuteSTR = "0";
+            }
+            if (daySTR.length == 1) {
+                daySTR = "0"+daySTR;
+            }
+
+            console.log(yearSTR + "-" + monthSTR + "-" + daySTR);
+            inputDate.value = yearSTR + "-" + monthSTR + "-" + daySTR;
+            inputTime.value = timeSTR;
+            inputNameRemind.value = remindSTR;
+            
+            document.getElementById("yearSTR").value = yearSTR;
+            document.getElementById("monthSTR").value = monthSTR;
+            document.getElementById("daySTR").value = daySTR;
+            document.getElementById("hourSTR").value = hourSTR;
+            document.getElementById("minuteSTR").value = minuteSTR;
+            document.getElementById("remindSTR").value = remindSTR;
+            
+
+        });
+        
+        
+        displayDiv.appendChild(dataDiv);
+        j++;
+
+
+    }
+
+    var acceptButton = document.createElement("button");
+    acceptButton.className = "acceptButton";
+    acceptButton.type = "button";
+    acceptButton.textContent = "VOLVER"
+         
+    var seeAlertsWindowDiv = document.getElementById(containerChildren);
+    seeAlertsWindowDiv.appendChild(acceptButton);
+         
+    acceptButton.addEventListener("click", function () {
+         
+        var ventanaEmergente = document.getElementById(containerParent);
         ventanaEmergente.style.display = "none";
          
          

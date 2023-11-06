@@ -118,8 +118,66 @@
             </div>
 
             <script>
-               const fechaInput = document.getElementById("fecha");
-               const horaInput = document.getElementById("hora");
+               var fechaInput = document.getElementById("fecha");
+               var horaInput = document.getElementById("hora");
+
+               // Evento para detectar cambios en el campo de fecha
+               fechaInput.addEventListener("change", () => {
+                  // Obtener la fecha seleccionada
+                  const selectedDate = fechaInput.value;
+
+                  // Si la fecha seleccionada es igual a la fecha mínima (personaliza según tus necesidades)
+                  if (selectedDate === "{{ currentTimeList[0]}}-{{currentTimeList[1]}}-{{currentTimeList[2] }}") {
+                     horaInput.min = "{{ currentTimeList[3] }}:{{ currentTimeList[4] }}";
+                  } else {
+                     // Si no es la fecha mínima, elimina la restricción de hora mínima
+                     horaInput.min = "";
+                  }
+               });
+
+            </script>
+
+            <!-- Edit reminder -->
+            <div class="addRemindWindow" id="editRemindWindow">
+               <div id="editRemindForm">
+                  <div id="formBody">
+                     <form id="formEdit" action="/remindEdit" method="POST">
+                        <h2 id="editRemindTitle">Modifica los datos que desees:</h2>
+                        <br>
+                        <label for="nameRemind" style="margin-bottom: 10px;">Nombre del Recordatorio:</label>
+                        <br>
+                        <input class="inputText" type="text" id="nameRemindEdit" aria-describedby="text" name="nameRemind" required>
+                        <br><br><br>
+            
+                        <label for="dateRemind" style="margin-bottom: 10px;">Fecha:</label>
+                        <input class="selector" type="date" id="fechaEdit" class="selector" name="dateRemind"
+                           min="{{ currentTimeList[0]}}-{{currentTimeList[1]}}-{{currentTimeList[2] }}" required />
+                        <br><br>
+            
+                        <label for="timeRemind" style="margin-bottom: 10px;">Hora:</label>
+                        <input class="selector" type="time" id="horaEdit" class="selector" name="timeRemind"
+                           min="{{ currentTimeList[3] }}:{{ currentTimeList[4] }}" required />
+                        <br><br>
+                        
+                        <input type="hidden" name="yearSTR" id="yearSTR">
+                        <input type="hidden" name="monthSTR" id="monthSTR">
+                        <input type="hidden" name="daySTR" id="daySTR">
+                        <input type="hidden" name="hourSTR" id="hourSTR">
+                        <input type="hidden" name="minuteSTR" id="minuteSTR">
+                        <input type="hidden" name="remindSTR" id="remindSTR">
+
+                        <div id="editRemindWindowButtons">
+                           <button id="formButtonAccept" type="submit">ACEPTAR</button>
+                           <button id="formButtonDecline" onclick="ocultarVentana('editRemindWindow'), mostrarVentana('editEventsWindow')">CANCELAR</button>
+                        </div>
+                     </form>
+                  </div>
+               </div>
+            </div>
+            
+            <script>
+               fechaInput = document.getElementById("fechaEdit");
+               horaInput = document.getElementById("horaEdit");
 
                // Evento para detectar cambios en el campo de fecha
                fechaInput.addEventListener("change", () => {
@@ -224,12 +282,36 @@
                <div class="alertsButtons">
                
                   <h4 id="newAlert" onclick="mostrarVentana('addRemindWindow')">AGREGAR RECORDATORIO +</h4>
-                  <h4 id="deleteAlert">QUITAR RECORDATORIO -</h4>
+                  <h4 id="deleteAlert" onclick="mostrarVentana('deleteEventsWindow')">QUITAR RECORDATORIO -</h4>
                
                </div>
                <br><br>
-               <h4 id = "seeAlerts" onclick="mostrarVentana('seeEventsWindow')">VER TODOS LOS EVENTOS</h4>
+               <div class="alertsButtons">
+                  <h4 id = "seeAlerts" onclick="mostrarVentana('seeEventsWindow')">VER TODOS LOS RECORDATORIOS</h4>
+                  <h4 id = "editAlerts" onclick="mostrarVentana('editEventsWindow')">EDITAR RECORDATORIO</h4>
+               </div>
 
+            </div>
+         </div>
+         <div class="seeEventsWindow" id="deleteEventsWindow">
+            <div id="deleteEventsContent">
+               <h3>¿Qué recordatorio desea eliminar?</h3>
+               <br>
+               <div id="eventsList">
+                  <script>
+
+                     var currentTimeList = JSON.parse('{{ currentTimeList | tojson | safe }}');
+                     var nombreRecordatorioList = JSON.parse('{{ nombreRecordatorioList | tojson | safe }}');
+                     var yearList = JSON.parse('{{ yearList | tojson | safe }}');
+                     var monthList = JSON.parse('{{ monthList | tojson | safe }}');
+                     var dayList = JSON.parse('{{ dayList | tojson | safe }}');
+                     var hourList = JSON.parse('{{ hourList | tojson | safe }}');
+                     var minuteList = JSON.parse('{{ minuteList | tojson | safe }}');
+
+                     cargarEventosDelete("deleteEventsWindow", "deleteEventsContent", nombreRecordatorioList, yearList, monthList, dayList, hourList, minuteList);
+
+                  </script>
+               </div>
             </div>
          </div>
          <div class="seeEventsWindow" id="seeEventsWindow">
@@ -238,8 +320,7 @@
                <br>
                <div id="eventsList">
                   <script>
-
-                     //CARGAR LOS DATOS DE LA BASE DE DATOS
+                     
                      var currentTimeList = JSON.parse('{{ currentTimeList | tojson | safe }}');
                      var nombreRecordatorioList = JSON.parse('{{ nombreRecordatorioList | tojson | safe }}');
                      var yearList = JSON.parse('{{ yearList | tojson | safe }}');
@@ -247,11 +328,32 @@
                      var dayList = JSON.parse('{{ dayList | tojson | safe }}');
                      var hourList = JSON.parse('{{ hourList | tojson | safe }}');
                      var minuteList = JSON.parse('{{ minuteList | tojson | safe }}');
-                     console.log(currentTimeList);
-                     cargarEventos(nombreRecordatorioList, yearList, monthList, dayList, hourList, minuteList);
-
+                     
+                     cargarEventosSee("seeEventsWindow", "seeEventsContent",nombreRecordatorioList, yearList, monthList, dayList, hourList, minuteList); 
+                     
                   </script>
                </div>
+            </div>
+         </div>
+      </div>
+      <div class="seeEventsWindow" id="editEventsWindow">
+         <div id="editEventsContent">
+            <h3>¿Qué recordatorio desea editar?</h3>
+            <br>
+            <div id="eventsList">
+               <script>
+
+                  var currentTimeList = JSON.parse('{{ currentTimeList | tojson | safe }}');
+                  var nombreRecordatorioList = JSON.parse('{{ nombreRecordatorioList | tojson | safe }}');
+                  var yearList = JSON.parse('{{ yearList | tojson | safe }}');
+                  var monthList = JSON.parse('{{ monthList | tojson | safe }}');
+                  var dayList = JSON.parse('{{ dayList | tojson | safe }}');
+                  var hourList = JSON.parse('{{ hourList | tojson | safe }}');
+                  var minuteList = JSON.parse('{{ minuteList | tojson | safe }}');
+
+                  cargarEventosEdit("editEventsWindow", "editEventsContent", nombreRecordatorioList, yearList, monthList, dayList, hourList, minuteList);
+
+               </script>
             </div>
          </div>
       </div>

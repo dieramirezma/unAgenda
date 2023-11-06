@@ -944,7 +944,104 @@ def addRemind():
         mysql.connection.commit()
         
         return redirect(url_for('admin'))
+
+
+@app.route("/remindRemove", methods=["GET", "POST"])
+def removeRemind():
+    yearSTR = request.args.get("yearSTR")
+    monthSTR = request.args.get("monthSTR")
+    daySTR = request.args.get("daySTR")
+    hourSTR = request.args.get("hourSTR")
+    minuteSTR = request.args.get("minuteSTR")
+    remindSTR = request.args.get("remindSTR")
+
+    _idUsuarioActual = session["idUsuario"]
+
+    cur = mysql.connection.cursor()
+    cur.execute(
+        "DELETE FROM recordatorios WHERE nombreRecordatorio = %s AND y = %s AND mm = %s AND d = %s AND h = %s AND m = %s AND idUsuario = %s",
+        (
+            remindSTR,
+            yearSTR,
+            monthSTR,
+            daySTR,
+            hourSTR,
+            minuteSTR,
+            _idUsuarioActual,
+        ),
+    )
+    mysql.connection.commit()
+
+    
+    return redirect(url_for("admin"))
         
+# Edit reminder route
+@app.route("/remindEdit", methods=["GET", "POST"])
+def editRemind():
+    # Verificar si se ha enviado un formulario POST
+    if (
+        request.method == "POST"
+        and "nameRemind" in request.form
+        and "dateRemind" in request.form
+        and "timeRemind" in request.form
+        and "yearSTR" in request.form
+        and "monthSTR" in request.form
+        and "daySTR" in request.form
+        and "hourSTR" in request.form
+        and "minuteSTR" in request.form
+        and "remindSTR" in request.form
+    ):  
+        yearSTR = request.form["yearSTR"]
+        monthSTR = request.form["monthSTR"]
+        daySTR = request.form["daySTR"]
+        hourSTR = request.form["hourSTR"]
+        minuteSTR = request.form["minuteSTR"]
+        remindSTR = request.form["remindSTR"]
+
+        print(yearSTR, monthSTR, daySTR, hourSTR, minuteSTR, remindSTR)
+        _idUsuarioActual = session["idUsuario"]
+
+        _nameRemind = request.form["nameRemind"]
+        _dateRemind = request.form["dateRemind"]
+        _timeRemind = request.form["timeRemind"]
+
+        _dateRemind = _dateRemind.split("-")
+        _timeRemind = _timeRemind.split(":")
+        
+        if _dateRemind[2][0] == "0":
+            _dateRemind[2] = _dateRemind[2][1]
+        if _timeRemind[0][0] == "0":
+            _timeRemind[0] = _timeRemind[0][1]
+        if _timeRemind[1][0] == "0":
+            _timeRemind[1] = _timeRemind[1][1]
+
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT idRecordatorio FROM recordatorios WHERE nombreRecordatorio = %s AND y = %s AND mm = %s AND d = %s AND h = %s AND m = %s AND idUsuario = %s", 
+        (
+            remindSTR,
+            yearSTR,
+            monthSTR,
+            daySTR,
+            hourSTR,
+            minuteSTR,
+            _idUsuarioActual,
+        ),
+        )
+        resultados = cur.fetchall()
+        idRecordatorio = [resultado["idRecordatorio"] for resultado in resultados]
+        # Crear un cursor para la base de datos MySQL
+        cur = mysql.connection.cursor()
+
+        # Insertar el nuevo Evento
+        cur.execute(
+            "UPDATE recordatorios SET nombreRecordatorio = %s, y = %s, mm = %s, d = %s, h = %s, m = %s WHERE idRecordatorio = %s AND idUsuario = %s",
+            (_nameRemind, _dateRemind[0], _dateRemind[1], _dateRemind[2], _timeRemind[0], _timeRemind[1], idRecordatorio[0], _idUsuarioActual),
+        )
+
+        mysql.connection.commit()
+        
+        return redirect(url_for('admin'))
+
 # Configuración de la clave secreta para las sesiones de usuario
 if __name__ == "__main__":
     app.secret_key = "prFlask"
