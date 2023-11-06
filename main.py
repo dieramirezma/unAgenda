@@ -862,6 +862,7 @@ def cuaderno():
     if (request.method == "POST"):
         # Obtener el Evento, las horas de inicio y fin, y el día
         _nombreCuaderno = request.form["nombreCuaderno"]
+        print("Nombre cauderno: ", _nombreCuaderno)
 
         # Crear un cursor para la base de datos MySQL
         cur = mysql.connection.cursor()
@@ -872,6 +873,13 @@ def cuaderno():
             (session["idUsuario"], _nombreCuaderno, "Tus Nuevos Apuntes...", 0),
         )
         mysql.connection.commit()
+
+        cur.execute(
+        f"SELECT * FROM cuaderno WHERE id_usuario = {session['idUsuario']} AND nombreCuaderno = '{_nombreCuaderno}'"
+        )
+        notebook = cur.fetchall()
+
+        return render_template("cuaderno.html",dark_mode=dark_mode, cuaderno=notebook[0])
         
 
 
@@ -888,7 +896,7 @@ def cuaderno():
         
 
         db.execute(
-        f"SELECT * FROM cuaderno WHERE id_usuario = {session['idUsuario']} AND id_cuaderno = {id_cuaderno} AND nombreCuaderno = {nombre_cuaderno}"
+        f"SELECT * FROM cuaderno WHERE id_usuario = {session['idUsuario']} AND id_cuaderno = {id_cuaderno} AND nombreCuaderno = '{nombre_cuaderno}'"
         )
         comparacion = db.fetchall()
 
