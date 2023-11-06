@@ -110,34 +110,36 @@
             fetch('/obtener_modo_oscuro')
                 .then(response => response.json())
                 .then(data => {
-                    if (data.modoOscuro === 1) {
-                        isDarkMode = true;
-                    }
+                    isDarkMode = data.modoOscuro === 1;
+                    actualizarEstadoModoOscuro();
+                    
+                    
                 })
 
             function toggleDarkMode() {
-                isDarkMode = !isDarkMode;
-                darkStylesheet.disabled = isDarkMode;
+                // Verifica si la preferencia está almacenada en localStorage
+                 const isDarkMode = localStorage.getItem('modoOscuro') === 'true';
+                 darkStylesheet.disabled = !isDarkMode;
 
                 if (editor) {
                     editor.destroy();
                 }
 
                 // Realiza una solicitud AJAX para actualizar el valor en la base de datos
-                fetch('/actualizar_modo_oscuro', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ modoOscuro: isDarkMode })
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log('Modo oscuro actualizado en la base de datos:', data.message);
-                    })
-                    .catch(error => {
-                        console.error('Error al actualizar el modo oscuro:', error);
-                    });
+                // fetch('/actualizar_modo_oscuro', {
+                //     method: 'POST',
+                //     headers: {
+                //         'Content-Type': 'application/json'
+                //     },
+                //     body: JSON.stringify({ modoOscuro: isDarkMode })
+                // })
+                //     .then(response => response.json())
+                //     .then(data => {
+                //         console.log('Modo oscuro actualizado en la base de datos:', data.message);
+                //     })
+                //     .catch(error => {
+                //         console.error('Error al actualizar el modo oscuro:', error);
+                //     });
 
                 tinymce.init({
                     selector: '#mytextarea',
@@ -151,8 +153,19 @@
                     }
                 });
             }
-            toggleDarkMode(); // Llamarlo aquí para configurar el modo al cargar la página
+            // Función para cambiar la preferencia de modo oscuro y almacenarla en localStorage
+            function setDarkModePreference(isDarkMode) {
+                localStorage.setItem('modoOscuro', isDarkMode);
+            }
+            toggleDarkModeButton.addEventListener('click', function() {
+                // Invierte la preferencia de modo oscuro
+                const isDarkMode = localStorage.getItem('modoOscuro') === 'true';
+                setDarkModePreference(!isDarkMode);
+                toggleDarkMode();
+            });
+            toggleDarkMode(); // Llama aquí para configurar el modo al cargar la página
 
+ 
             function toggleMenu() {
                 if (menuDesplegable.style.display === 'block') {
                     menuDesplegable.style.display = 'none';
