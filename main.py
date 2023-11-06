@@ -8,6 +8,7 @@ from datetime import datetime, timedelta
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
 from functools import wraps
+from flask import jsonify
 # Cargar variables de entorno para las credenciales
 MYSQL_PASSWORD = os.environ.get("MYSQL_PASSWORD_UNAGENDA")
 EMAIL_PASSWORD = os.environ.get("EMAIL_PASSWORD_UNAGENDA")
@@ -855,8 +856,33 @@ def calculator():
         promedioFinal=sum(arregloPromedio),
     )
 dark_mode = False
-@app.route("/cuaderno")
+@app.route("/cuaderno", methods=["POST", "GET"])
 def cuaderno():
+
+    if (request.method == "POST"):
+        # Obtener el Evento, las horas de inicio y fin, y el día
+        _nombreCuaderno = request.form["nombreCuaderno"]
+        print("Nombre cauderno: ", _nombreCuaderno)
+
+        # Crear un cursor para la base de datos MySQL
+        cur = mysql.connection.cursor()
+
+        # Insertar el nuevo Cuaderno
+        cur.execute(
+            "INSERT INTO cuaderno (id_usuario, nombreCuaderno, contenido, modoOscuro) VALUES (%s, %s, %s, %s)",
+            (session["idUsuario"], _nombreCuaderno, "Tus Nuevos Apuntes...", 0),
+        )
+        mysql.connection.commit()
+
+        cur.execute(
+        f"SELECT * FROM cuaderno WHERE id_usuario = {session['idUsuario']} AND nombreCuaderno = '{_nombreCuaderno}'"
+        )
+        notebook = cur.fetchall()
+
+        return render_template("cuaderno.html",dark_mode=dark_mode, cuaderno=notebook[0])
+        
+
+
     contenido = request.args.get("contenido")
     id_cuaderno = request.args.get("id")
     nombre_cuaderno = request.args.get("nombre")
@@ -867,6 +893,7 @@ def cuaderno():
         contenido = contenido.replace(',', '\n')
         contenido = contenido.replace('5hjis6754', '&')
         contenido = contenido.replace('5hjdf4754', ',')
+        
 
         db.execute(
         f"SELECT * FROM cuaderno WHERE id_usuario = {session['idUsuario']} AND id_cuaderno = {id_cuaderno} AND nombreCuaderno = '{nombre_cuaderno}'"
@@ -894,17 +921,78 @@ def cuaderno():
         f"SELECT * FROM cuaderno WHERE id_usuario = {session['idUsuario']}"
     )
     cuaderno = db.fetchall()
+    print("Hola 1 ", cuaderno, len(cuaderno))
     if len(cuaderno) == 0:
         cuaderno = cuaderno + tuple({"contenido": ""})
     print(cuaderno)
 
-    return render_template("cuaderno.html",dark_mode=dark_mode, cuaderno=cuaderno[0])
+    # db.execute(f"SELECT * FROM cuaderno WHERE id_usuario = {session['idUsuario']}")
+    # cuaderno = db.fetchall()
 
+    db.execute(f"SELECT modoOscuro FROM cuaderno WHERE id_usuario = {session['idUsuario']}")
+    modo_oscuro = db.fetchone()
+
+    # if modo_oscuro:
+    #     modo_oscuro = modo_oscuro[0]
+    # else:
+    #     modo_oscuro = 0  # O establece el valor predeterminado que desees si no se encuentra en la base de datos
+
+    print("Hola 2 ", cuaderno, len(cuaderno))
+
+    return render_template("cuaderno.html",dark_mode=dark_mode, cuaderno=cuaderno[0])
+@app.route('/obtener_cuadernos', methods=['GET'])
+def obtener_cuadernos():
+
+    # Realiza una consulta a la base de datos para obtener la lista de cuadernos
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT nombreCuaderno FROM cuaderno WHERE id_usuario = %s", (session['idUsuario'],))
+    cuadernos = cur.fetchall()
+    cur.close()
+    # Realiza una consulta a la base de datos para obtener la lista de cuadernos
+    # Supongamos que obtienes la lista de cuadernos en una variable cuadernos
+    # cuadernos = [{'nombreCuaderno': 'Cuaderno 1'}, {'nombreCuaderno': 'Cuaderno 2'},{'nombreCuaderno': 'Cuaderno 3'}]
+    cuadernos_json = [{'nombreCuaderno': cuaderno['nombreCuaderno']} for cuaderno in cuadernos]
+
+    # Devuelve la lista de cuadernos como JSON
+    # return jsonify(cuadernos)
+    return jsonify(cuadernos_json)
 @app.route('/toggle_dark_mode')
 def toggle_dark_mode():
     global dark_mode
     dark_mode = not dark_mode
     return redirect(url_for('cuaderno', dark_mode=dark_mode))
+
+@app.route('/actualizar_modo_oscuro', methods=['POST'])
+def actualizar_modo_oscuro():
+    data = request.get_json()
+    modo_oscuro = data.get('modoOscuro')
+
+    cur = mysql.connection.cursor()
+    
+    # Actualiza el valor de modo oscuro en la base de datos (cuaderno)
+    cur.execute("UPDATE cuaderno SET modoOscuro = %s WHERE id_usuario = %s", (modo_oscuro, session['idUsuario']))
+    mysql.connection.commit()
+    
+    cur.close()
+
+    return jsonify({'message': 'Modo oscuro actualizado con éxito'})
+
+@app.route("/cambiar_cuaderno", methods=['GET', 'POST'])
+def cambiar_cuaderno():
+    if request.method == 'POST':
+        nuevo_cuaderno_id = request.form.get("nuevo_cuaderno")
+
+        if nuevo_cuaderno_id:
+            print()
+            # Aquí debes escribir la lógica para cambiar al cuaderno seleccionado.
+            # Puedes utilizar el nuevo_cuaderno_id para cargar el cuaderno desde la base de datos.
+    # db = mysql.connection.cursor()
+    db = mysql.connection.cursor()
+    db.execute(f"SELECT * FROM cuaderno WHERE id_usuario = {session['idUsuario']}")
+    cuadernos = db.fetchall()
+    
+    
+    return render_template("cuaderno.html", cuadernos=cuadernos)
 
 
 # Add reminder route
