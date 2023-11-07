@@ -9,6 +9,10 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import os
 from functools import wraps
 from flask import jsonify
+import pytz
+
+colombia_zona_horaria = pytz.timezone('America/Bogota')
+
 # Cargar variables de entorno para las credenciales
 MYSQL_PASSWORD = os.environ.get("MYSQL_PASSWORD_UNAGENDA")
 EMAIL_PASSWORD = os.environ.get("EMAIL_PASSWORD_UNAGENDA")
@@ -61,7 +65,7 @@ def recuperacion():
     if request.method == "POST":
         recipient = request.form["recipient"]
         token = generate_random_token()
-        current_time = datetime.now()
+        current_time = datetime.now(colombia_zona_horaria)
         expiration_time = current_time + timedelta(hours=24)
         cur = mysql.connection.cursor()
         cur.execute(
@@ -108,7 +112,7 @@ def reset_password():
         )
         cur.close()
         return render_template("reset.html", data=data)
-    current_time = datetime.now()
+    current_time = datetime.now(colombia_zona_horaria)
     token_validity_period = timedelta(hours=1)
     expiration_time = data["created_at"] + token_validity_period
 
@@ -152,7 +156,7 @@ def homepage():
 @login_required
 def admin():
     print(session["nombre"])
-    now = datetime.now()
+    now = datetime.now(colombia_zona_horaria)
     formatted_date = now.strftime("%Y-%m-%d %H:%M:%S")
     currentYear = now.strftime("%Y")
     currentMonth = now.strftime("%m")
@@ -194,7 +198,7 @@ def admin():
     otherReminders = []
 
     for i in range(len(year)):
-        fecha = datetime(int(year[i]), int(month[i]), int(day[i]), int(hour[i]), int(minute[i]))
+        fecha = colombia_zona_horaria.localize(datetime(int(year[i]), int(month[i]), int(day[i]), int(hour[i]), int(minute[i])))
         if fecha >= now and abs(fecha-now) <= timedelta(days=7):
             if fecha.day == now.day:
                 todayReminders.append([nombreRecordatorio[i], year[i], month[i], day[i], hour[i], minute[i]])
@@ -496,7 +500,7 @@ def login():
             session["idUsuario"] = account["idUsuario"]
             session["nombre"] = account["nombre"]
 
-            now = datetime.now()
+            now = datetime.now(colombia_zona_horaria)
             formatted_date = now.strftime("%Y-%m-%d %H:%M:%S")
             currentYear = now.strftime("%Y")
             currentMonth = now.strftime("%m")
@@ -538,7 +542,7 @@ def login():
             otherReminders = []
 
             for i in range(len(year)):
-                fecha = datetime(int(year[i]), int(month[i]), int(day[i]), int(hour[i]), int(minute[i]))
+                fecha = colombia_zona_horaria.localize(datetime(int(year[i]), int(month[i]), int(day[i]), int(hour[i]), int(minute[i])))
                 if fecha >= now and abs(fecha-now) <= timedelta(days=7):
                     if fecha.day == now.day:
                         todayReminders.append([nombreRecordatorio[i], year[i], month[i], day[i], hour[i], minute[i]])
