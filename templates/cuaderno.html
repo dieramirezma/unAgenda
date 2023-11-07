@@ -107,6 +107,7 @@
             let toggleDarkModeButton = document.getElementById('toggleDarkMode');
 
             // Realiza una solicitud AJAX para obtener el valor de modo oscuro de la base de datos
+
             // fetch('/obtener_modo_oscuro')
             //     .then(response => response.json())
             //     .then(data => {
@@ -115,6 +116,7 @@
                     
                     
             //     })
+
 
             function toggleDarkMode() {
                 // Verifica si la preferencia está almacenada en localStorage
@@ -184,6 +186,7 @@
                                 li.setAttribute('data-id', cuaderno.id_cuaderno);
                                 // Verifica que el contenido se obtiene correctamente
                                 console.log("Contenido:", cuaderno.contenido);
+
                                 console.log("ID JSON: ", cuaderno.id_cuaderno);
 
                                 // Agrega el título y el contenido como atributos de datos en el elemento LI
@@ -192,10 +195,12 @@
 
                                 li.addEventListener('click', function() {
                                    // Cuando se hace clic en un cuaderno, cargar los datos en TinyMCE
+
                                    const id = this.getAttribute('data-id');
                                    const titulo = this.getAttribute('data-titulo');
                                    const contenido = this.getAttribute('data-contenido');
                                    cargarCuadernoEnTinyMCE(titulo, contenido, id);
+
                                    ocultarMenuDesplegable(); // Oculta el menú después de seleccionar un cuaderno
                                 });
                                menuDesplegable.appendChild(li);
@@ -211,6 +216,7 @@
                         });
                 }
             }
+
             function cargarCuadernoEnTinyMCE(titulo, contenido, id) {
                 console.log("Título:", titulo);
                 console.log("Contenido:", contenido);
@@ -219,6 +225,7 @@
                 tinymce.activeEditor.setContent(contenido);
                 document.querySelector('#encabezado-nombre').textContent = titulo;
                 document.querySelector('#id-cuaderno').textContent = id;
+
 
                 
                 
