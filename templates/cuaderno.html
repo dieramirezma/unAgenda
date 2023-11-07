@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuaderno</title>
+    <link rel="icon" href="{{url_for('static', filename='img/unAgenda1.ico')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='styles/cuaderno.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='styles/cuaderno-dark.css')}}" id="dark-stylesheet" disabled>
+    <script src="https://cdn.tiny.cloud/1/cyo40kyuazintmua0qe935k28ieyfp6y2rxnqthey7zgklrw/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    <style>
+        .menu-desplegable {
+            display: none;
+            position: absolute;
+            background-color: #f2f2f2; /* Tono gris */
+            border: 1px solid #ccc;
+            border-radius: 10px; /* Bordes redondeados más marcados */
+            z-index: 100;
+            opacity: 15;
+            transition: opacity 0.0s ease-in-out; /* Animación de opacidad */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra más suave */
+            min-width: 200px; /* Ancho mínimo del menú */
+        }
+
+        .menu-desplegable ul {
+            list-style: none;
+            padding: 50;
+            margin: 80;
+        }
+
+        .menu-desplegable li {
+            padding: 10px 20px; /* Mayor espaciado y tamaño del texto */
+            cursor: pointer;
+            transition: background-color 0.3s; /* Animación de cambio de color al pasar el ratón */
+        }
+
+        .menu-desplegable li:hover {
+            background-color: #e0e0e0; /* Color de fondo al pasar el ratón */
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="sideMenuContainer">
+            <br>
+            <a href="admin">
+                <img id="unAgendaLabel" src="{{url_for('static', filename='img/unAgenda1.png')}}" width="100" />
+            </a>
+            <br><br>
+            <a href="admin">
+                <div class="iconBox">
+                    <img class="iconImage" src="{{url_for('static', filename='img/mainmenumini.png')}}" width="100" />
+                </div>
+            </a>
+            <a href="schedule">
+                <div class="iconBox">
+                    <img class="iconImage" src="{{url_for('static', filename='img/scheduleindexmini.png')}}" width="100" />
+                </div>
+            </a>
+            <a href="calculator">
+                <div class="iconBox">
+                    <img class="iconImage" src="{{url_for('static', filename='img/calculatorindexmini.png')}}" width="100" />
+                </div>
+            </a>
+            <a href="cuaderno">
+                <div class="iconBox">
+                    <img class="iconImage" src="{{url_for('static', filename='img/notebookmini.png')}}" width="100" />
+                </div>
+            </a>
+        </div>
+        <div class="welcomeText">
+            <h1 id="encabezado-nombre">{{cuaderno["nombreCuaderno"]}}</h1>
+        </div>
+        <div id="id-cuaderno">
+            {{cuaderno["id_cuaderno"]}}
+        </div>
+        <div class="notebook">
+            <form method="post">
+                <textarea id="mytextarea">{{cuaderno["contenido"]}}</textarea>
+            </form>
+            <div class="justify">
+                <div class="buttons">
+                    <button class="btn btn-nuevo" id="btnNuevoCuaderno" onclick = "mostrarVentana('newNotebookWindow')">Nuevo Cuaderno</button>
+                    <button class="btn btn-cambiar" id="btnCambiarCuaderno">Cambiar Cuaderno</button>
+                    <button class="btn btn-guardar">Guardar Cuaderno</button>
+                    <div id="menuDesplegable" class="menu-desplegable">
+                        <ul>
+                            {% for cuaderno in cuadernos %}
+                                <li>{{ cuaderno.nombreCuaderno }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <br>
+                    <button type="button" id="toggleDarkMode" class="dark-mode-button">Cambiar Modo</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            let isDarkMode = false;
+            let editor;
+            let darkStylesheet = document.getElementById('dark-stylesheet');
+            let menuDesplegable = document.getElementById('menuDesplegable');
+            let btnCambiarCuaderno = document.getElementById('btnCambiarCuaderno');
+            let toggleDarkModeButton = document.getElementById('toggleDarkMode');
+
+            // Realiza una solicitud AJAX para obtener el valor de modo oscuro de la base de datos
+            fetch('/obtener_modo_oscuro')
+                .then(response => response.json())
+                .then(data => {
+                    isDarkMode = data.modoOscuro === 1;
+                    actualizarEstadoModoOscuro();
+                    
+                    
+                })
+
+            function toggleDarkMode() {
+                // Verifica si la preferencia está almacenada en localStorage
+                 const isDarkMode = localStorage.getItem('modoOscuro') === 'true';
+                 darkStylesheet.disabled = !isDarkMode;
+
+                if (editor) {
+                    editor.destroy();
+                }
+
+                // Realiza una solicitud AJAX para actualizar el valor en la base de datos
+                // fetch('/actualizar_modo_oscuro', {
+                //     method: 'POST',
+                //     headers: {
+                //         'Content-Type': 'application/json'
+                //     },
+                //     body: JSON.stringify({ modoOscuro: isDarkMode })
+                // })
+                //     .then(response => response.json())
+                //     .then(data => {
+                //         console.log('Modo oscuro actualizado en la base de datos:', data.message);
+                //     })
+                //     .catch(error => {
+                //         console.error('Error al actualizar el modo oscuro:', error);
+                //     });
+
+                tinymce.init({
+                    selector: '#mytextarea',
+                    plugins: "lists",
+                    height: "100%",
+                    toolbar: 'undo redo | styles | bold italic underline | alignleft aligncenter alignright alignjustify | fontfamily fontsizeinput fontsize forecolor | link image | bullist numlist',
+                    skin: isDarkMode ? 'oxide-dark' : 'oxide',
+                    content_css: isDarkMode ? "{{url_for('static', filename='styles/cuaderno-dark.css')}}" : "{{url_for('static', filename='styles/cuaderno.css')}}",
+                    setup: function(editorInstance) {
+                        editor = editorInstance;
+                    }
+                });
+            }
+            // Función para cambiar la preferencia de modo oscuro y almacenarla en localStorage
+            function setDarkModePreference(isDarkMode) {
+                localStorage.setItem('modoOscuro', isDarkMode);
+            }
+            toggleDarkModeButton.addEventListener('click', function() {
+                // Invierte la preferencia de modo oscuro
+                const isDarkMode = localStorage.getItem('modoOscuro') === 'true';
+                setDarkModePreference(!isDarkMode);
+                toggleDarkMode();
+            });
+            toggleDarkMode(); // Llama aquí para configurar el modo al cargar la página
+
+ 
+            function toggleMenu() {
+                if (menuDesplegable.style.display === 'block') {
+                    menuDesplegable.style.display = 'none';
+                } else {
+                    // Realiza una solicitud AJAX para obtener la lista de cuadernos
+                    fetch('/obtener_cuadernos')
+                        .then(response => response.json())
+                        .then(data => {
+                            // Borra el contenido anterior del menú desplegable
+                            menuDesplegable.innerHTML = '';
+
+                            // Agrega los cuadernos obtenidos a la lista
+                            data.forEach(cuaderno => {
+                                const li = document.createElement('li');
+                                li.textContent = cuaderno.nombreCuaderno;
+                                li.setAttribute('data-id', cuaderno.id_cuaderno);
+                                // Verifica que el contenido se obtiene correctamente
+                                console.log("Contenido:", cuaderno.contenido);
+
+                                // Agrega el título y el contenido como atributos de datos en el elemento LI
+                                li.setAttribute('data-titulo', cuaderno.nombreCuaderno);
+                                li.setAttribute('data-contenido', cuaderno.contenido);
+
+                                li.addEventListener('click', function() {
+                                   // Cuando se hace clic en un cuaderno, cargar los datos en TinyMCE
+                                   const titulo = this.getAttribute('data-titulo');
+                                   const contenido = this.getAttribute('data-contenido');
+                                   cargarCuadernoEnTinyMCE(titulo, contenido);
+                                   ocultarMenuDesplegable(); // Oculta el menú después de seleccionar un cuaderno
+                                });
+                               menuDesplegable.appendChild(li);
+                                
+                            });
+                            
+
+                            // Muestra el menú
+                            menuDesplegable.style.display = 'block';
+                        })
+                        .catch(error => {
+                            console.error('Error al obtener la lista de cuadernos:', error);
+                        });
+                }
+            }
+            function cargarCuadernoEnTinyMCE(titulo, contenido) {
+                console.log("Título:", titulo);
+                console.log("Contenido:", contenido);
+                // A continuación, establece el contenido en TinyMCE
+                tinymce.activeEditor.setContent(contenido);
+                document.querySelector('#encabezado-nombre').textContent = titulo;
+
+                
+                
+            }
+
+            function ocultarMenuDesplegable() {
+                menuDesplegable.style.display = 'none';
+            }
+
+            btnCambiarCuaderno.addEventListener('click', toggleMenu);
+            toggleDarkModeButton.addEventListener('click', toggleDarkMode);
+
+            tinymce.init({
+                selector: '#mytextarea',
+                plugins: "lists",
+                height: "100%",
+                toolbar: 'undo redo | styles | bold italic underline | alignleft aligncenter alignright alignjustify | fontfamily fontsizeinput fontsize forecolor | link image | bullist numlist',
+                setup: function(editorInstance) {
+                    editor = editorInstance;
+                }
+            });
+        });
+    </script>
+    <script src="{{url_for('static', filename='js/gestorCuaderno.js')}}"></script>
+    <div class="newNotebookWindow" id="newNotebookWindow">
+        <div id = "newNotebookContent">
+           <h2>¡Crea un nuevo Cuaderno!</h2>
+           <div id="formBody">
+            <form action="/cuaderno" method="POST" id = "formBody2">
+               <br>
+               <label for="nombreNuevoCuaderno" style="margin-bottom: 10px;">Nombre del Cuaderno:</label>
+               <br>
+               <input class="inputText" type="text" id="nombreCuaderno" aria-describedby="text" name="nombreCuaderno" required>
+               <br><br>
+               <div id="newNotebookWindowButtons">
+                <button id="formButtonAccept" type="submit">ACEPTAR</button>
+                <button id="formButtonDecline" onclick="ocultarVentana('newNotebookWindow')">CANCELAR</button>
+                </div>
+           <br>
+        </div>
+     </div>
+</body>
+</html>
