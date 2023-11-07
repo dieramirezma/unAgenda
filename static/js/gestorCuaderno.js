@@ -21,10 +21,10 @@ async function save_notebook() {
     myContent = myContent.replaceAll(',', '5hjdf4754');
 
     content = myContent.split('\n');
-    console.log(nombre, id)
+    // console.log(nombre, id)
 
     let url = '/cuaderno?contenido=' + content + '&nombre=' + nombre + '&id=' + id;
-    console.log(nombre.length);
+    // console.log(nombre.length);
 
     try {
 
@@ -38,10 +38,10 @@ async function save_notebook() {
     console.log("Han pasado 60 segundos")
 }
 
-function change_notebook() {
-    tinymce.get("mytextarea").setContent(globalContent)
-    console.log("---------- Funcionó ----------")
-}
+// function change_notebook() {
+//     tinymce.get("mytextarea").setContent(globalContent)
+//     console.log("---------- Funcionó ----------")
+// }
 
 function mostrarVentana(elementId) 
 { 
@@ -56,5 +56,5 @@ function ocultarVentana(elementId)
 }
 
 btn_save.addEventListener('click', save_notebook);
-btn_change.addEventListener('click', change_notebook);
+// btn_change.addEventListener('click', change_notebook);
 // window.addEventListener('beforeunload', save_notebook)
