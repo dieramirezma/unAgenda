@@ -21,10 +21,10 @@ EMAIL_PASSWORD = os.environ.get("EMAIL_PASSWORD_UNAGENDA")
 app = Flask(__name__, template_folder="templates")
 
 # Configuración de la conexión a la base de datos MySQL
-app.config["MYSQL_HOST"] = "bk9yaw96cgi2zyhqfvda-mysql.services.clever-cloud.com"
-app.config["MYSQL_USER"] = "uu2geebwmidfiq4r"
+app.config["MYSQL_HOST"] = "unagenda.mysql.pythonanywhere-services.com"
+app.config["MYSQL_USER"] = "unagenda"
 app.config["MYSQL_PASSWORD"] = MYSQL_PASSWORD
-app.config["MYSQL_DB"] = "bk9yaw96cgi2zyhqfvda"
+app.config["MYSQL_DB"] = "unagenda$default"
 app.config["MYSQL_CURSORCLASS"] = "DictCursor"
 
 
@@ -1142,9 +1142,8 @@ def editRemind():
         return redirect(url_for('admin'))
 
 # Configuración de la clave secreta para las sesiones de usuario
-if __name__ == "__main__":
-    app.secret_key = "prFlask"
-# Ejecución de la aplicación Flask
-app.run(debug=True, host="0.0.0.0", port=5000, threaded=True)
+app.secret_key = "prFlask"
+
+
 
 
