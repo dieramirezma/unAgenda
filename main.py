@@ -7,7 +7,8 @@ from flask_mysqldb import MySQL, MySQLdb
 from datetime import datetime, timedelta
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
-
+from functools import wraps
+from flask import jsonify
 # Cargar variables de entorno para las credenciales
 MYSQL_PASSWORD = os.environ.get("MYSQL_PASSWORD_UNAGENDA")
 EMAIL_PASSWORD = os.environ.get("EMAIL_PASSWORD_UNAGENDA")
@@ -15,13 +16,11 @@ EMAIL_PASSWORD = os.environ.get("EMAIL_PASSWORD_UNAGENDA")
 # Crear una instancia de la aplicación Flask
 app = Flask(__name__, template_folder="templates")
 
-
 # Configuración de la conexión a la base de datos MySQL
-
-app.config["MYSQL_HOST"] = "unagenda.mysql.pythonanywhere-services.com"
-app.config["MYSQL_USER"] = "unagenda"
+app.config["MYSQL_HOST"] = "bk9yaw96cgi2zyhqfvda-mysql.services.clever-cloud.com"
+app.config["MYSQL_USER"] = "uu2geebwmidfiq4r"
 app.config["MYSQL_PASSWORD"] = MYSQL_PASSWORD
-app.config["MYSQL_DB"] = "unagenda$default"
+app.config["MYSQL_DB"] = "bk9yaw96cgi2zyhqfvda"
 app.config["MYSQL_CURSORCLASS"] = "DictCursor"
 
 
@@ -40,10 +39,22 @@ mysql = MySQL(app)
 
 mail = Mail(app)
 
+def obtener_fecha_hora(sublista):
+    return datetime(sublista[1], sublista[2], sublista[3], sublista[4], sublista[5])
+
 def generate_random_token(length=32):
     characters = string.ascii_letters + string.digits
     token = "".join(random.choice(characters) for _ in range(length))
     return token
+
+
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if "nombre" not in session or "idUsuario" not in session:
+            return render_template("index.html")
+        return f(*args, **kwargs)
+    return decorated_function
 
 @app.route("/recuperacion", methods=["GET", "POST"])
 def recuperacion():
@@ -125,6 +136,12 @@ def reset_password():
 
     return render_template("reset.html", data=data)
 
+@app.route("/logout", methods=["POST"])
+
+def logout():
+    session.clear()
+    return render_template("index.html")  # Redirige al usuario a la página de inicio o a donde desees
+    
 
 @app.route("/")
 def homepage():
@@ -132,12 +149,82 @@ def homepage():
 
 
 @app.route("/admin")
+@login_required
 def admin():
     print(session["nombre"])
-    return render_template("admin.html", username=session["nombre"])
+    now = datetime.now()
+    formatted_date = now.strftime("%Y-%m-%d %H:%M:%S")
+    currentYear = now.strftime("%Y")
+    currentMonth = now.strftime("%m")
+    currentDay = now.strftime("%d")
+    currentHour = now.strftime("%H")
+    currentMinute = now.strftime("%M")
+
+    currentTime = (currentYear, currentMonth, currentDay, currentHour, currentMinute)
+
+    cur = mysql.connection.cursor()
+    _idUsuarioActual = session["idUsuario"]
+
+    cur.execute("SELECT nombreRecordatorio FROM recordatorios WHERE idUsuario = %s", (_idUsuarioActual,))
+    resultados = cur.fetchall()
+    nombreRecordatorio = [resultado["nombreRecordatorio"] for resultado in resultados]
+
+    cur.execute("SELECT y FROM recordatorios WHERE idUsuario = %s", (_idUsuarioActual,))
+    resultados = cur.fetchall()
+    year = [resultado["y"] for resultado in resultados]
+
+    cur.execute("SELECT mm FROM recordatorios WHERE idUsuario = %s", (_idUsuarioActual,))
+    resultados = cur.fetchall()
+    month = [resultado["mm"] for resultado in resultados]
+
+    cur.execute("SELECT d FROM recordatorios WHERE idUsuario = %s", (_idUsuarioActual,))
+    resultados = cur.fetchall()
+    day = [resultado["d"] for resultado in resultados]
+
+    cur.execute("SELECT h FROM recordatorios WHERE idUsuario = %s", (_idUsuarioActual,))
+    resultados = cur.fetchall()
+    hour = [resultado["h"] for resultado in resultados]
+
+    cur.execute("SELECT m FROM recordatorios WHERE idUsuario = %s", (_idUsuarioActual,))
+    resultados = cur.fetchall()
+    minute = [resultado["m"] for resultado in resultados]
+
+    todayReminders = []
+    tomorrowReminders = []
+    otherReminders = []
+
+    for i in range(len(year)):
+        fecha = datetime(int(year[i]), int(month[i]), int(day[i]), int(hour[i]), int(minute[i]))
+        if fecha >= now and abs(fecha-now) <= timedelta(days=7):
+            if fecha.day == now.day:
+                todayReminders.append([nombreRecordatorio[i], year[i], month[i], day[i], hour[i], minute[i]])
+            elif abs(fecha-now) < timedelta(hours=24):
+                tomorrowReminders.append([nombreRecordatorio[i], year[i], month[i], day[i], hour[i], minute[i]])
+            else:
+                otherReminders.append([nombreRecordatorio[i], year[i], month[i], day[i], hour[i], minute[i]])
+    
+    todayReminders = sorted(todayReminders, key=obtener_fecha_hora)
+    tomorrowReminders = sorted(tomorrowReminders, key=obtener_fecha_hora)
+    otherReminders = sorted(otherReminders, key=obtener_fecha_hora)
+
+    # Redirigir al usuario a la página de administrador
+    return render_template("admin.html", 
+    username=session["nombre"],
+    currentTimeList = currentTime,
+    nombreRecordatorioList = nombreRecordatorio,
+    yearList = year,
+    monthList = month,
+    dayList = day,
+    hourList = hour,
+    minuteList = minute ,
+    todayReminders = todayReminders,
+    tomorrowReminders = tomorrowReminders,
+    otherReminders = otherReminders,
+    )   
 
 
 @app.route("/schedule")
+@login_required
 def schedule():
 
     _idUsuarioActual = session["idUsuario"]
@@ -409,8 +496,75 @@ def login():
             session["idUsuario"] = account["idUsuario"]
             session["nombre"] = account["nombre"]
 
+            now = datetime.now()
+            formatted_date = now.strftime("%Y-%m-%d %H:%M:%S")
+            currentYear = now.strftime("%Y")
+            currentMonth = now.strftime("%m")
+            currentDay = now.strftime("%d")
+            currentHour = now.strftime("%H")
+            currentMinute = now.strftime("%M")
+
+            currentTime = (currentYear, currentMonth, currentDay, currentHour, currentMinute)
+
+            cur = mysql.connection.cursor()
+            _idUsuarioActual = session["idUsuario"]
+
+            cur.execute("SELECT nombreRecordatorio FROM recordatorios WHERE idUsuario = %s", (_idUsuarioActual,))
+            resultados = cur.fetchall()
+            nombreRecordatorio = [resultado["nombreRecordatorio"] for resultado in resultados]
+
+            cur.execute("SELECT y FROM recordatorios WHERE idUsuario = %s", (_idUsuarioActual,))
+            resultados = cur.fetchall()
+            year = [resultado["y"] for resultado in resultados]
+
+            cur.execute("SELECT mm FROM recordatorios WHERE idUsuario = %s", (_idUsuarioActual,))
+            resultados = cur.fetchall()
+            month = [resultado["mm"] for resultado in resultados]
+
+            cur.execute("SELECT d FROM recordatorios WHERE idUsuario = %s", (_idUsuarioActual,))
+            resultados = cur.fetchall()
+            day = [resultado["d"] for resultado in resultados]
+
+            cur.execute("SELECT h FROM recordatorios WHERE idUsuario = %s", (_idUsuarioActual,))
+            resultados = cur.fetchall()
+            hour = [resultado["h"] for resultado in resultados]
+
+            cur.execute("SELECT m FROM recordatorios WHERE idUsuario = %s", (_idUsuarioActual,))
+            resultados = cur.fetchall()
+            minute = [resultado["m"] for resultado in resultados]
+
+            todayReminders = []
+            tomorrowReminders = []
+            otherReminders = []
+
+            for i in range(len(year)):
+                fecha = datetime(int(year[i]), int(month[i]), int(day[i]), int(hour[i]), int(minute[i]))
+                if fecha >= now and abs(fecha-now) <= timedelta(days=7):
+                    if fecha.day == now.day:
+                        todayReminders.append([nombreRecordatorio[i], year[i], month[i], day[i], hour[i], minute[i]])
+                    elif abs(fecha-now) < timedelta(hours=24):
+                        tomorrowReminders.append([nombreRecordatorio[i], year[i], month[i], day[i], hour[i], minute[i]])
+                    else:
+                        otherReminders.append([nombreRecordatorio[i], year[i], month[i], day[i], hour[i], minute[i]])
+            
+            todayReminders = sorted(todayReminders, key=obtener_fecha_hora)
+            tomorrowReminders = sorted(tomorrowReminders, key=obtener_fecha_hora)
+            otherReminders = sorted(otherReminders, key=obtener_fecha_hora)
+
             # Redirigir al usuario a la página de administrador
-            return render_template("admin.html", username=session["nombre"])
+            return render_template("admin.html", 
+            username=session["nombre"],
+            currentTimeList = currentTime,
+            nombreRecordatorioList = nombreRecordatorio,
+            yearList = year,
+            monthList = month,
+            dayList = day,
+            hourList = hour,
+            minuteList = minute ,
+            todayReminders = todayReminders,
+            tomorrowReminders = tomorrowReminders,
+            otherReminders = otherReminders,
+            )   
         else:
             # Si no se encuentra un usuario, redirigir de nuevo a la página de inicio
             error_message = "Credenciales incorrectas"
@@ -461,6 +615,7 @@ def register():
 
 
 @app.route("/calculator", methods=["POST", "GET"])
+@login_required
 def calculator():
     # if request.method == 'POST':
     #     print("--------------------- Entro -----------------------------")
@@ -700,12 +855,284 @@ def calculator():
         len_group=len(nota_ordenadas),
         promedioFinal=sum(arregloPromedio),
     )
-
-@app.route("/cuaderno")
+dark_mode = False
+@app.route("/cuaderno", methods=["POST", "GET"])
+@login_required
 def cuaderno():
-    return render_template("cuaderno.html")
+
+    if (request.method == "POST"):
+        # Obtener el Evento, las horas de inicio y fin, y el día
+        _nombreCuaderno = request.form["nombreCuaderno"]
+        print("Nombre cauderno: ", _nombreCuaderno)
+
+        # Crear un cursor para la base de datos MySQL
+        cur = mysql.connection.cursor()
+
+        # Insertar el nuevo Cuaderno
+        cur.execute(
+            "INSERT INTO cuaderno (id_usuario, nombreCuaderno, contenido, modoOscuro) VALUES (%s, %s, %s, %s)",
+            (session["idUsuario"], _nombreCuaderno, "Tus Nuevos Apuntes...", 0),
+        )
+        mysql.connection.commit()
+
+        cur.execute(
+        f"SELECT * FROM cuaderno WHERE id_usuario = {session['idUsuario']} AND nombreCuaderno = '{_nombreCuaderno}'"
+        )
+        notebook = cur.fetchall()
+
+        return render_template("cuaderno.html",dark_mode=dark_mode, cuaderno=notebook[0])
+        
+
+
+    contenido = request.args.get("contenido")
+    id_cuaderno = request.args.get("id")
+    nombre_cuaderno = request.args.get("nombre")
+
+    db = mysql.connection.cursor()
+    print("Contenido 1: ", contenido)
+    if contenido != None and id_cuaderno != None and nombre_cuaderno != None:
+        contenido = contenido.replace(',', '\n')
+        contenido = contenido.replace('5hjis6754', '&')
+        contenido = contenido.replace('5hjdf4754', ',')
+        
+
+        db.execute(
+        f"SELECT * FROM cuaderno WHERE id_usuario = {session['idUsuario']} AND id_cuaderno = {id_cuaderno} AND nombreCuaderno = '{nombre_cuaderno}'"
+        )
+        comparacion = db.fetchall()
+
+        if len(comparacion) > 0:
+            db.execute(
+                f'UPDATE cuaderno set contenido = "{contenido}" WHERE id_usuario = {session["idUsuario"]} AND id_cuaderno = {id_cuaderno} AND nombreCuaderno = "{nombre_cuaderno}"'
+            )
+            mysql.connection.commit()
+
+        else:
+            print("Contenido 2: ", contenido)
+            db.execute(
+                    f'INSERT INTO cuaderno (id_usuario, nombreCuaderno, contenido) VALUES ({session["idUsuario"]}, "Ingeniería de software", "{contenido}")'
+            )
+            mysql.connection.commit()
+
+            print("---------- Se ha insertado exitosamente ----------")
+
+    # print(contenido)
+
+    db.execute(
+        f"SELECT * FROM cuaderno WHERE id_usuario = {session['idUsuario']}"
+    )
+    cuaderno = db.fetchall()
+    print("Hola 1 ", cuaderno, len(cuaderno))
+    if len(cuaderno) == 0:
+        cuaderno = cuaderno + tuple({"contenido": ""})
+    print(cuaderno)
+
+    # db.execute(f"SELECT * FROM cuaderno WHERE id_usuario = {session['idUsuario']}")
+    # cuaderno = db.fetchall()
+
+    db.execute(f"SELECT modoOscuro FROM cuaderno WHERE id_usuario = {session['idUsuario']}")
+    modo_oscuro = db.fetchone()
+
+    # if modo_oscuro:
+    #     modo_oscuro = modo_oscuro[0]
+    # else:
+    #     modo_oscuro = 0  # O establece el valor predeterminado que desees si no se encuentra en la base de datos
+
+    print("Hola 2 ", cuaderno, len(cuaderno))
+
+    return render_template("cuaderno.html",dark_mode=dark_mode, cuaderno=cuaderno[0])
+@app.route('/obtener_cuadernos', methods=['GET'])
+def obtener_cuadernos():
+
+    # Realiza una consulta a la base de datos para obtener la lista de cuadernos
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT nombreCuaderno, contenido  FROM cuaderno WHERE id_usuario = %s", (session['idUsuario'],))
+    cuadernos = cur.fetchall()
+    cur.close()
+    # Realiza una consulta a la base de datos para obtener la lista de cuadernos
+    
+    cuadernos_json = [{'nombreCuaderno': cuaderno['nombreCuaderno'],'contenido':cuaderno['contenido'] } for cuaderno in cuadernos]
+
+    # Devuelve la lista de cuadernos como JSON
+    # return jsonify(cuadernos)
+    return jsonify(cuadernos_json)
+@app.route('/toggle_dark_mode')
+def toggle_dark_mode():
+    global dark_mode
+    dark_mode = not dark_mode
+    return redirect(url_for('cuaderno', dark_mode=dark_mode))
+
+@app.route('/actualizar_modo_oscuro', methods=['POST'])
+def actualizar_modo_oscuro():
+    data = request.get_json()
+    modo_oscuro = data.get('modoOscuro')
+
+    cur = mysql.connection.cursor()
+    
+    # Actualiza el valor de modo oscuro en la base de datos (cuaderno)
+    cur.execute("UPDATE cuaderno SET modoOscuro = %s WHERE id_usuario = %s", (modo_oscuro, session['idUsuario']))
+    mysql.connection.commit()
+    
+    cur.close()
+
+    return jsonify({'message': 'Modo oscuro actualizado con éxito'})
+
+@app.route("/cambiar_cuaderno", methods=['GET', 'POST'])
+def cambiar_cuaderno():
+    if request.method == 'POST':
+        nuevo_cuaderno_id = request.form.get("nuevo_cuaderno")
+
+        if nuevo_cuaderno_id:
+            print()
+            # Aquí debes escribir la lógica para cambiar al cuaderno seleccionado.
+            # Puedes utilizar el nuevo_cuaderno_id para cargar el cuaderno desde la base de datos.
+    # db = mysql.connection.cursor()
+    db = mysql.connection.cursor()
+    db.execute(f"SELECT * FROM cuaderno WHERE id_usuario = {session['idUsuario']}")
+    cuadernos = db.fetchall()
+    
+    
+    return render_template("cuaderno.html", cuadernos=cuadernos)
+
+
+# Add reminder route
+@app.route("/remindAdd", methods=["GET", "POST"])
+def addRemind():
+    # Verificar si se ha enviado un formulario POST
+    if (
+        request.method == "POST"
+        and "nameRemind" in request.form
+        and "dateRemind" in request.form
+        and "timeRemind" in request.form
+    ):  
+
+        # Obtener el Evento, las horas de inicio y fin, y el día
+        _nameRemind = request.form["nameRemind"]
+        _dateRemind = request.form["dateRemind"]
+        _timeRemind = request.form["timeRemind"]
+
+        _dateRemind = _dateRemind.split("-")
+        _timeRemind = _timeRemind.split(":")
+        
+        if _dateRemind[2][0] == "0":
+            _dateRemind[2] = _dateRemind[2][1]
+        if _timeRemind[0][0] == "0":
+            _timeRemind[0] = _timeRemind[0][1]
+        if _timeRemind[1][0] == "0":
+            _timeRemind[1] = _timeRemind[1][1]
+
+        # Crear un cursor para la base de datos MySQL
+        cur = mysql.connection.cursor()
+
+        # Insertar el nuevo Evento
+        cur.execute(
+            "INSERT INTO recordatorios (idUsuario, nombreRecordatorio, y, mm, d, h, m) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+            (session["idUsuario"], _nameRemind, _dateRemind[0], _dateRemind[1], _dateRemind[2], _timeRemind[0], _timeRemind[1]),
+        )
+        mysql.connection.commit()
+        
+        return redirect(url_for('admin'))
+
+
+@app.route("/remindRemove", methods=["GET", "POST"])
+def removeRemind():
+    yearSTR = request.args.get("yearSTR")
+    monthSTR = request.args.get("monthSTR")
+    daySTR = request.args.get("daySTR")
+    hourSTR = request.args.get("hourSTR")
+    minuteSTR = request.args.get("minuteSTR")
+    remindSTR = request.args.get("remindSTR")
+
+    _idUsuarioActual = session["idUsuario"]
+
+    cur = mysql.connection.cursor()
+    cur.execute(
+        "DELETE FROM recordatorios WHERE nombreRecordatorio = %s AND y = %s AND mm = %s AND d = %s AND h = %s AND m = %s AND idUsuario = %s",
+        (
+            remindSTR,
+            yearSTR,
+            monthSTR,
+            daySTR,
+            hourSTR,
+            minuteSTR,
+            _idUsuarioActual,
+        ),
+    )
+    mysql.connection.commit()
+
+    
+    return redirect(url_for("admin"))
+        
+# Edit reminder route
+@app.route("/remindEdit", methods=["GET", "POST"])
+def editRemind():
+    # Verificar si se ha enviado un formulario POST
+    if (
+        request.method == "POST"
+        and "nameRemind" in request.form
+        and "dateRemind" in request.form
+        and "timeRemind" in request.form
+        and "yearSTR" in request.form
+        and "monthSTR" in request.form
+        and "daySTR" in request.form
+        and "hourSTR" in request.form
+        and "minuteSTR" in request.form
+        and "remindSTR" in request.form
+    ):  
+        yearSTR = request.form["yearSTR"]
+        monthSTR = request.form["monthSTR"]
+        daySTR = request.form["daySTR"]
+        hourSTR = request.form["hourSTR"]
+        minuteSTR = request.form["minuteSTR"]
+        remindSTR = request.form["remindSTR"]
+
+        print(yearSTR, monthSTR, daySTR, hourSTR, minuteSTR, remindSTR)
+        _idUsuarioActual = session["idUsuario"]
+
+        _nameRemind = request.form["nameRemind"]
+        _dateRemind = request.form["dateRemind"]
+        _timeRemind = request.form["timeRemind"]
+
+        _dateRemind = _dateRemind.split("-")
+        _timeRemind = _timeRemind.split(":")
+        
+        if _dateRemind[2][0] == "0":
+            _dateRemind[2] = _dateRemind[2][1]
+        if _timeRemind[0][0] == "0":
+            _timeRemind[0] = _timeRemind[0][1]
+        if _timeRemind[1][0] == "0":
+            _timeRemind[1] = _timeRemind[1][1]
+
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT idRecordatorio FROM recordatorios WHERE nombreRecordatorio = %s AND y = %s AND mm = %s AND d = %s AND h = %s AND m = %s AND idUsuario = %s", 
+        (
+            remindSTR,
+            yearSTR,
+            monthSTR,
+            daySTR,
+            hourSTR,
+            minuteSTR,
+            _idUsuarioActual,
+        ),
+        )
+        resultados = cur.fetchall()
+        idRecordatorio = [resultado["idRecordatorio"] for resultado in resultados]
+        # Crear un cursor para la base de datos MySQL
+        cur = mysql.connection.cursor()
+
+        # Insertar el nuevo Evento
+        cur.execute(
+            "UPDATE recordatorios SET nombreRecordatorio = %s, y = %s, mm = %s, d = %s, h = %s, m = %s WHERE idRecordatorio = %s AND idUsuario = %s",
+            (_nameRemind, _dateRemind[0], _dateRemind[1], _dateRemind[2], _timeRemind[0], _timeRemind[1], idRecordatorio[0], _idUsuarioActual),
+        )
+
+        mysql.connection.commit()
+        
+        return redirect(url_for('admin'))
 
 # Configuración de la clave secreta para las sesiones de usuario
-app.secret_key = "prFlask"
-
+if __name__ == "__main__":
+    app.secret_key = "prFlask"
+# Ejecución de la aplicación Flask
+app.run(debug=True, host="0.0.0.0", port=5000, threaded=True)
 
