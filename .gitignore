@@ -1,6 +1,6 @@
 tempCodeRunnerFile.py
 .vscode/
-__pycache__/
+__pycache__/*
 .vercel
 .env
 prueba.py

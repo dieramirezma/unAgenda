@@ -26,14 +26,11 @@ DROP TABLE IF EXISTS `recordatorios`;
   `idRecordatorio` int(11) NOT NULL AUTO_INCREMENT,
   `idUsuario` int(11) DEFAULT NULL,
   `nombreRecordatorio` varchar(255) NOT NULL,
-  `y` int(11) NOT NULL,
-  `mm` int(11) NOT NULL,
-  `d` int(11) NOT NULL,
-  `h` int(11) NOT NULL,
-  `m` int(11) NOT NULL,
-  PRIMARY KEY (`idRecordatorio`),
-  KEY `idUsuario` (`idUsuario`),
-  CONSTRAINT `recordatorios_ibfk_1` FOREIGN KEY (`idUsuario`) REFERENCES `usuario` (`idusuario`)
+  `y` int(11) DEFAULT NOT NULL,
+  `mm` int(11) DEFAULT NOT NULL,
+  `h` int(11) DEFAULT NOT NULL,
+  `m` int(11) DEFAULT NOT NULL,
+
  )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 DROP TABLE IF EXISTS `grupoNotas`;

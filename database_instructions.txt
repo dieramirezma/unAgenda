@@ -1,0 +1,36 @@
+Para acceder a la base de datos localmente:
+
+=============   CONSOLA ============= 
+
+1- Ir a la siguiente ruta (o equivalente en su equipo):
+
+    C:\Program Files\MySQL\MySQL Server 8.0\bin
+
+2. Abrir una consola en el directorio
+
+3. Ingresar el siguiente comando: 
+
+    mysql -h bk9yaw96cgi2zyhqfvda-mysql.services.clever-cloud.com -P 3306 -u uu2geebwmidfiq4r -p bk9yaw96cgi2zyhqfvda
+
+4. Ingresar la siguiente contraseña:
+
+    KCoFaNpyzpIfKEXrjAgx
+
+Ya se ha accedido a la base de datos localmente a través de la consola
+
+
+=============   MySQL Workbench ============= 
+
+1. Crear una nueva conexión:
+
+2. Ingresar los siguientes datos:
+
+    Connection Name: el que se desee
+    Hostname: bk9yaw96cgi2zyhqfvda-mysql.services.clever-cloud.com
+    Port: 3306
+    Username: uu2geebwmidfiq4r
+    Password: KCoFaNpyzpIfKEXrjAgx
+    Default Schema: bk9yaw96cgi2zyhqfvda
+    
+Aquí es posible ejecutar las sentencias de SQL y los cambios se verán reflejados
+en la base remota
