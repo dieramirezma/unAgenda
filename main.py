@@ -542,7 +542,9 @@ def login():
             otherReminders = []
 
             for i in range(len(year)):
+
                 fecha = colombia_zona_horaria.localize(datetime(int(year[i]), int(month[i]), int(day[i]), int(hour[i]), int(minute[i])))
+
                 if fecha >= now and abs(fecha-now) <= timedelta(days=7):
                     if fecha.day == now.day:
                         todayReminders.append([nombreRecordatorio[i], year[i], month[i], day[i], hour[i], minute[i]])
@@ -864,6 +866,7 @@ dark_mode = False
 @login_required
 def cuaderno():
 
+
     if (request.method == "POST"):
         # Obtener el Evento, las horas de inicio y fin, y el día
         _nombreCuaderno = request.form["nombreCuaderno"]
@@ -1138,8 +1141,5 @@ def editRemind():
         return redirect(url_for('admin'))
 
 # Configuración de la clave secreta para las sesiones de usuario
-if __name__ == "__main__":
-    app.secret_key = "prFlask"
-# Ejecución de la aplicación Flask
-app.run(debug=True, host="0.0.0.0", port=5000, threaded=True)
+app.secret_key = "prFlask"
 

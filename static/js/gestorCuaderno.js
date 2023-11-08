@@ -25,7 +25,6 @@ async function save_notebook() {
 
     let url = '/cuaderno?contenido=' + content + '&nombre=' + nombre + '&id=' + id;
     // console.log(nombre.length);
-
     try {
 
         const reponse = await fetch(url);
@@ -56,5 +55,5 @@ function ocultarVentana(elementId)
 }
 
 btn_save.addEventListener('click', save_notebook);
-// btn_change.addEventListener('click', change_notebook);
+
 // window.addEventListener('beforeunload', save_notebook)

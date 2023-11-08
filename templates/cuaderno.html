@@ -116,6 +116,7 @@
                     
             //     })
 
+
             function toggleDarkMode() {
                 // Verifica si la preferencia está almacenada en localStorage
                  const isDarkMode = localStorage.getItem('modoOscuro') === 'true';
@@ -219,8 +220,6 @@
                 tinymce.activeEditor.setContent(contenido);
                 document.querySelector('#encabezado-nombre').textContent = titulo;
                 document.querySelector('#id-cuaderno').textContent = id;
-
-                
                 
             }
 
