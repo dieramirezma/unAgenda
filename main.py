@@ -114,7 +114,7 @@ def reset_password():
         return render_template("reset.html", data=data)
     current_time = datetime.now(colombia_zona_horaria)
     token_validity_period = timedelta(hours=1)
-    expiration_time = data["created_at"] + token_validity_period
+    expiration_time = colombia_zona_horaria.localize(data["created_at"] + token_validity_period)
 
     if current_time > expiration_time:
         flash(
