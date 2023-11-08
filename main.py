@@ -21,10 +21,10 @@ EMAIL_PASSWORD = os.environ.get("EMAIL_PASSWORD_UNAGENDA")
 app = Flask(__name__, template_folder="templates")
 
 # Configuración de la conexión a la base de datos MySQL
-app.config["MYSQL_HOST"] = "unagenda.mysql.pythonanywhere-services.com"
-app.config["MYSQL_USER"] = "unagenda"
+app.config["MYSQL_HOST"] = "bk9yaw96cgi2zyhqfvda-mysql.services.clever-cloud.com"
+app.config["MYSQL_USER"] = "uu2geebwmidfiq4r"
 app.config["MYSQL_PASSWORD"] = MYSQL_PASSWORD
-app.config["MYSQL_DB"] = "unagenda$default"
+app.config["MYSQL_DB"] = "bk9yaw96cgi2zyhqfvda"
 app.config["MYSQL_CURSORCLASS"] = "DictCursor"
 
 
@@ -114,7 +114,7 @@ def reset_password():
         return render_template("reset.html", data=data)
     current_time = datetime.now(colombia_zona_horaria)
     token_validity_period = timedelta(hours=1)
-    expiration_time = data["created_at"] + token_validity_period
+    expiration_time = colombia_zona_horaria.localize(data["created_at"] + token_validity_period)
 
     if current_time > expiration_time:
         flash(
@@ -543,10 +543,8 @@ def login():
 
             for i in range(len(year)):
 
-              
                 fecha = colombia_zona_horaria.localize(datetime(int(year[i]), int(month[i]), int(day[i]), int(hour[i]), int(minute[i])))
 
-  
                 if fecha >= now and abs(fecha-now) <= timedelta(days=7):
                     if fecha.day == now.day:
                         todayReminders.append([nombreRecordatorio[i], year[i], month[i], day[i], hour[i], minute[i]])
@@ -868,6 +866,7 @@ dark_mode = False
 @login_required
 def cuaderno():
 
+
     if (request.method == "POST"):
         # Obtener el Evento, las horas de inicio y fin, y el día
         _nombreCuaderno = request.form["nombreCuaderno"]
@@ -1143,7 +1142,4 @@ def editRemind():
 
 # Configuración de la clave secreta para las sesiones de usuario
 app.secret_key = "prFlask"
-
-
-
 
