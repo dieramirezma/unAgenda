@@ -21,10 +21,10 @@ EMAIL_PASSWORD = os.environ.get("EMAIL_PASSWORD_UNAGENDA")
 app = Flask(__name__, template_folder="templates")
 
 # Configuración de la conexión a la base de datos MySQL
-app.config["MYSQL_HOST"] = "bk9yaw96cgi2zyhqfvda-mysql.services.clever-cloud.com"
-app.config["MYSQL_USER"] = "uu2geebwmidfiq4r"
+app.config["MYSQL_HOST"] = "unagenda.mysql.pythonanywhere-services.com"
+app.config["MYSQL_USER"] = "unagenda"
 app.config["MYSQL_PASSWORD"] = MYSQL_PASSWORD
-app.config["MYSQL_DB"] = "bk9yaw96cgi2zyhqfvda"
+app.config["MYSQL_DB"] = "unagenda$default"
 app.config["MYSQL_CURSORCLASS"] = "DictCursor"
 
 
