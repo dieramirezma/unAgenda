@@ -199,3 +199,14 @@
     color: white;
 
 }
+
+.selector {
+
+    margin-top: 2rem;
+    width: 60%;
+    height: 2.5rem;
+    border-radius: 10px;
+
+    background-color: rgb(226, 226, 226);
+
+}
