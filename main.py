@@ -1136,6 +1136,11 @@ def editRemind():
         mysql.connection.commit()
         
         return redirect(url_for('admin'))
+    
+#Interfaz Flashcards
+@app.route("/flashcards", methods=["GET", "POST"])
+def flashcards():
+    return render_template("flashcards.html")
 
 # Configuración de la clave secreta para las sesiones de usuario
 if __name__ == "__main__":

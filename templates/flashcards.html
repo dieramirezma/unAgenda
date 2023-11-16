@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>unAgenda - Horario</title>
+      <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&display=swap" rel="stylesheet">
+      <link rel="stylesheet" href="{{url_for('static', filename='styles/flashcardsStyle.css')}}">
+      <link rel="icon" href="{{url_for('static', filename='img/unAgenda1.ico')}}">
+      <script src="static/js/gestorHorario.js"></script>
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
+   </head>
+   <body>
+      <div class="mainContainer">
+         <!-- Contiene a todo el código, dado que es el header el que contiene el fondo de pantalla. Si se coloca alguna división después de esta, aparecerá -->
+         <!-- debajo del fondo, lo cual obviamente no queremos.                                                                                              -->
+         <div class="sideMenuContainer">
+            <!-- MENU LATERAL -->
+            <br>
+            <a href="admin">
+            <img id="unAgendaLabel" src="{{url_for('static', filename='img/unAgenda1.png')}}" width="100" />
+            </a>
+            <br><br>
+            <a href="admin">
+               <div class="iconBox">
+                  <img class="iconImage" src="{{url_for('static', filename='img/mainmenumini.png')}}" width="100" />
+               </div>
+            </a>
+            <a href="schedule">
+               <div class="iconBox">
+                  <img class="iconImage" src="{{url_for('static', filename='img/scheduleindexmini.png')}}"
+                     width="100" />
+               </div>
+            </a>
+            <a href="calculator">
+               <div class="iconBox">
+                  <img class="iconImage" src="{{url_for('static', filename='img/calculatorindexmini.png')}}"
+                     width="100" />
+               </div>
+            </a>
+            <a href="cuaderno">
+               <div class="iconBox">
+                  <img class="iconImage" src="{{url_for('static', filename='img/notebookmini.png')}}"
+                     width="100" />
+               </div>
+            </a>
+            <a href="flashcards">
+                <div class="iconBox">
+                   <img class="iconImage" src="{{url_for('static', filename='img/flashcardsmini.png')}}"
+                      width="100" />
+                </div>
+             </a>
+         </div>
+         <div class="contentContainer">
+            
+            <!-- AQUÍ VA EL CONTENIDO DE LA INTERFAZ COMO TAL -->
+
+            <div class = "cardContainer">
+
+                <p>NOMBRE DEL MAZO</p>
+                <h1>NAME PLACEHOLDER</h1>
+                <br>
+                <p>NÚMERO DE TARJETAS</p>
+                <h2>NUMBER PLACEHOLDER</h2>
+                <br><br>
+                <p class="dateSentence">ÚLTIMA VEZ ESTUDIADO EN: </p><p id="dateText" class="dateSentence"> dd/mm/aa</p>
+                
+                <br><br>
+
+                <button id="addCardButton" >AGREGAR TARJETA</button>
+                <br>
+                <button id="editDeckButton" >EDITAR MAZO</button>
+                <br><br><br>
+                <button id="studyDeckButton" >ESTUDIAR ESTE MAZO</button>
+
+            </div>
+
+         </div>
+         
+   </body> 
