@@ -7,7 +7,7 @@
       <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&display=swap" rel="stylesheet">
       <link rel="stylesheet" href="{{url_for('static', filename='styles/flashcardsStyle.css')}}">
       <link rel="icon" href="{{url_for('static', filename='img/unAgenda1.ico')}}">
-      <script src="static/js/gestorHorario.js"></script>
+      <script src="static/js/gestorFlashcards.js"></script>
       <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
    </head>
@@ -82,8 +82,60 @@
 
                 <option value="0" class="opcion">Name PlaceHolder</option>
                 <option value="-1" class="opcion">CREAR UN NUEVO MAZO...</option>
-             </select>
+            </select>
 
          </div>
+
+         <div class="newDeckWindow" id="newDeckWindow">
+            <div id="newDeckForm">
+               <div id="formBody">
+                  <form action="/newDeck" method="POST">
+                     <h2 id="newDeckTitle">Agregar Mazo:</h2>
+                     <br>
+                     <label for="nameDeck" style="margin-bottom: 10px;">Nombre del Mazo:</label>
+                     <br>
+                     <input class="inputText" type="text" id="nameDeck" aria-describedby="text" name="nameDeck" required autocomplete="off">
+                     <br><br><br>
+
+                     <label for="questionFirstCard" style="margin-bottom: 10px;">Pregunta de la Primera Tarjeta:</label>
+                     <br>
+                     <input class="inputText" type="text" id="questionFirstCard" aria-describedby="text" name="questionFirstCard" required autocomplete="off">
+                     <br><br>
+                     
+                     <label for="answerFirstCard" style="margin-bottom: 10px;">Respuesta de la Primera Tarjeta:</label>
+                     <br>
+                     <input class="inputText" type="text" id="answerFirstCard" aria-describedby="text" name="answerFirstCard" required autocomplete="off">
+                     <br><br>
+      
+                     <div id="addRemindWindowButtons">
+                        <button id="formButtonAccept" type="submit">ACEPTAR</button>
+                        <button id="formButtonDecline" type="button" onclick="ocultarVentana('newDeckWindow')">CANCELAR</button>
+                     </div>
+                  </form>
+               </div>
+            </div>
+         </div>
          
+
+         
+
+         <script>
+            //PEQUEÑA FUNCIÓN QUE HACE MOSTRAR LA VENTANA DE CREACIÓN DE NUEVO MAZO
+            const selector = document.getElementById("deckSelect");
+            selector.addEventListener('change', function()
+                {
+
+                    if (selector.options[selector.selectedIndex].text == "CREAR UN NUEVO MAZO...")
+                    {
+
+                        var ventanaEmergente = document.getElementById("newDeckWindow");
+                        ventanaEmergente.style.display = "flex";
+
+                    }
+
+                }
+            );
+
+         </script>
+
    </body> 

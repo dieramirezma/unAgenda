@@ -1142,6 +1142,12 @@ def editRemind():
 def flashcards():
     return render_template("flashcards.html")
 
+
+#Agregar Mazo Flashcards
+@app.route("/newDeck", methods=["GET", "POST"])
+def newDeck():
+    return ("work in progress")
+
 # Configuración de la clave secreta para las sesiones de usuario
 if __name__ == "__main__":
     app.secret_key = "prFlask"
