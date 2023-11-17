@@ -513,6 +513,13 @@ def login():
             cur = mysql.connection.cursor()
             _idUsuarioActual = session["idUsuario"]
 
+            # Agregar traza a la base de datos
+            cur.execute(
+            "INSERT INTO Traza (id_Usuario,nombre,descripcion, hora) VALUES (%s, %s, %s, %s)",
+            (session["idUsuario"],session["nombre"], "El usuario ha iniciado sesión", formatted_date),
+            )
+            mysql.connection.commit()
+
             cur.execute("SELECT nombreRecordatorio FROM recordatorios WHERE idUsuario = %s", (_idUsuarioActual,))
             resultados = cur.fetchall()
             nombreRecordatorio = [resultado["nombreRecordatorio"] for resultado in resultados]
