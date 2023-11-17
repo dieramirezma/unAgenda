@@ -3,7 +3,7 @@
    <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>unAgenda - Horario</title>
+      <title>unAgenda - Flashcards</title>
       <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&display=swap" rel="stylesheet">
       <link rel="stylesheet" href="{{url_for('static', filename='styles/flashcardsStyle.css')}}">
       <link rel="icon" href="{{url_for('static', filename='img/unAgenda1.ico')}}">
@@ -87,23 +87,31 @@
          <div class="newDeckWindow" id="newDeckWindow">
             <div id="newDeckForm">
                <div id="formBody">
-                  <form action="/newDeck" method="POST">
+                  <form action="/newDeck" method="POST" id = "actualForm1">
                      <h2 id="newDeckTitle">Agregar Mazo:</h2>
                      <br>
                      <label for="nameDeck" style="margin-bottom: 10px;">Nombre del Mazo:</label>
                      <br>
                      <input class="inputText" type="text" id="nameDeck" aria-describedby="text" name="nameDeck" required autocomplete="off">
-                     <br><br><br>
+                     <input class="inputText" type="hidden" id="nameDeck1" aria-describedby="text" name="nameDeck1" autocomplete="off">
+                     <input class="inputText2" type="hidden" id="answerFirstCard1" aria-describedby="text" name="answerFirstCard1" autocomplete="off" >
+                     <br>
+                     <input class="inputText2" type="hidden" id="questionFirstCard1" aria-describedby="text" name="questionFirstCard1" autocomplete="off" >
+                     <br>
 
-                     <label for="questionFirstCard" style="margin-bottom: 10px;">Pregunta de la Primera Tarjeta:</label>
+                     <label for="questionFirstCard" style="margin-bottom: 10px;" id = "labelFirstQuestion">Pregunta de la Primera Tarjeta:</label>
                      <br>
                      <input class="inputText" type="text" id="questionFirstCard" aria-describedby="text" name="questionFirstCard" required autocomplete="off">
                      <br><br>
                      
-                     <label for="answerFirstCard" style="margin-bottom: 10px;">Respuesta de la Primera Tarjeta:</label>
+                     <label for="answerFirstCard" style="margin-bottom: 10px;" id = "labelFirstAnswer">Respuesta de la Primera Tarjeta:</label>
                      <br>
                      <input class="inputText" type="text" id="answerFirstCard" aria-describedby="text" name="answerFirstCard" required autocomplete="off">
+                     
                      <br><br>
+
+                     
+                     
       
                      <div id="addRemindWindowButtons">
                         <button id="formButtonAccept" type="submit">ACEPTAR</button>

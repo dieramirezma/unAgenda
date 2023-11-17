@@ -1204,6 +1204,29 @@ def deleteFlashcard():
 
     return redirect(url_for('flashcards'))
 
+#Editar Tarjeta Flashcards
+@app.route("/editFlashcard", methods=["GET", "POST"])
+def editFlashcard():
+
+    nameDeck = request.form["nameDeck1"]
+    questionFirstCard = request.form["questionFirstCard"]
+    answerFirstCard = request.form["answerFirstCard"]
+    previousQuestionFirstCard = request.form["questionFirstCard1"]
+    previousAnswerFirstCard = request.form["answerFirstCard1"]
+
+    _idUsuarioActual = session["idUsuario"]
+
+    cur = mysql.connection.cursor()
+
+    #EDITAR TARJETA
+    cur.execute(
+        "UPDATE flashcards SET pista = %s, respuesta = %s WHERE nombreMazo = %s AND pista = %s AND respuesta = %s AND id_Usuario = %s", 
+        (questionFirstCard, answerFirstCard, nameDeck, previousQuestionFirstCard, previousAnswerFirstCard, _idUsuarioActual,)
+    )
+    mysql.connection.commit()
+
+    return redirect(url_for('flashcards'))
+
 # Configuración de la clave secreta para las sesiones de usuario
 if __name__ == "__main__":
     app.secret_key = "prFlask"

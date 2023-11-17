@@ -243,6 +243,19 @@
 
 }
 
+.inputText2 {
+
+    background: rgb(255, 255, 255);
+    color: white;
+    height: 0%;
+
+    border-radius: 10px;
+    border: none;
+
+    text-align: center;
+
+}
+
 #formButtonAccept {
 
     margin: 1rem;
