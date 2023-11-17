@@ -1176,6 +1176,27 @@ def newDeck():
 
     return redirect(url_for('flashcards'))
 
+#Borrar Tarjeta Flashcards
+@app.route("/deleteFlashcard", methods=["GET", "POST"])
+def deleteFlashcard():
+
+    nombreMazo = request.args.get("nombreMazo")
+    pregunta = request.args.get("pregunta")
+    _idUsuarioActual = session["idUsuario"]
+
+    cur = mysql.connection.cursor()
+
+    print(pregunta)
+
+    #BORRAR LA TARJETA CUYA PREGUNTA Y MAZO COINCIDAN
+    cur.execute(
+        "DELETE FROM flashcards WHERE nombreMazo = %s AND pista = %s AND id_Usuario = %s", 
+        (nombreMazo, pregunta, _idUsuarioActual,)
+    )
+    mysql.connection.commit()
+
+    return redirect(url_for('flashcards'))
+
 # Configuración de la clave secreta para las sesiones de usuario
 if __name__ == "__main__":
     app.secret_key = "prFlask"

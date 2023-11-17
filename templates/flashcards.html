@@ -70,7 +70,7 @@
 
                 <button id="addCardButton" >AGREGAR TARJETA</button>
                 <br>
-                <button id="editDeckButton" >EDITAR MAZO</button>
+                <button id="editDeckButton" onclick="mostrarVentana('editDeckWindow')">EDITAR MAZO</button>
                 <br><br><br>
                 <button id="studyDeckButton" >ESTUDIAR ESTE MAZO</button>
 
@@ -143,6 +143,12 @@
                      </div>
                   </form>
                </div>
+            </div>
+         </div>
+
+         <div class="editDeckWindow" id="editDeckWindow">
+            <div id="editDeckForm">
+               
             </div>
          </div>
          
@@ -239,11 +245,12 @@
                option.text = "CREAR UN NUEVO MAZO...";
                selector.add(option);
 
+               cargarTarjetas(totalFlashcards);
+
                
 
             });
 
-            //selector.addEventListener("change", alterarInterfaz("deckSelect", totalFlashcards));
 
          </script>
 
