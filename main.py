@@ -1140,13 +1140,41 @@ def editRemind():
 #Interfaz Flashcards
 @app.route("/flashcards", methods=["GET", "POST"])
 def flashcards():
-    return render_template("flashcards.html")
+
+    _idUsuarioActual = session["idUsuario"]
+    cur = mysql.connection.cursor()
+
+    cur.execute("SELECT nombreMazo, pista, respuesta, dia, mes, año FROM flashcards WHERE id_Usuario = %s", (_idUsuarioActual,))
+
+    resultados = cur.fetchall()
+    lista_de_listas = [list(fila.values()) for fila in resultados]
+
+    print(lista_de_listas)
+
+    return render_template("flashcards.html", flashcards = lista_de_listas)
 
 
 #Agregar Mazo Flashcards
 @app.route("/newDeck", methods=["GET", "POST"])
 def newDeck():
-    return ("work in progress")
+
+    nameDeck = request.form["nameDeck"]
+    questionFirstCard = request.form["questionFirstCard"]
+    answerFirstCard = request.form["answerFirstCard"]
+
+    _idUsuarioActual = session["idUsuario"]
+
+    cur = mysql.connection.cursor()
+
+        # Insertar el nuevo Mazo
+    cur.execute(
+        "INSERT INTO flashcards(id_Usuario, nombreMazo, pista, respuesta, dia, mes, año) VALUES (%s,%s,%s,%s,%s,%s,%s)", 
+        (_idUsuarioActual, nameDeck, questionFirstCard, answerFirstCard, 0, 0, 0,)
+    )
+    mysql.connection.commit()
+
+
+    return redirect(url_for('flashcards'))
 
 # Configuración de la clave secreta para las sesiones de usuario
 if __name__ == "__main__":

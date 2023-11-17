@@ -59,10 +59,10 @@
             <div class = "cardContainer">
 
                 <p>NOMBRE DEL MAZO</p>
-                <h1>NAME PLACEHOLDER</h1>
+                <h1 id = "nombreMazo">NAME PLACEHOLDER</h1>
                 <br>
                 <p>NÚMERO DE TARJETAS</p>
-                <h2>NUMBER PLACEHOLDER</h2>
+                <h2 id = "numeroTarjetas">NUMBER PLACEHOLDER</h2>
                 <br><br>
                 <p class="dateSentence">ÚLTIMA VEZ ESTUDIADO EN: </p><p id="dateText" class="dateSentence"> dd/mm/aa</p>
                 
@@ -76,12 +76,10 @@
 
             </div>
 
-            <select id="deckSelect" class="selector" name= deckSelect>
+            <select id="deckSelect" class="selector" name= deckSelect onchange= "alterarInterfaz('deckSelect', totalFlashcards)">
 
                 <!-- NOTE TO SELF: ESTA PARTE VA A NECESITAR UN SCRIPT QUE CARGUE TODOS LOS MAZOS -->
 
-                <option value="0" class="opcion">Name PlaceHolder</option>
-                <option value="-1" class="opcion">CREAR UN NUEVO MAZO...</option>
             </select>
 
          </div>
@@ -115,26 +113,138 @@
                </div>
             </div>
          </div>
+
+         <div class="firstDeckWindow" id="firstDeckWindow">
+            <div id="firstDeckForm">
+               <div id="formBody">
+                  <form action="/newDeck" method="POST">
+                     <h2 id="firstDeckTitle">¡Bienvenido a las Tarjetas Didácticas!</h2>
+                     <br>
+                     <p>Para empezar, tendrás que crear al menos un mazo. ¡Asegúrate de darle un buen nombre!</p>
+                     <br>
+                     <label for="nameDeck" style="margin-bottom: 10px;">Nombre del Mazo:</label>
+                     <br>
+                     <input class="inputText" type="text" id="nameDeckNew" aria-describedby="text" name="nameDeck" required autocomplete="off">
+                     <br><br><br>
+                     <p>Adicionalmente, tendrás que asignarle al menos una tarjeta a cada mazo. Deberás escoger una pregunta que quieras memorizar con su respectiva respuesta.</p>
+                     <br>
+                     <label for="questionFirstCard" style="margin-bottom: 10px;">Pregunta de la Primera Tarjeta:</label>
+                     <br>
+                     <input class="inputText" type="text" id="questionFirstCardNew" aria-describedby="text" name="questionFirstCard" required autocomplete="off">
+                     <br><br>
+                     
+                     <label for="answerFirstCard" style="margin-bottom: 10px;">Respuesta de la Primera Tarjeta:</label>
+                     <br>
+                     <input class="inputText" type="text" id="answerFirstCardNew" aria-describedby="text" name="answerFirstCard" required autocomplete="off">
+                     <br><br>
+      
+                     <div id="addRemindWindowButtons">
+                        <button id="formButtonAccept" type="submit">ACEPTAR</button>
+                     </div>
+                  </form>
+               </div>
+            </div>
+         </div>
          
 
-         
+         <!-- ZONA DE SCRIPTS DE CARGA DE BASES DE DATOS -->
 
          <script>
-            //PEQUEÑA FUNCIÓN QUE HACE MOSTRAR LA VENTANA DE CREACIÓN DE NUEVO MAZO
-            const selector = document.getElementById("deckSelect");
-            selector.addEventListener('change', function()
-                {
+            
+            var totalFlashcards = JSON.parse('{{ flashcards | tojson | safe }}');
+            //IMPORTANTE
 
-                    if (selector.options[selector.selectedIndex].text == "CREAR UN NUEVO MAZO...")
-                    {
+            //CON ESTO, QUEDAN CARGADAS TODAS LAS FLASHCARDS DEL USUARIO EN FORMA DE LISTA. CADA LISTA LLEVA ESTE FORMATO:
+            //lista[0] = nombreMazo
+            //lista[1] = pregunta
+            //lista[2] = respuesta
+            //lista[3] = dia
+            //lista[4] = mes
+            //lista[5] = año
 
-                        var ventanaEmergente = document.getElementById("newDeckWindow");
-                        ventanaEmergente.style.display = "flex";
+            
 
-                    }
+            //CARGAR EL CONTENIDO DEL PRIMER MAZO EN LA INTERFAZ
+            document.addEventListener("DOMContentLoaded", function () 
+            {
 
-                }
-            );
+               if (totalFlashcards.lenght != 0)
+               {
+
+                  var nombreMazo = document.getElementById("nombreMazo");
+                  var numeroTarjetas = document.getElementById("numeroTarjetas");
+                  var fechaEstudio = document.getElementById("dateText");
+
+                  nombreMazo.textContent = totalFlashcards[0][0];
+
+                  var contador = 0;
+                  for (var i = 0; i < totalFlashcards.length; i++)
+                  {
+
+                     if (totalFlashcards[i][0] == nombreMazo.textContent)
+                     {
+                        contador ++;
+                     }
+
+                  }
+
+                  numeroTarjetas.textContent = contador + " Tarjetas";
+
+                  if (totalFlashcards[0][3]== 0)
+                  {
+
+                     fechaEstudio.textContent = "Nunca"
+
+                  }
+                  else
+                  {
+
+                     fechaEstudio.textContent = totalFlashcards[0][3] + "/" + totalFlashcards[0][4] + "/" + totalFlashcards[0][5] 
+
+                  }
+               }
+               else
+               {
+
+                  //Esta función se ejecutará si el usuario no tiene ningún mazo creado, con lo cual se verá forzado a crear uno nuevo.
+                  var ventanaEmergente = document.getElementById("firstDeckWindow");
+                  ventanaEmergente.style.display = "flex";
+
+
+               }
+
+               const selector = document.getElementById("deckSelect");
+               var listaMazosRepetidos = [];
+
+               for (var i = 0; i < totalFlashcards.length; i++)
+               {
+
+                  listaMazosRepetidos.push(totalFlashcards[i][0]);
+
+               }
+
+               
+               var setMazos = new Set(listaMazosRepetidos);
+               var listaMazos = Array.from(setMazos);
+               for (var i = 0; i < listaMazos.length; i++)
+               {
+
+                  var option = document.createElement("option");
+                  option.text = listaMazos[i];
+                  
+                  selector.add(option);
+
+               }
+
+               var option = document.createElement("option");
+               option.text = "CREAR UN NUEVO MAZO...";
+               selector.add(option);
+
+               
+
+            });
+
+            //selector.addEventListener("change", alterarInterfaz("deckSelect", totalFlashcards));
 
          </script>
 
