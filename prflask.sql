@@ -18,6 +18,21 @@
 --
 -- Table structure for table `gruponotas`
 --
+DROP TABLE IF EXISTS `Traza`;
+CREATE TABLE `bk9yaw96cgi2zyhqfvda`.`Traza` (
+  `idTraza` INT NOT NULL AUTO_INCREMENT,
+  `id_Usuario` INT NULL,
+  `Nombre` VARCHAR(255) NULL,
+  `Descripcion` VARCHAR(255) NULL,
+  `Hora` VARCHAR(45) NULL,
+  PRIMARY KEY (`idTraza`),
+  INDEX `id_Usuario_idx` (`id_Usuario` ASC) VISIBLE,
+  CONSTRAINT `idUsuariotraza`
+    FOREIGN KEY (`id_Usuario`)
+    REFERENCES `bk9yaw96cgi2zyhqfvda`.`usuario` (`idUsuario`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
 
 DROP TABLE IF EXISTS `recordatorios`;
  SET character_set_client = utf8mb4 ;
