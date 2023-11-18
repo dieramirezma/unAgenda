@@ -879,17 +879,23 @@ def cuaderno():
         # Crear un cursor para la base de datos MySQL
         cur = mysql.connection.cursor()
 
-        # Insertar el nuevo Cuaderno
-        cur.execute(
-            "INSERT INTO cuaderno (id_usuario, nombreCuaderno, contenido, modoOscuro) VALUES (%s, %s, %s, %s)",
-            (session["idUsuario"], _nombreCuaderno, "Tus Nuevos Apuntes...", 0),
-        )
-        mysql.connection.commit()
-
         cur.execute(
         f"SELECT * FROM cuaderno WHERE id_usuario = {session['idUsuario']} AND nombreCuaderno = '{_nombreCuaderno}'"
         )
         notebook = cur.fetchall()
+
+        if len(notebook) <= 0:
+            # Insertar el nuevo Cuaderno
+            cur.execute(
+                "INSERT INTO cuaderno (id_usuario, nombreCuaderno, contenido, modoOscuro) VALUES (%s, %s, %s, %s)",
+                (session["idUsuario"], _nombreCuaderno, "Tus Nuevos Apuntes...", 0),
+            )
+            mysql.connection.commit()
+
+            cur.execute(
+            f"SELECT * FROM cuaderno WHERE id_usuario = {session['idUsuario']} AND nombreCuaderno = '{_nombreCuaderno}'"
+            )
+            notebook = cur.fetchall()
 
         return render_template("cuaderno.html",dark_mode=dark_mode, cuaderno=notebook[0])
         
@@ -898,14 +904,20 @@ def cuaderno():
     contenido = request.args.get("contenido")
     id_cuaderno = request.args.get("id")
     nombre_cuaderno = request.args.get("nombre")
+    borrar = request.args.get("borrar")
+
+    print(f'Contenido: {contenido}')
+    print(f'Id: {id_cuaderno}')
+    print(f'Nombre: {nombre_cuaderno}')
+    print(f'Borrar: {borrar}')
 
     db = mysql.connection.cursor()
     # print("Contenido 1: ", contenido)
-    if contenido != None and id_cuaderno != None and nombre_cuaderno != None:
+    if contenido != None and id_cuaderno != None and nombre_cuaderno != None and borrar == None:
         contenido = contenido.replace(',', '\n')
         contenido = contenido.replace('5hjis6754', '&')
         contenido = contenido.replace('5hjdf4754', ',')
-        
+        print("---------- ¡¡¡Entro!!! ----------")
         print(id_cuaderno, nombre_cuaderno)
 
         db.execute(
@@ -929,7 +941,11 @@ def cuaderno():
             mysql.connection.commit()
 
             print("---------- Se ha insertado exitosamente ----------")
-
+    elif id_cuaderno != None and nombre_cuaderno != None and borrar != None:
+        db.execute(
+        f"DELETE FROM cuaderno WHERE id_usuario = {session['idUsuario']} AND id_cuaderno = {id_cuaderno} AND nombreCuaderno = '{nombre_cuaderno}'"
+        )
+        mysql.connection.commit()
     # print(contenido)
 
     db.execute(

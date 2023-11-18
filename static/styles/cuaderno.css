@@ -200,6 +200,11 @@ form {
     border: rgb(89, 236, 108) solid 2px;
 }
 
+.btn-eliminar {
+    color: red;
+    border: red solid 2px;
+}
+
 .btn-cambiar:hover {
     background-color: rgb(64, 109, 192);
     color: white;
@@ -212,6 +217,11 @@ form {
 
 .btn-guardar:hover {
     background-color: rgb(89, 236, 108);
+    color: white;
+}
+
+.btn-eliminar:hover {
+    background-color: red;
     color: white;
 }
 
@@ -388,4 +398,28 @@ form {
 
     float: right;
 
+}
+
+.info {
+    font-size: 0.7em;
+    color: white;
+    border: white solid 2px;
+    padding: 4px 8px;
+    margin-bottom: 3rem;
+    border-radius: 6px;
+    display: none;
+}
+
+.info-success {
+    color: #66e966;
+    border-color: #66e966;
+    background-color: rgba(106, 250, 106, 0.3);
+    display: block;
+}
+
+.info-failure {
+    color: red;
+    border-color: red;
+    background-color: rgba(226, 79, 79, 0.3);
+    display: block;
 }
