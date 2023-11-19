@@ -43,6 +43,19 @@ mysql = MySQL(app)
 
 mail = Mail(app)
 
+def fecha_hora():
+    now = datetime.now(colombia_zona_horaria)
+    formatted_date = now.strftime("%Y-%m-%d %H:%M:%S")
+    currentYear = now.strftime("%Y")
+    currentMonth = now.strftime("%m")
+    currentDay = now.strftime("%d")
+    currentHour = now.strftime("%H")
+    currentMinute = now.strftime("%M")
+
+    currentTime = (currentYear, currentMonth, currentDay, currentHour, currentMinute)
+
+    return formatted_date, currentTime
+
 def obtener_fecha_hora(sublista):
     return datetime(sublista[1], sublista[2], sublista[3], sublista[4], sublista[5])
 
@@ -280,6 +293,8 @@ def addEvent():
         _horaInicio = request.form["horaInicio"]
         _horaFin = request.form["horaFin"]
 
+        formatted_date, currentTime = fecha_hora()
+
         # Crear un cursor para la base de datos MySQL
         cur = mysql.connection.cursor()
 
@@ -288,6 +303,12 @@ def addEvent():
             "INSERT INTO horario (idUsuario, evento, horaInicio, horaFin, diaSemana) VALUES (%s, %s, %s, %s, %s)",
             (session["idUsuario"], _nombreEvento, _horaInicio, _horaFin, _diaSemana),
         )
+        mysql.connection.commit()
+
+        cur.execute(
+            f"INSERT INTO Traza (id_Usuario, Nombre, Descripcion, Hora, Servicio) VALUES ({session['idUsuario']}, '{session['nombre']}', 'Ha creado el evento {_nombreEvento}', '{formatted_date}', 'Horario')"
+        )
+
         mysql.connection.commit()
 
         # Recuperar los Eventos del Usuario
@@ -363,6 +384,17 @@ def removeEvent():
             _idUsuarioActual,
         ),
     )
+    mysql.connection.commit()
+
+    formatted_date, currentTime = fecha_hora()
+
+        # Crear un cursor para la base de datos MySQL
+    cur = mysql.connection.cursor()
+
+    cur.execute(
+        f"INSERT INTO Traza (id_Usuario, Nombre, Descripcion, Hora, Servicio) VALUES ({session['idUsuario']}, '{session['nombre']}', 'Ha eliminado el evento {eventoSTR}', '{formatted_date}', 'Horario')"
+    )
+
     mysql.connection.commit()
 
     # Recuperar los Eventos del Usuario
