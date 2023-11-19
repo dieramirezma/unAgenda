@@ -547,8 +547,8 @@ def login():
 
             # Agregar traza a la base de datos
             cur.execute(
-            "INSERT INTO Traza (id_Usuario,nombre,descripcion, hora) VALUES (%s, %s, %s, %s)",
-            (session["idUsuario"],session["nombre"], "Ha iniciado sesión", formatted_date),
+            "INSERT INTO Traza (id_Usuario,nombre,descripcion, hora, servicio) VALUES (%s, %s, %s, %s,%s)",
+            (session["idUsuario"],session["nombre"], "Ha iniciado sesión", formatted_date, "Login"),
             )
             mysql.connection.commit()
 
@@ -640,6 +640,21 @@ def register():
             "INSERT INTO usuario (nombre, correo, contrasena) VALUES (%s, %s, %s)",
             (_nombre, _correo, password_hash),
         )
+        mysql.connection.commit()
+
+        #traza registro
+        now = datetime.now(colombia_zona_horaria)
+        formatted_date = now.strftime("%Y-%m-%d %H:%M:%S")
+        
+
+        cur = mysql.connection.cursor()
+        
+
+        # Agregar traza a la base de datos
+        cur.execute(
+        "INSERT INTO Traza (id_Usuario,nombre,descripcion, hora, servicio) VALUES (%s, %s, %s, %s,%s)",
+        (session["idUsuario"],_nombre, "Se ha Registrado Exitosamente", formatted_date, "Login"),
+         )
         mysql.connection.commit()
 
         cur.execute(
@@ -1273,6 +1288,25 @@ def editFlashcard():
     )
     mysql.connection.commit()
 
+    return redirect(url_for('flashcards'))
+
+@app.route("/cardAdd", methods=["GET", "POST"]) 
+def addCard():
+    nameDeck = request.form["nameDeckAdd"]
+    question = request.form["questionCard"]
+    answer = request.form["answerCard"]
+
+    _idUsuarioActual = session["idUsuario"]
+
+    cur = mysql.connection.cursor()
+
+    # ADD CARD TO DATABASE
+    cur.execute(
+        "INSERT INTO flashcards(id_Usuario, nombreMazo, pista, respuesta, dia, mes, año) VALUES (%s,%s,%s,%s,%s,%s,%s)", 
+        (_idUsuarioActual, nameDeck, question, answer, 0, 0, 0,)
+    )
+
+    mysql.connection.commit()
     return redirect(url_for('flashcards'))
 
 # Configuración de la clave secreta para las sesiones de usuario

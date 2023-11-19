@@ -1,6 +1,6 @@
 ## unAgenda - Ingesoft
 Proyecto junto con actividades a realizar; Ingeniería de Software, Universidad Nacional de Colombia. Desarrollado por:
-Iván Rengifo, John  Cortés, Sergio Perez, Juan Medina, Diego Maldonado, Anderson Chila & Andrés Hernández
+Iván Rengifo, John  Cortés, Sergio Perez, Diego Ramírez, Anderson Chila & Andrés Hernández
 
 
 # Instalación
