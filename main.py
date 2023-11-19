@@ -515,8 +515,8 @@ def login():
 
             # Agregar traza a la base de datos
             cur.execute(
-            "INSERT INTO Traza (id_Usuario,nombre,descripcion, hora) VALUES (%s, %s, %s, %s)",
-            (session["idUsuario"],session["nombre"], "Ha iniciado sesión", formatted_date),
+            "INSERT INTO Traza (id_Usuario,nombre,descripcion, hora) VALUES (%s, %s, %s, %s,%s)",
+            (session["idUsuario"],session["nombre"], "Ha iniciado sesión", formatted_date, "Login"),
             )
             mysql.connection.commit()
 
