@@ -98,22 +98,22 @@
             <div class="addRemindWindow" id="addRemindWindow">
                <div id="addRemindForm">
                   <div id="formBody">
-                     <form action="/remindAdd" method="POST">
+                     <form action="/remindAdd" method="POST" >
                         <h2 id="addRemindTitle">Agrega un nuevo Recordatorio:</h2>
                         <br>
                         <label for="nameRemind" style="margin-bottom: 10px;">Nombre del Recordatorio:</label>
                         <br>
-                        <input class="inputText" type="text" id="nameRemind" aria-describedby="text" name="nameRemind" required>
+                        <input class="inputText" type="text" id="nameRemind" aria-describedby="text" name="nameRemind" required title="">
                         <div class="tooltip-text">Ejemplo de nombre: "Sprint review"</div>
                         <br><br><br>
                         
                         <label for="dateRemind" style="margin-bottom: 10px;">Fecha:</label>
-                        <input class="selector" type="date" id="fecha" class="selector" name="dateRemind" min="{{ currentTimeList[0]}}-{{currentTimeList[1]}}-{{currentTimeList[2] }}" required />
+                        <input class="selector" type="date" id="fecha" class="selector" name="dateRemind" min="{{ currentTimeList[0]}}-{{currentTimeList[1]}}-{{currentTimeList[2] }}" required title=""/>
                         <div class="tooltip-text">Solo se permiten fechas mayores o iguales a la actual</div>
                         <br><br>
                         
                         <label for="timeRemind" style="margin-bottom: 10px;">Hora:</label>
-                        <input class="selector" type="time" id="hora" class="selector" name="timeRemind" min="{{ currentTimeList[3] }}:{{ currentTimeList[4] }}"  required />
+                        <input class="selector" type="time" id="hora" class="selector" name="timeRemind" min="{{ currentTimeList[3] }}:{{ currentTimeList[4] }}"  required title=""/>
                         <div class="tooltip-text">Solo se permiten horas mayores o iguales a la actual</div>
                         <br><br>
          
