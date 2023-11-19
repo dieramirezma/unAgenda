@@ -211,7 +211,7 @@
 
 }
 
-.newDeckWindow {
+.newDeckWindow, .addCardWindow {
     display: none;
     position: fixed;
     top: 0;
@@ -223,7 +223,7 @@
     align-items: center;
 }
 
-#newDeckForm {
+#newDeckForm, #addCardForm {
     background: white;
     padding: 20px;
     border-radius: 5px;

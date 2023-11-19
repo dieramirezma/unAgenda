@@ -68,7 +68,7 @@
                 
                 <br><br>
 
-                <button id="addCardButton" >AGREGAR TARJETA</button>
+                <button id="addCardButton" onclick="mostrarVentanaAddCard('addCardWindow')">AGREGAR TARJETA</button>
                 <br>
                 <button id="editDeckButton" onclick="mostrarVentana('editDeckWindow')">EDITAR MAZO</button>
                 <br><br><br>
@@ -109,10 +109,6 @@
                      <input class="inputText" type="text" id="answerFirstCard" aria-describedby="text" name="answerFirstCard" required autocomplete="off">
                      
                      <br><br>
-
-                     
-                     
-      
                      <div id="addRemindWindowButtons">
                         <button id="formButtonAccept" type="submit">ACEPTAR</button>
                         <button id="formButtonDecline" type="button" onclick="ocultarVentana('newDeckWindow')">CANCELAR</button>
@@ -121,7 +117,7 @@
                </div>
             </div>
          </div>
-
+         
          <div class="firstDeckWindow" id="firstDeckWindow">
             <div id="firstDeckForm">
                <div id="formBody">
@@ -145,7 +141,7 @@
                      <br>
                      <input class="inputText" type="text" id="answerFirstCardNew" aria-describedby="text" name="answerFirstCard" required autocomplete="off">
                      <br><br>
-      
+                     
                      <div id="addRemindWindowButtons">
                         <button id="formButtonAccept" type="submit">ACEPTAR</button>
                      </div>
@@ -153,21 +149,50 @@
                </div>
             </div>
          </div>
+         
+         <!-- Add card -->
+         
+         <div class="addCardWindow" id="addCardWindow">
+            <div id="addCardForm">
+               <div id="formBody">
+                  <form action="/cardAdd" method="POST">
+                     <h2 id="firstDeckTitle">Agrega una nueva tarjeta</h2>
+                     <br>
+                     <label for="questionFirstCard" style="margin-bottom: 10px;" id = "labelFirstQuestion">Pregunta de la Tarjeta:</label>
+                     <br>
+                     <input class="inputText" type="text" id="questionFirstCard" aria-describedby="text" name="questionCard" required autocomplete="off">
+                     <br><br>
+                     
+                     <label for="answerFirstCard" style="margin-bottom: 10px;" id = "labelFirstAnswer">Respuesta de la Tarjeta:</label>
+                     <br>
+                     <input class="inputText" type="text" id="answerFirstCard" aria-describedby="text" name="answerCard" required autocomplete="off">
+                     
+                     <br><br>
+                     <input type="hidden" name="nameDeckAdd" id="nameDeckAdd">
+                     <div id="addRemindWindowButtons">
+                        <button id="formButtonAccept" type="submit">ACEPTAR</button>
+                        <button id="formButtonDecline" type="button" onclick="ocultarVentana('addCardWindow')">CANCELAR</button>
+                     </div>
+                  </form>
 
+               </div>
+            </div>
+         </div>
+         
          <div class="editDeckWindow" id="editDeckWindow">
             <div id="editDeckForm">
                
             </div>
          </div>
          
-
+         
          <!-- ZONA DE SCRIPTS DE CARGA DE BASES DE DATOS -->
-
+         
          <script>
             
             var totalFlashcards = JSON.parse('{{ flashcards | tojson | safe }}');
             //IMPORTANTE
-
+            
             //CON ESTO, QUEDAN CARGADAS TODAS LAS FLASHCARDS DEL USUARIO EN FORMA DE LISTA. CADA LISTA LLEVA ESTE FORMATO:
             //lista[0] = nombreMazo
             //lista[1] = pregunta
@@ -175,21 +200,22 @@
             //lista[3] = dia
             //lista[4] = mes
             //lista[5] = año
-
             
-
+            
+            
             //CARGAR EL CONTENIDO DEL PRIMER MAZO EN LA INTERFAZ
             document.addEventListener("DOMContentLoaded", function () 
             {
                if (totalFlashcards.length != 0)
                {
-
+                  
                   var nombreMazo = document.getElementById("nombreMazo");
                   var numeroTarjetas = document.getElementById("numeroTarjetas");
                   var fechaEstudio = document.getElementById("dateText");
-
+                  
+                  
                   nombreMazo.textContent = totalFlashcards[0][0];
-
+                  
                   var contador = 0;
                   for (var i = 0; i < totalFlashcards.length; i++)
                   {

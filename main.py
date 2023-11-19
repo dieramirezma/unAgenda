@@ -1243,6 +1243,25 @@ def editFlashcard():
 
     return redirect(url_for('flashcards'))
 
+@app.route("/cardAdd", methods=["GET", "POST"]) 
+def addCard():
+    nameDeck = request.form["nameDeckAdd"]
+    question = request.form["questionCard"]
+    answer = request.form["answerCard"]
+
+    _idUsuarioActual = session["idUsuario"]
+
+    cur = mysql.connection.cursor()
+
+    # ADD CARD TO DATABASE
+    cur.execute(
+        "INSERT INTO flashcards(id_Usuario, nombreMazo, pista, respuesta, dia, mes, año) VALUES (%s,%s,%s,%s,%s,%s,%s)", 
+        (_idUsuarioActual, nameDeck, question, answer, 0, 0, 0,)
+    )
+
+    mysql.connection.commit()
+    return redirect(url_for('flashcards'))
+
 # Configuración de la clave secreta para las sesiones de usuario
 if __name__ == "__main__":
     app.secret_key = "prFlask"
