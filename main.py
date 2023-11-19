@@ -610,6 +610,21 @@ def register():
         )
         mysql.connection.commit()
 
+        #traza registro
+        now = datetime.now(colombia_zona_horaria)
+        formatted_date = now.strftime("%Y-%m-%d %H:%M:%S")
+        
+
+        cur = mysql.connection.cursor()
+        
+
+        # Agregar traza a la base de datos
+        cur.execute(
+        "INSERT INTO Traza (id_Usuario,nombre,descripcion, hora, servicio) VALUES (%s, %s, %s, %s,%s)",
+        (session["idUsuario"],_nombre, "Se ha Registrado Exitosamente", formatted_date, "Login"),
+         )
+        mysql.connection.commit()
+
         cur.execute(
             "SELECT * FROM usuario WHERE correo = %s AND contrasena = %s",
             (_correo, password_hash),
