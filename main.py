@@ -1172,8 +1172,6 @@ def flashcards():
     resultados = cur.fetchall()
     lista_de_listas = [list(fila.values()) for fila in resultados]
 
-    print(lista_de_listas)
-
     return render_template("flashcards.html", flashcards = lista_de_listas)
 
 
@@ -1261,6 +1259,26 @@ def addCard():
 
     mysql.connection.commit()
     return redirect(url_for('flashcards'))
+
+@app.route('/saveStudyDate', methods=['POST'])
+def saveStudyDate():
+    receivedDate = request.args.get('date')
+    receivedDeck = request.args.get('deck')
+    
+    cur = mysql.connection.cursor()
+
+    # Split date
+    receivedDate = receivedDate.split("/")
+    
+    # Update study date of deck
+    cur.execute(
+        "UPDATE flashcards SET dia = %s, mes = %s, año = %s WHERE nombreMazo = %s", 
+        (receivedDate[0], receivedDate[1], receivedDate[2], receivedDeck,)
+    )
+
+    mysql.connection.commit()
+    
+    return 'Fecha y mazo recibidos correctamente'
 
 # Configuración de la clave secreta para las sesiones de usuario
 if __name__ == "__main__":

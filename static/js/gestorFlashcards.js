@@ -4,9 +4,13 @@ function ocultarVentana(elementId) {
     ventanaEmergente.style.display = "none";
   }
 
+function mostrarVentanaSimple(elementId, displayType = "flex") {
+  var ventanaEmergente = document.getElementById(elementId);
+  ventanaEmergente.style.display = displayType;
+}
+
 function mostrarVentanaAddCard(elementId) {
-    var ventanaEmergente = document.getElementById(elementId);
-    ventanaEmergente.style.display = "flex";
+    mostrarVentanaSimple(elementId);
     var nombreMazo = document.getElementById("nombreMazo");
     console.log(nombreMazo.textContent);
     document.getElementById('nameDeckAdd').value = nombreMazo.textContent;
