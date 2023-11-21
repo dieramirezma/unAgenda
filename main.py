@@ -13,6 +13,8 @@ import pytz
 
 colombia_zona_horaria = pytz.timezone('America/Bogota')
 
+actualizado_horario = False
+
 # Cargar variables de entorno para las credenciales
 MYSQL_PASSWORD = os.environ.get("MYSQL_PASSWORD_UNAGENDA")
 EMAIL_PASSWORD = os.environ.get("EMAIL_PASSWORD_UNAGENDA")
@@ -42,6 +44,19 @@ app.config["MAIL_DEFAULT_SENDER"] = "unagenda.of@gmail.com"
 mysql = MySQL(app)
 
 mail = Mail(app)
+
+def fecha_hora():
+    now = datetime.now(colombia_zona_horaria)
+    formatted_date = now.strftime("%Y-%m-%d %H:%M:%S")
+    currentYear = now.strftime("%Y")
+    currentMonth = now.strftime("%m")
+    currentDay = now.strftime("%d")
+    currentHour = now.strftime("%H")
+    currentMinute = now.strftime("%M")
+
+    currentTime = (currentYear, currentMonth, currentDay, currentHour, currentMinute)
+
+    return formatted_date, currentTime
 
 def obtener_fecha_hora(sublista):
     return datetime(sublista[1], sublista[2], sublista[3], sublista[4], sublista[5])
@@ -268,6 +283,8 @@ def schedule():
 
 @app.route("/eventAdd", methods=["GET", "POST"])
 def addEvent():
+    global actualizado_horario
+
     # Verificar si se ha enviado un formulario POST
     if (
         request.method == "POST"
@@ -280,6 +297,8 @@ def addEvent():
         _horaInicio = request.form["horaInicio"]
         _horaFin = request.form["horaFin"]
 
+        formatted_date, currentTime = fecha_hora()
+
         # Crear un cursor para la base de datos MySQL
         cur = mysql.connection.cursor()
 
@@ -289,6 +308,19 @@ def addEvent():
             (session["idUsuario"], _nombreEvento, _horaInicio, _horaFin, _diaSemana),
         )
         mysql.connection.commit()
+
+        if actualizado_horario:
+            cur.execute(
+                f"INSERT INTO Traza (id_Usuario, Nombre, Descripcion, Hora, Servicio) VALUES ({session['idUsuario']}, '{session['nombre']}', 'Ha editado el evento {_nombreEvento}', '{formatted_date}', 'Horario')"
+            )
+        else:
+            cur.execute(
+                f"INSERT INTO Traza (id_Usuario, Nombre, Descripcion, Hora, Servicio) VALUES ({session['idUsuario']}, '{session['nombre']}', 'Ha creado el evento {_nombreEvento}', '{formatted_date}', 'Horario')"
+            )
+
+        mysql.connection.commit()
+
+        actualizado_horario = False
 
         # Recuperar los Eventos del Usuario
 
@@ -365,6 +397,17 @@ def removeEvent():
     )
     mysql.connection.commit()
 
+    formatted_date, currentTime = fecha_hora()
+
+        # Crear un cursor para la base de datos MySQL
+    cur = mysql.connection.cursor()
+
+    cur.execute(
+        f"INSERT INTO Traza (id_Usuario, Nombre, Descripcion, Hora, Servicio) VALUES ({session['idUsuario']}, '{session['nombre']}', 'Ha eliminado el evento {eventoSTR}', '{formatted_date}', 'Horario')"
+    )
+
+    mysql.connection.commit()
+
     # Recuperar los Eventos del Usuario
     cur.execute("SELECT evento FROM horario WHERE idUsuario = %s", (_idUsuarioActual,))
     resultados = cur.fetchall()
@@ -398,6 +441,8 @@ def removeEvent():
 
 @app.route("/eventRemove2", methods=["GET", "POST"])
 def removeEvent2():
+    global actualizado_horario
+
     eventoSTR = request.args.get("eventoSTR")
     diaSTR = request.args.get("diaSTR")
     horaInicioSTR = request.args.get("horaInicioSTR")
@@ -452,6 +497,8 @@ def removeEvent2():
     )
     resultados = cur.fetchall()
     diasSemana = [resultado["diaSemana"] for resultado in resultados]
+
+    actualizado_horario = True
 
     return render_template(
         "schedule.html",
@@ -608,6 +655,21 @@ def register():
             "INSERT INTO usuario (nombre, correo, contrasena) VALUES (%s, %s, %s)",
             (_nombre, _correo, password_hash),
         )
+        mysql.connection.commit()
+
+        #traza registro
+        now = datetime.now(colombia_zona_horaria)
+        formatted_date = now.strftime("%Y-%m-%d %H:%M:%S")
+        
+
+        cur = mysql.connection.cursor()
+        
+
+        # Agregar traza a la base de datos
+        cur.execute(
+        "INSERT INTO Traza (id_Usuario,nombre,descripcion, hora, servicio) VALUES (%s, %s, %s, %s,%s)",
+        (session["idUsuario"],_nombre, "Se ha Registrado Exitosamente", formatted_date, "Login"),
+         )
         mysql.connection.commit()
 
         cur.execute(
@@ -870,8 +932,8 @@ dark_mode = False
 @app.route("/cuaderno", methods=["POST", "GET"])
 @login_required
 def cuaderno():
-
     if (request.method == "POST"):
+        formatted_date, currentTime = fecha_hora()
         # Obtener el Evento, las horas de inicio y fin, y el día
         _nombreCuaderno = request.form["nombreCuaderno"]
         # print("Nombre cauderno: ", _nombreCuaderno)
@@ -897,6 +959,12 @@ def cuaderno():
             )
             notebook = cur.fetchall()
 
+            # Agregar traza a la base de datos
+            cur.execute(
+                f"INSERT INTO Traza (id_Usuario,nombre,descripcion, hora, servicio) VALUES ({session['idUsuario']}, '{session['nombre']}', 'Ha creado el cuaderno {_nombreCuaderno}', '{formatted_date}', 'Cuaderno')"
+            )
+            mysql.connection.commit()
+
         return render_template("cuaderno.html",dark_mode=dark_mode, cuaderno=notebook[0])
         
 
@@ -914,6 +982,8 @@ def cuaderno():
     db = mysql.connection.cursor()
     # print("Contenido 1: ", contenido)
     if contenido != None and id_cuaderno != None and nombre_cuaderno != None and borrar == None:
+        formatted_date, currentTime = fecha_hora()
+
         contenido = contenido.replace(',', '\n')
         contenido = contenido.replace('5hjis6754', '&')
         contenido = contenido.replace('5hjdf4754', ',')
@@ -931,6 +1001,11 @@ def cuaderno():
             )
             mysql.connection.commit()
 
+            db.execute(
+                f"INSERT INTO Traza (id_Usuario, nombre, descripcion, hora, servicio) VALUES ({session['idUsuario']}, '{session['nombre']}', 'Ha editado el cuaderno {nombre_cuaderno}', '{formatted_date}', 'Cuaderno')"
+            )
+            mysql.connection.commit()
+
             print("---------- Actualizado con éxito ----------")
 
         else:
@@ -942,8 +1017,15 @@ def cuaderno():
 
             print("---------- Se ha insertado exitosamente ----------")
     elif id_cuaderno != None and nombre_cuaderno != None and borrar != None:
+        formatted_date, currentTime = fecha_hora()
+
         db.execute(
         f"DELETE FROM cuaderno WHERE id_usuario = {session['idUsuario']} AND id_cuaderno = {id_cuaderno} AND nombreCuaderno = '{nombre_cuaderno}'"
+        )
+        mysql.connection.commit()
+
+        db.execute(
+            f"INSERT INTO Traza (id_Usuario, nombre, descripcion, hora, servicio) VALUES ({session['idUsuario']}, '{session['nombre']}', 'Ha eliminado el cuaderno {nombre_cuaderno}', '{formatted_date}', 'Cuaderno')"
         )
         mysql.connection.commit()
     # print(contenido)
@@ -973,18 +1055,25 @@ def cuaderno():
     return render_template("cuaderno.html",dark_mode=dark_mode, cuaderno=cuaderno[0])
 @app.route('/obtener_cuadernos', methods=['GET'])
 def obtener_cuadernos():
+    formatted_date, currentTime = fecha_hora()
 
     # Realiza una consulta a la base de datos para obtener la lista de cuadernos
     cur = mysql.connection.cursor()
     cur.execute("SELECT nombreCuaderno, contenido, id_cuaderno  FROM cuaderno WHERE id_usuario = %s", (session['idUsuario'],))
     cuadernos = cur.fetchall()
-    cur.close()
     # Realiza una consulta a la base de datos para obtener la lista de cuadernos
     
     cuadernos_json = [{'nombreCuaderno': cuaderno['nombreCuaderno'],'contenido':cuaderno['contenido'], 'id_cuaderno':cuaderno['id_cuaderno'] } for cuaderno in cuadernos]
 
     # Devuelve la lista de cuadernos como JSON
     # return jsonify(cuadernos)
+
+    cur.execute(
+        f"INSERT INTO Traza (id_Usuario, nombre, descripcion, hora, servicio) VALUES ({session['idUsuario']}, '{session['nombre']}', 'Ha cambiado de cuaderno', '{formatted_date}', 'Cuaderno')"
+    )
+    mysql.connection.commit()
+    cur.close()
+
     return jsonify(cuadernos_json)
 @app.route('/toggle_dark_mode')
 def toggle_dark_mode():
@@ -1020,7 +1109,8 @@ def cambiar_cuaderno():
     db = mysql.connection.cursor()
     db.execute(f"SELECT * FROM cuaderno WHERE id_usuario = {session['idUsuario']}")
     cuadernos = db.fetchall()
-    
+
+    print("---------- Se ha cambiado el cuaderno ----------")    
     
     return render_template("cuaderno.html", cuadernos=cuadernos)
 
