@@ -206,7 +206,6 @@ img {
   flex: 0 0 auto;
   width: 100%;
   padding-top: 20px;
-  z-index:-1;
 }
 
 
@@ -654,6 +653,7 @@ img {
 
 .mt-4 {
   margin-top: 1.5rem !important;
+  z-index: 1;
 }
 
 .me-1 {
