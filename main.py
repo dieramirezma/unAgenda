@@ -1275,12 +1275,22 @@ def newDeck():
 
     _idUsuarioActual = session["idUsuario"]
 
+    now = datetime.now(colombia_zona_horaria)
+    formatted_date = now.strftime("%Y-%m-%d %H:%M:%S")
+
     cur = mysql.connection.cursor()
 
         # Insertar el nuevo Mazo
     cur.execute(
         "INSERT INTO flashcards(id_Usuario, nombreMazo, pista, respuesta, dia, mes, año) VALUES (%s,%s,%s,%s,%s,%s,%s)", 
         (_idUsuarioActual, nameDeck, questionFirstCard, answerFirstCard, 0, 0, 0,)
+    )
+    mysql.connection.commit()
+
+    # Agregar traza a la base de datos
+    cur.execute(
+        "INSERT INTO Traza (id_Usuario,nombre,descripcion, hora, servicio) VALUES (%s, %s, %s, %s,%s)",
+        (session["idUsuario"],session["nombre"], "Ha creado el mazo " + nameDeck, formatted_date, "Tarjetas Didácticas"),
     )
     mysql.connection.commit()
 
@@ -1297,12 +1307,22 @@ def deleteFlashcard():
 
     cur = mysql.connection.cursor()
 
+    now = datetime.now(colombia_zona_horaria)
+    formatted_date = now.strftime("%Y-%m-%d %H:%M:%S")
+
     print(pregunta)
 
     #BORRAR LA TARJETA CUYA PREGUNTA Y MAZO COINCIDAN
     cur.execute(
         "DELETE FROM flashcards WHERE nombreMazo = %s AND pista = %s AND id_Usuario = %s", 
         (nombreMazo, pregunta, _idUsuarioActual,)
+    )
+    mysql.connection.commit()
+
+    # Agregar traza a la base de datos
+    cur.execute(
+        "INSERT INTO Traza (id_Usuario,nombre,descripcion, hora, servicio) VALUES (%s, %s, %s, %s,%s)",
+        (session["idUsuario"],session["nombre"], "Ha borrado una tarjeta del mazo " + nombreMazo, formatted_date, "Tarjetas Didácticas"),
     )
     mysql.connection.commit()
 
@@ -1322,10 +1342,20 @@ def editFlashcard():
 
     cur = mysql.connection.cursor()
 
+    now = datetime.now(colombia_zona_horaria)
+    formatted_date = now.strftime("%Y-%m-%d %H:%M:%S")
+
     #EDITAR TARJETA
     cur.execute(
         "UPDATE flashcards SET pista = %s, respuesta = %s WHERE nombreMazo = %s AND pista = %s AND respuesta = %s AND id_Usuario = %s", 
         (questionFirstCard, answerFirstCard, nameDeck, previousQuestionFirstCard, previousAnswerFirstCard, _idUsuarioActual,)
+    )
+    mysql.connection.commit()
+
+    # Agregar traza a la base de datos
+    cur.execute(
+        "INSERT INTO Traza (id_Usuario,nombre,descripcion, hora, servicio) VALUES (%s, %s, %s, %s,%s)",
+        (session["idUsuario"],session["nombre"], "Ha editado una tarjeta del mazo " + nameDeck, formatted_date, "Tarjetas Didácticas"),
     )
     mysql.connection.commit()
 
@@ -1341,11 +1371,21 @@ def addCard():
 
     cur = mysql.connection.cursor()
 
+    now = datetime.now(colombia_zona_horaria)
+    formatted_date = now.strftime("%Y-%m-%d %H:%M:%S")
+
     # ADD CARD TO DATABASE
     cur.execute(
         "INSERT INTO flashcards(id_Usuario, nombreMazo, pista, respuesta, dia, mes, año) VALUES (%s,%s,%s,%s,%s,%s,%s)", 
         (_idUsuarioActual, nameDeck, question, answer, 0, 0, 0,)
     )
+
+    # Agregar traza a la base de datos
+    cur.execute(
+        "INSERT INTO Traza (id_Usuario,nombre,descripcion, hora, servicio) VALUES (%s, %s, %s, %s,%s)",
+        (session["idUsuario"],session["nombre"], "Ha creado una tarjeta para el mazo " + nameDeck, formatted_date, "Tarjetas Didácticas"),
+    )
+    mysql.connection.commit()
 
     mysql.connection.commit()
     return redirect(url_for('flashcards'))
