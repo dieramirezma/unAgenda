@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+         <h1>Recuperación</h1>
+         <p>Recibirás un enlace de recuperacion vía e-mail</p>
+         {% with messages = get_flashed_messages() %}
+         {% if messages %}
+             <div class="custom-message-box">
+                 <ul>
+                     {% for message in messages %}
+                         <li>{{ message }}</li>
+                     {% endfor %}
+                 </ul>
+             </div>
+         {% endif %}
+     {% endwith %} 
+    <form method="POST" action="/recuperacion">
+        <input type="email" name="recipient" id="exampleInputEmail1" aria-describedby="emailHelp"  name="txtEmail" placeholder="Correo electrónico" required="required" />
+            <button type="submit" class="btn btn-primary btn-block btn-large">Enviar</button>
+         </form>
+         
+         <div style="padding-top: 20px;">
+            <a href="/">&#10229; Volver</a> 
+         </div>
+         {% endblock %}

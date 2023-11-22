@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+<style>
+    .custom-message-box {
+    background-color: #ffcccc; /* Fondo rojo claro */
+    border: 1px solid #ff0000; /* Borde rojo */
+    padding: 10px; /* Espaciado interno */
+    margin-bottom: 10px; /* Margen inferior */
+    border-radius: 5px; /* Esquinas redondeadas */
+    color: #ff0000; /* Color de texto rojo */
+}
+</style>
+{% block content %}
+         <h1>Recuperación</h1>
+         {% with messages = get_flashed_messages() %}
+         {% if messages %}
+             <div class="custom-message-box">
+                 <ul>
+                     {% for message in messages %}
+                         <li>{{ message }}</li>
+                     {% endfor %}
+                 </ul>
+             </div>
+         {% endif %}
+     {% endwith %}     
+         <form method="POST">
+            <label for="new_password">Nueva Contraseña:</label>
+            <input type="password" name="new_password" id="new_password" required>
+            <button type="submit" class="btn btn-primary btn-block btn-large">Cambiar contraseña</button>
+        </form>
+         
+         <div style="padding-top: 20px;">
+            <a href="/">&#10229; Volver</a> 
+         </div>
+         {% endblock %}

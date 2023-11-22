@@ -1,0 +1,596 @@
+*
+{
+
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+
+}
+
+.header
+{
+
+    width: 100%;
+    height: 100vh;
+
+    max-width: 100%;
+    max-height: 100%;
+
+    background-image: url('/static/img/background.png');
+    background-position: center;
+    background-size: cover;
+
+    overflow: hidden;
+
+}
+
+.menuSideBar
+{
+
+    background-color: rgba(169, 169, 169, .5);
+    width: 30%;
+    height: 100%;
+
+    float: left;
+    text-align: center;
+
+
+}
+
+#unAgendaLabel
+{
+
+    max-width: 100%;
+
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-top: 2rem;
+
+}
+
+.selectedIndexBox
+{
+
+    max-width: 100%;
+    margin: auto;
+
+    transition: background-color 0.3s ease;
+
+    width: 300px;
+
+    padding-left: 1%;
+    padding-right: 1rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    border-radius: 10px;
+
+    text-align: center;
+
+}
+
+.selectedIndexBox:hover
+{
+
+    background-color: rgba(0, 0, 0, 0.2);
+
+}
+
+.iconMenu
+{
+
+    max-width: 100%;
+    margin: auto;
+
+}
+
+.welcomeText
+{
+    
+    color: white;
+    width: 70%;
+    float: right;
+    height: 20%;
+
+    padding-left: 2rem;
+
+}
+
+.buttonsArea
+{
+
+    width: 50%;
+    max-width: 50%;
+    float: left;
+    overflow-y: auto;
+    height: 80%;
+
+}
+
+.buttonsFirstRow
+{
+
+    text-align: center;
+
+}
+
+.buttonCalendar
+{
+
+    max-width: 100%;
+
+    background-color: rgb(153, 153, 153, 0.7);
+    transition: box-shadow 0.3s ease;
+
+    width: 200px;
+    text-align: center;
+    border-radius: 10px;
+    margin-left: 2rem;
+    margin-right: 2rem;
+
+    float: left;
+
+}
+
+.buttonCalculator
+{
+
+    max-width: 100%;
+
+    background-color: rgb(153, 153, 153, 0.7);
+    transition: box-shadow 0.3s ease;
+
+    width: 200px;
+    text-align: center;
+    border-radius: 10px;
+    margin-left: 2rem;
+    margin-right: 2rem;
+
+    float: left;
+
+}
+
+
+
+.buttonCalendar:hover
+{
+
+    box-shadow: 0 0.2rem 0.6rem rgba(255, 255, 255, 0.3);
+
+}
+
+
+
+.buttonNotes
+{
+
+    max-width: 100%;
+
+    background-color: rgb(153, 153, 153, 0.7);
+    transition: box-shadow 0.3s ease;
+
+    width: 200px;
+    text-align: center;
+    border-radius: 10px;
+    margin-top: 1rem;
+    margin-left: 2rem;
+    margin-right: 2rem;
+
+    float: left;
+
+}
+
+.buttonNotes:hover
+{
+
+    box-shadow: 0 0.2rem 0.6rem rgba(255, 255, 255, 0.3);
+
+}
+
+.buttonCalculator:hover
+{
+
+    box-shadow: 0 0.2rem 0.6rem rgba(255, 255, 255, 0.3);
+
+}
+
+#calendarImage
+{
+
+    max-width: 100%;
+
+}
+
+#instructionLabel
+{
+
+    color: white;
+
+    padding-left: 2rem;
+
+}
+
+#instructionLabel2
+{
+
+    color: white;
+
+    padding-left: 2rem;
+
+}
+
+.nonMenuContent
+{
+
+    width: 70%;
+    height: 100%;
+
+    float: right;
+
+
+}
+
+.alertsArea
+{
+
+    width: 49.9%;
+
+    float: right;
+    height: 80%;
+    overflow-y: auto;
+
+}
+
+.separator 
+{
+    width: 0.1%; 
+    height: 100%;
+    background-color: rgb(255, 255, 255); 
+    float: left; 
+}
+
+#newAlert
+{padding-left: 1rem;/* color: rgb(192, 192, 192); */transition: color 0.1s ease;float: left;}
+
+#newAlert:hover
+{
+    cursor: pointer;
+}
+
+#deleteAlert
+{/* padding-right: 2rem; *//* color: rgb(192, 192, 192); */transition: color 0.1s ease;float: right;}
+
+#deleteAlert:hover
+{
+    cursor: pointer;
+}
+
+.lastAlertBox
+{
+
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 0.7rem;
+    padding-bottom: 0.7rem;
+
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;   
+
+    color: white;
+
+    background-color: rgba(77, 77, 77, 0.432);
+    border-radius: 1px;
+
+}
+
+#seeAlerts
+{/* padding-right: 2rem; *//* color: rgb(100, 206, 200); */transition: color 0.2s ease;float: right;}
+
+#seeAlerts:hover
+{
+    cursor: pointer;
+}
+
+
+#editAlerts {/* padding-left: 2rem; *//* color: rgb(206, 183, 100); */transition: color 0.2s ease;float: left;}
+
+#editAlerts:hover {
+
+    cursor: pointer;
+}
+.seeEventsWindow {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+#seeEventsContent{
+    width: 60%;
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+#deleteEventsContent {
+    width: 60%;
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.alertBoxEventDiv {
+
+    overflow-y: auto;
+    height: 25rem;
+    max-height: 25rem;
+
+}
+
+.alertBoxContentDiv{
+    text-align: left;
+    padding: 1rem;
+    width: 100%;
+    justify-content: center; 
+
+}
+
+.alertBoxContentDetails{
+
+    font-style: italic;
+    color: darkgray;
+
+}
+
+.acceptButton {
+
+    margin: 1rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+
+    border-radius: 10px;
+    background-color: rgb(163, 218, 163);
+
+    float: right;
+
+}
+
+.acceptButton:hover {
+
+    cursor: pointer;
+
+}
+
+.custom-span {
+    /* Aquí puedes definir los estilos personalizados para los elementos span */
+    color: rgb(100, 206, 200);
+    /* Ejemplo: color de texto en rojo */
+    font-weight: normal;
+    /* Ejemplo: estilo de fuente normal */
+}
+
+.individualRemindDiv {
+    text-align: left;
+    margin: 0 4%;
+}
+
+.individualRemindDiv h3 {
+    font-weight: 500;
+}
+
+.spanDiv {
+    text-align: left;
+}	
+
+.nearRemind {
+    margin: 0 5%;
+    /* Margen izquierdo y derecho del 10% del ancho del div padre (que se ajustará al contenido) */
+}
+
+
+.nearBoxContentDiv {
+    background-color: rgb(153, 153, 153, 0.7);
+    border-radius: 10px;
+    margin-bottom: 3px;
+}
+
+.addRemindWindow {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+#addRemindForm {
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.inputText {
+
+    background: rgb(219, 219, 219);
+    width: 80%;
+    height: 2.5rem;
+
+    border-radius: 10px;
+    border: none;
+
+    text-align: center;
+
+}
+
+
+.selector {
+    
+    width: 60%;
+    height: 2.5rem;
+    border-radius: 10px;
+    text-align: center;
+}
+
+#formButtonAccept {
+
+    margin: 1rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+
+    border-radius: 10px;
+    background-color: rgb(114, 218, 157);
+}
+
+#formButtonDecline {
+
+    margin: 1rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+
+    border-radius: 10px;
+    background-color: rgb(204, 137, 132);
+
+    float: right;
+
+}
+
+.removeButton {
+
+    margin: 1rem;
+    /* padding-top: 0.5rem; */
+    padding-bottom: 0.5rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+
+    border-radius: 10px;
+    background-color: rgb(204, 137, 132);
+
+    float: right;
+
+}
+
+.removeButton:hover {
+    cursor: pointer;
+}
+
+.individualEventDiv {
+    width: 80%;
+    float: left;
+    padding: 0.5rem;
+
+}
+
+.editRemindWindow {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+.editEventsWindow {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+#editEventsContent {
+    width: 60%;
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.editButton {
+
+    margin: 1rem;
+    /* padding-top: 0.5rem; */
+    padding-bottom: 0.5rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+
+    border-radius: 10px;
+    background-color: rgb(206, 183, 100);
+
+    float: right;
+
+}
+
+.editButton:hover {
+    cursor: pointer;
+}
+
+#editRemindForm {
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+}
+.btn {
+    /* margin: 1rem; */
+    /* padding-top: 0.5rem; */
+    /* padding-bottom: 0.5rem; */
+    /* padding-left: 1rem; */
+    padding-right: 1rem;
+    border-radius: 10px;
+    /* border: 10px black; */
+    background-color: rgb(114, 218, 157);
+}
+/* Estilo para el tooltip */
+#nameRemind:hover+.tooltip-text {
+    opacity: 1;
+    pointer-events: auto;
+}
+#fecha:hover+.tooltip-text {
+    opacity: 1;
+    pointer-events: auto;
+}
+#hora:hover+.tooltip-text {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.tooltip-text {
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+    background-color: #333;
+    color: #fff;
+    padding: 5px;
+    border-radius: 5px;
+    margin-top: 20px;
+    width: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: opacity 0.3s;
+}

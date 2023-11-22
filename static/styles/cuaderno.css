@@ -1,0 +1,425 @@
+*
+{
+
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+
+}
+
+.header
+{
+
+    width: 100%;
+    height: 100vh;
+
+    max-width: 100%;
+    max-height: 100%;
+    background-image: url("../img/background.png");
+    background-position: center;
+    background-size: cover;
+    /* scroll-behavior: smooth; */
+    overflow-y: scroll;
+
+}
+
+.menuSideBar
+{
+
+    background-color: rgba(169, 169, 169, .5);
+    width: 30%;
+    height: 100%;
+
+    float: left;
+    text-align: center;
+
+
+}
+
+#unAgendaLabel
+{
+
+    max-width: 100%;
+
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-top: 2rem;
+
+}
+
+.selectedIndexBox
+{
+
+    max-width: 100%;
+    margin: auto;
+
+    transition: background-color 0.3s ease;
+
+    width: 300px;
+
+    padding-left: 1%;
+    padding-right: 1rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    border-radius: 10px;
+
+    text-align: center;
+
+}
+
+.selectedIndexBox:hover
+{
+
+    background-color: rgba(0, 0, 0, 0.2);
+
+}
+
+.iconMenu
+{
+
+    max-width: 100%;
+    margin: auto;
+
+}
+
+.welcomeText
+{
+    
+    color: white;
+    text-align: center;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+
+}
+.sideMenuContainer
+{
+
+    background-color: rgba(169, 169, 169, .5);
+
+    width: 10%;
+    height: 100%;
+
+    max-height: 100vh;
+
+    float: left;
+    text-align: center;
+    overflow-y: auto;
+
+}
+
+#unAgendaLabel
+{
+
+    max-width: 100%;
+    max-height: 100%;
+
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+    padding-top: 0.25rem;
+
+}
+
+.iconBox
+{
+
+    max-height: 100%;
+
+    width: 80%;
+    margin-right: 10%;
+    margin-left: 10%;
+
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    border-radius: 10px;
+
+    transition: background-color 0.3s ease;
+
+}
+
+.iconBox:hover
+{
+
+    background-color: rgba(0, 0, 0, 0.2);
+
+}
+
+.iconImage
+{
+    
+
+    max-width: 100%;
+    max-height: 100%;
+
+
+}
+
+.notebook {
+    margin: 10px 15px;
+    float: left;
+    width: 87%;
+    height: 100%;
+    display: flex;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-left: 10px;
+    justify-content: space-evenly;
+    height: 100px;
+    align-items: center;
+}
+
+form {
+    height: 100%;
+    width: 85%;
+}
+.btn {
+    margin-bottom: 5px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    padding: 5px 10px;
+}
+
+.btn-cambiar {
+    color: rgb(64, 109, 192);
+    border: rgb(64, 109, 192) solid 2px;
+}
+
+.btn-nuevo {
+    color: rgb(166, 64, 192);
+    border: rgb(166, 64, 192) solid 2px;
+}
+
+.btn-guardar {
+    color: rgb(89, 236, 108);
+    border: rgb(89, 236, 108) solid 2px;
+}
+
+.btn-eliminar {
+    color: red;
+    border: red solid 2px;
+}
+
+.btn-cambiar:hover {
+    background-color: rgb(64, 109, 192);
+    color: white;
+}
+
+.btn-nuevo:hover {
+    background-color: rgb(166, 64, 192);
+    color: white;
+}
+
+.btn-guardar:hover {
+    background-color: rgb(89, 236, 108);
+    color: white;
+}
+
+.btn-eliminar:hover {
+    background-color: red;
+    color: white;
+}
+
+.justify {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 15%;
+}
+
+
+/* Estilos para el fondo detrás del título "Modo Oscuro" */
+.mode-label {
+    background-color: #333; /* Cambia el color de fondo a tu elección */
+    color: #fff; /* Cambia el color del texto a tu elección */
+    padding: 5px 10px; /* Ajusta el espacio alrededor del texto */
+    border-radius: 5px; /* Hace que el fondo sea ligeramente redondeado */
+  }
+  
+/* Estilos para el interruptor en modo claro */
+.switch-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+  }
+  
+  .switch input {
+    display: none;
+  }
+  
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
+    border-radius: 34px;
+  }
+  
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: #fff;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
+    border-radius: 50%;
+  }
+  
+  /* Estilos para el interruptor en modo oscuro */
+  .dark-mode .slider {
+    background-color: #333;
+  }
+  
+  .dark-mode .slider:before {
+    background-color: #ccc;
+  }
+  
+  /* Etiqueta del modo */
+  .mode-label {
+    margin-left: 10px;
+  }
+  
+/* Estilo para el botón de modo oscuro */
+.dark-mode-button {
+    border: none;
+    border-radius: 20px;
+    padding: 10px 20px;
+    background-color: #333; /* Color de fondo oscuro */
+    color: #fff; /* Texto en color blanco */
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.dark-mode-button:hover {
+    background-color: #555; /* Cambio de color de fondo al pasar el cursor */
+}
+
+#id-cuaderno {
+    display: none;
+}
+
+.newNotebookWindow {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+#newNotebookContent{
+    width: 30%;
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.inputText {
+
+    background: rgb(219, 219, 219);
+    width: 80%;
+    height: 2.5rem;
+
+    border-radius: 10px;
+    border: none;
+
+    text-align: center;
+
+}
+
+#formBody {
+    background: rgb(255, 255, 255);
+    width: 100%;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+#formBody2 {
+    background: rgb(255, 255, 255);
+    width: 100%;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+#formButtonAccept {
+
+    margin: 1rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+
+    border-radius: 10px;
+    background-color: rgb(114, 218, 157);
+
+    float: left;
+
+
+
+}
+
+#formButtonDecline {
+
+    margin: 1rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+
+    border-radius: 10px;
+    background-color: rgb(204, 137, 132);
+
+    float: right;
+
+}
+
+.info {
+    font-size: 0.7em;
+    color: white;
+    border: white solid 2px;
+    padding: 4px 8px;
+    margin-bottom: 3rem;
+    border-radius: 6px;
+    display: none;
+}
+
+.info-success {
+    color: #66e966;
+    border-color: #66e966;
+    background-color: rgba(106, 250, 106, 0.3);
+    display: block;
+}
+
+.info-failure {
+    color: red;
+    border-color: red;
+    background-color: rgba(226, 79, 79, 0.3);
+    display: block;
+}

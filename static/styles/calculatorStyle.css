@@ -1,0 +1,450 @@
+*
+{
+
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+
+}
+
+.header
+{
+
+    width: 100%;
+    height: 100vh;
+
+    max-width: 100%;
+    max-height: 100%;
+    background-image: url("../img/background.png");
+    background-position: center;
+    background-size: cover;
+    /* scroll-behavior: smooth; */
+    overflow-y: scroll;
+
+}
+
+.menuSideBar
+{
+
+    background-color: rgba(169, 169, 169, .5);
+    width: 30%;
+    height: 100%;
+
+    float: left;
+    text-align: center;
+
+
+}
+
+#unAgendaLabel
+{
+
+    max-width: 100%;
+
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-top: 2rem;
+
+}
+
+.selectedIndexBox
+{
+
+    max-width: 100%;
+    margin: auto;
+
+    transition: background-color 0.3s ease;
+
+    width: 300px;
+
+    padding-left: 1%;
+    padding-right: 1rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    border-radius: 10px;
+
+    text-align: center;
+
+}
+
+.selectedIndexBox:hover
+{
+
+    background-color: rgba(0, 0, 0, 0.2);
+
+}
+
+.iconMenu
+{
+
+    max-width: 100%;
+    margin: auto;
+
+}
+
+.welcomeText
+{
+    
+    color: white;
+    text-align: center;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+
+}
+.sideMenuContainer
+{
+
+    background-color: rgba(169, 169, 169, .5);
+
+    width: 10%;
+    height: 100%;
+
+    max-height: 100vh;
+
+    float: left;
+    text-align: center;
+    overflow-y: auto;
+
+}
+
+#unAgendaLabel
+{
+
+    max-width: 100%;
+    max-height: 100%;
+
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+    padding-top: 0.25rem;
+
+}
+
+.iconBox
+{
+
+    max-height: 100%;
+
+    width: 80%;
+    margin-right: 10%;
+    margin-left: 10%;
+
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    border-radius: 10px;
+
+    transition: background-color 0.3s ease;
+
+}
+
+.iconBox:hover
+{
+
+    background-color: rgba(0, 0, 0, 0.2);
+
+}
+
+.iconImage
+{
+    
+
+    max-width: 100%;
+    max-height: 100%;
+
+
+}
+
+.note {
+    background-color: #0000008c;
+    color: white;
+    text-align: center;
+    border-radius: 5px;
+    margin-bottom: 2px;   
+    margin-left: 1px;
+    width: 100%;
+    border: black solid 2px;
+}
+
+.percentage {
+    /* float: left;    
+    position: relative; */
+    color: black;
+    display: flex;
+    align-items: center;
+    border-radius: 5px;
+    width: 20%;
+    justify-content: center;
+    /* height: 100%; */
+    background-color: green;
+}
+
+.container-note-percentage {
+    /* position: absolute; */
+    display: flex;
+    /* align-items: center; */
+    width: 400px;
+}
+
+.container-notes {
+    /* position: relative; */
+    float: left;
+    width: 80%;
+}
+
+.addNote {
+    background-color: #00000000;
+    color: white;
+    width: 100%;
+    border: white solid 2px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.addNote:hover {
+    box-shadow: 0px 2px 3px 1px;
+}
+
+.editNote {
+    margin-left: 5px;
+    height: 25px;
+    width: 25px;
+    padding: 3px;
+    border-radius: 5px;
+    background-color: #00000000;
+    border: #2271b3 solid 1px;
+}
+
+.img-editNote {
+    height: 100%;
+    width: 100%;
+}
+
+.editNote:hover {
+    box-shadow: 0px 2px 3px 1px #2271b3;
+}
+
+.deletNote {
+    margin-left: 5px;
+    height: 25px;
+    width: 25px;
+    padding: 3px;
+    background-color: #00000000;
+    border-radius: 5px;
+    border: red solid 1px;
+}
+
+.deletNote:hover {
+    box-shadow: 0px 2px 3px 1px red;
+}
+
+.container-button-notes {
+    display: flex;
+    width: 100%;
+}
+
+#addGroupNotes, #editGroupNotes, #deleteGroupNotes {
+    height: 50px;
+    width: 50px;
+    background-color: #00000000;
+    margin-bottom: 2rem;
+    margin-left: 5rem;
+    border-radius: 10px;
+    border: white solid 2px;
+    padding: 5px;
+}
+
+#addGroupNotes {
+    border: white solid 2px;
+}
+
+#editGroupNotes {
+    border: rgb(6, 120, 212) solid 2px;
+}
+
+#deleteGroupNotes {
+    border: red solid 2px;
+}
+
+#botones {
+    display: flex;
+}
+
+#addGroupNotes:hover {
+    box-shadow: 0px 2px 3px 1px white;
+}
+
+#editGroupNotes:hover {
+    box-shadow: 0px 2px 3px 1px rgb(6, 120, 212);
+}
+
+ul {
+    list-style: none;
+}
+
+.li-group-notes {
+    margin-bottom: 7px;
+}
+.li-notes {
+    margin-bottom: 5px;
+}
+
+#groupNotes {
+    margin-left: 12rem;
+}
+
+form {
+    display: flex;
+    width: 100%;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none;  
+}
+
+.confirmNote {
+    margin-left: 5px;
+    height: 25px;
+    width: 25px;
+    padding: 3px;
+    border-radius: 5px;
+    background-color: #00000000;
+    border: #21a10f solid 1px;
+    display: none;
+}
+
+.confirmNote:hover {
+    box-shadow: 0px 2px 3px 1px #21a10f;
+}
+
+.modal-container {
+    display: flex;
+    background-color: rgba(0, 0, 0, 0.3);
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    pointer-events: none;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    opacity: 0;
+}
+
+.modal {
+    background-color: white;
+    width: 600px;
+    max-width: 100%;
+    padding: 30px 50px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.modal-adv {
+    background-color: rgba(190, 62, 83, 0.829);
+    width: 250px;
+    max-width: 100%;
+    padding: 30px 50px;
+    border-radius: 10px;
+    border: red solid 2px;
+    color: white;
+    font-size: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+#close-adv {
+    color: white;
+    border-radius: 5px;
+    padding: 5px 15px;
+    background-color: rgb(212, 68, 68);
+    border: red solid 2px;
+    margin-top: 5px;
+}
+
+.show {
+    pointer-events: auto;
+    opacity: 1;
+}
+
+.input-group {
+    width: 50px;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.form-group{
+    justify-content: center;
+}
+
+.edit-group, .confirm-group, .delete-group, #close, #close-eliminar, #send {
+    color: black;
+    border-radius: 5px;
+    padding: 5px 15px;
+}
+
+.edit-group, .confirm-group {
+    margin-left: 10px;
+}
+
+.edit-group{
+    background-color: #3dc2ffe7;
+    border: #0567fa solid 2px;
+}
+
+.confirm-group {
+    background-color: #6efa10e7;
+    border: #05fa7f solid 2px;
+    display: none;
+}
+
+#send {
+    background-color: #6efa10e7;
+    border: #05fa7f solid 2px;
+}
+
+.delete-group {
+    background-color: #ee380ae7;
+    border: #fa0505 solid 2px;
+    margin-left: 30px;
+}
+
+#close, #close-eliminar {
+    background-color: #0567fa;
+    border: none;
+}
+
+.li-edit-group {
+    margin-bottom: 10px;
+    border: black solid 3px;
+    border-radius: 10px;
+    padding: 5px 10px;
+}
+
+#groupNotes
+{
+
+    float:left;
+    margin-left: 3rem;
+    margin-right: 3rem;
+
+}
+
+#finalAverage
+{
+
+    margin-right: 4rem;
+    background-color: #bbbbbb;
+    float:right;
+    width: auto;
+    padding: 2rem;
+    border-radius: 15px;
+
+    text-align: center;
+
+}
+

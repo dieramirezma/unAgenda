@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="es">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>unAgenda - Flashcards</title>
+      <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&display=swap" rel="stylesheet">
+      <link rel="stylesheet" href="{{url_for('static', filename='styles/flashcardsStyle.css')}}">
+      <link rel="icon" href="{{url_for('static', filename='img/unAgenda1.ico')}}">
+      <script src="static/js/gestorFlashcards.js"></script>
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
+   </head>
+   <body>
+      <div class="mainContainer">
+         <!-- Contiene a todo el código, dado que es el header el que contiene el fondo de pantalla. Si se coloca alguna división después de esta, aparecerá -->
+         <!-- debajo del fondo, lo cual obviamente no queremos.                                                                                              -->
+         <div class="sideMenuContainer">
+            <!-- MENU LATERAL -->
+            <br>
+            <a href="admin">
+            <img id="unAgendaLabel" src="{{url_for('static', filename='img/unAgenda1.png')}}" width="100" />
+            </a>
+            <br>
+            <a href="admin">
+               <div class="iconBox">
+                  <img class="iconImage" src="{{url_for('static', filename='img/mainmenumini.png')}}" width="100" />
+               </div>
+            </a>
+            <a href="schedule">
+               <div class="iconBox">
+                  <img class="iconImage" src="{{url_for('static', filename='img/scheduleindexmini.png')}}"
+                     width="100" />
+               </div>
+            </a>
+            <a href="calculator">
+               <div class="iconBox">
+                  <img class="iconImage" src="{{url_for('static', filename='img/calculatorindexmini.png')}}"
+                     width="100" />
+               </div>
+            </a>
+            <a href="cuaderno">
+               <div class="iconBox">
+                  <img class="iconImage" src="{{url_for('static', filename='img/notebookmini.png')}}"
+                     width="100" />
+               </div>
+            </a>
+            <a href="flashcards">
+                <div class="iconBox">
+                   <img class="iconImage" src="{{url_for('static', filename='img/flashcardsmini.png')}}"
+                      width="100" />
+                </div>
+             </a>
+         </div>
+         <div class="contentContainer">
+            
+            <!-- AQUÍ VA EL CONTENIDO DE LA INTERFAZ COMO TAL -->
+            <div class = "cardContainer" id="cardContainer">
+
+                <p>NOMBRE DEL MAZO</p>
+                <h1 id = "nombreMazo">NAME PLACEHOLDER</h1>
+                <br>
+                <p>NÚMERO DE TARJETAS</p>
+                <h2 id = "numeroTarjetas">NUMBER PLACEHOLDER</h2>
+                <br><br>
+                <p class="dateSentence">ÚLTIMA VEZ ESTUDIADO EN: </p><p id="dateText" class="dateSentence"> dd/mm/aa</p>
+                
+                <br><br>
+
+                <button id="addCardButton" onclick="mostrarVentanaAddCard('addCardWindow')">AGREGAR TARJETA</button>
+                <br>
+                <button id="editDeckButton" onclick="mostrarVentana('editDeckWindow')">EDITAR MAZO</button>
+                <br><br><br>
+                <button id="studyDeckButton" onclick="sendStudyDate(), ocultarVentana('cardContainer'), ocultarVentana('deckSelect'), mostrarVentanaSimple('studyDeckContainer', 'block'), updateCurrentDeck()">ESTUDIAR ESTE MAZO</button>
+
+            </div>
+
+            <!-- STUDY DECK CONTAINER  -->
+            <div class="studyDeckContainer" id="studyDeckContainer" style="display: none;">
+               <h2 id="studyZone">ZONA DE ESTUDIO</h2>
+               <div class="card-container">
+                  <div class="card" id="card">
+                     <div class="card-face front">
+                        <h2 id="preguntaN">Pregunta</h2>
+                        <br><br>
+                        <p class="preguntaTexto">Pregunta de prueba</p>
+                     </div>
+                     <div class="card-face back">
+                        <h2 id="respuestaN">Respuesta</h2>
+                        <br><br>
+                        <p class="respuestaTexto">Respuesta de prueba</p>
+                     </div>
+                  </div>
+               </div>
+               <br>
+               <div class="studyButtons">
+                  <button id="changeCardContentButton" onclick="changeCardContent()" style="display: none;">Cambiar Tarjeta</button>
+                  <button id="showAnswerButton" onclick="flipCard(), switchButtons1()" >Ver Respuesta</button>
+                  <button id="correctAnswerButton" onclick="correctAnswer()" style="display: none;">La tuve bien 😁</button>
+                  <button id="wrongAnswerButton" onclick="wrongAnswer()" style="display: none;">La tuve mal 🥲</button>
+
+               </div>
+               <button id="studyDeckButton" onclick="reloadPage()">Regresar</button>
+
+               <!-- Pop-up content -->
+               <div class="overlay" id="overlay" onclick="closePopup()"></div>
+               <div class="popup" id="popup">
+                  <p>¡Felicidades 🎉! Has terminado de estudiar este mazo.</p>
+                  <span id="countdown"></span>
+               </div>
+            </div>
+            
+            <script>
+               // Variables
+               var currentDeck = ""
+               var listCurrentDeck = []
+               var currentCardIndex = 0;
+               var currentCard = [];
+               var wrongAnswers = []
+
+               // Show pop-up
+               function openPopup() {
+                  document.getElementById('popup').style.display = 'block';
+                  document.getElementById('overlay').style.display = 'block';
+               }
+
+               // Hide pop-up
+               function closePopup() {
+                  document.getElementById('popup').style.display = 'none';
+                  document.getElementById('overlay').style.display = 'none';
+               }
+
+               // Open pop-up and close it after 4 seconds
+               function openAndClosePopup() {
+                  openPopup();
+
+                  var secondsRemaining = 3;
+                  var countdownElement = document.getElementById('countdown');
+
+                  // Update countdown every second
+                  function updateCountdown() {
+                     countdownElement.textContent = secondsRemaining;
+
+                     if (secondsRemaining <= 0) {
+                        closePopup();
+                        reloadPage();
+                     } else {
+                        secondsRemaining--;
+                        setTimeout(updateCountdown, 1000);
+                     }
+                  }
+
+                  // Start countdown
+                  updateCountdown();
+                  
+               }
+
+               function switchButtons1() {
+                  ocultarVentana('showAnswerButton')
+                  mostrarVentanaSimple('correctAnswerButton', 'inline-block')
+                  mostrarVentanaSimple('wrongAnswerButton', 'inline-block')
+               }
+
+               function switchButtons2() {
+                  ocultarVentana('correctAnswerButton')
+                  ocultarVentana('wrongAnswerButton')
+                  mostrarVentanaSimple('showAnswerButton', 'inline-block')
+               }
+
+               function correctAnswer() {
+                  listCurrentDeck.splice(currentCardIndex, 1);
+
+                  if (listCurrentDeck.length == 0 && wrongAnswers == 0) {
+                     openAndClosePopup();
+                  } else {
+                     flipCard();
+                     switchButtons2();
+                     changeCardContent();
+                  }
+               }
+               
+               function wrongAnswer() { 
+                  wrongAnswers.push(currentCard);
+                  listCurrentDeck.splice(currentCardIndex, 1);
+                  flipCard();
+                  switchButtons2();
+                  changeCardContent();
+               }
+
+               function reloadPage() {
+                     location.reload();
+               }
+
+               // Send study date and deck name to server
+               function sendStudyDate() {
+                  // Get current date
+                  const currentDate = new Date();
+                  const dia = currentDate.getDate();
+                  const mes = currentDate.getMonth() + 1;
+                  const anio = currentDate.getFullYear();
+                  const dateFormat = dia + '/' + mes + '/' + anio;
+                  const currentDeck = document.getElementById("nombreMazo").textContent;
+                  
+                  // Build URL
+                  var url = '/saveStudyDate?date=' + encodeURIComponent(dateFormat) + '&deck=' + encodeURIComponent(currentDeck);
+                  
+                  // Send request
+                  fetch(url, {
+                     method: 'POST', 
+                  })
+                     .then(response => response.text())
+                     .then(data => {
+                        console.log(data); 
+                     })
+                     .catch(error => {
+                        console.error('Error:', error);
+                     });
+               }
+
+               function updateCurrentDeck() {
+                  currentDeck = document.getElementById("nombreMazo").textContent;
+                  listCurrentDeck = totalFlashcards.filter(function (sublista) {
+                     return sublista[0] === currentDeck;
+                  });
+
+
+                  // Choose random index of listCurrentDeck
+                  currentCardIndex = Math.floor(Math.random() * listCurrentDeck.length);
+                  currentCard = listCurrentDeck[currentCardIndex];
+
+                  // Update content of card faces
+                  card.querySelector('.front p').textContent = currentCard[1];
+                  card.querySelector('.back p').textContent = currentCard[2];
+                  
+               }
+               
+               function flipCard() {
+                  var card = document.getElementById('card');
+                  var button = document.getElementById('showAnswerButton');
+                  
+                  // Verify if card is flipped
+                  var isFlipped = card.style.transform === 'rotateY(180deg)';
+
+                  button.textContent = isFlipped ? 'Ver Respuesta' : 'Ver Pregunta';
+
+                  card.style.opacity = 0; 
+                  card.style.transform = isFlipped ? 'rotateY(0deg)' : 'rotateY(180deg)';
+                  card.style.opacity = 1; 
+               }
+               
+               function changeCardContent() {
+                  if (listCurrentDeck.length == 0) {
+                     listCurrentDeck = wrongAnswers;
+                     wrongAnswers = []
+                  }
+                  console.table("Wrong Answers ",wrongAnswers)
+                  console.table("Deck List",listCurrentDeck)
+
+                  var card = document.getElementById('card');
+                  card.style.opacity = 0;
+
+                  setTimeout(() => {
+                     currentCardIndex = Math.floor(Math.random() * listCurrentDeck.length);
+                     currentCard = listCurrentDeck[currentCardIndex];
+
+                     // Update content of card faces
+                     card.querySelector('.front p').textContent = currentCard[1];
+                     card.querySelector('.back p').textContent = currentCard[2];
+                  }, 500);
+
+                  setTimeout(() => {
+                     card.style.transform = 'rotateY(0deg)'; 
+                     card.style.opacity = 1;
+                  }, 600); 
+               }
+            </script>
+   
+            <select id="deckSelect" class="selector" name= deckSelect onchange= "alterarInterfaz('deckSelect', totalFlashcards)">
+
+                <!-- NOTE TO SELF: ESTA PARTE VA A NECESITAR UN SCRIPT QUE CARGUE TODOS LOS MAZOS -->
+
+            </select>
+
+         </div>
+
+         <div class="newDeckWindow" id="newDeckWindow">
+            <div id="newDeckForm">
+               <div id="formBody">
+                  <form action="/newDeck" method="POST" id = "actualForm1">
+                     <h2 id="newDeckTitle">Agregar Mazo:</h2>
+                     <br>
+                     <label for="nameDeck" style="margin-bottom: 10px;">Nombre del Mazo:</label>
+                     <br>
+                     <input class="inputText" type="text" id="nameDeck" aria-describedby="text" name="nameDeck" required autocomplete="off">
+                     <input class="inputText" type="hidden" id="nameDeck1" aria-describedby="text" name="nameDeck1" autocomplete="off">
+                     <input class="inputText2" type="hidden" id="answerFirstCard1" aria-describedby="text" name="answerFirstCard1" autocomplete="off" >
+                     <br>
+                     <input class="inputText2" type="hidden" id="questionFirstCard1" aria-describedby="text" name="questionFirstCard1" autocomplete="off" >
+                     <br>
+
+                     <label for="questionFirstCard" style="margin-bottom: 10px;" id = "labelFirstQuestion">Pregunta de la Primera Tarjeta:</label>
+                     <br>
+                     <input class="inputText" type="text" id="questionFirstCard" aria-describedby="text" name="questionFirstCard" required autocomplete="off">
+                     <br><br>
+                     
+                     <label for="answerFirstCard" style="margin-bottom: 10px;" id = "labelFirstAnswer">Respuesta de la Primera Tarjeta:</label>
+                     <br>
+                     <input class="inputText" type="text" id="answerFirstCard" aria-describedby="text" name="answerFirstCard" required autocomplete="off">
+                     
+                     <br><br>
+                     <div id="addRemindWindowButtons">
+                        <button id="formButtonAccept" type="submit">ACEPTAR</button>
+                        <button id="formButtonDecline" type="button" onclick="ocultarVentana('newDeckWindow')">CANCELAR</button>
+                     </div>
+                  </form>
+               </div>
+            </div>
+         </div>
+         
+         <div class="firstDeckWindow" id="firstDeckWindow">
+            <div id="firstDeckForm">
+               <div id="formBody">
+                  <form action="/newDeck" method="POST">
+                     <h2 id="firstDeckTitle">¡Bienvenido a las Tarjetas Didácticas!</h2>
+                     <br>
+                     <p>Para empezar, tendrás que crear al menos un mazo. ¡Asegúrate de darle un buen nombre!</p>
+                     <br>
+                     <label for="nameDeck" style="margin-bottom: 10px;">Nombre del Mazo:</label>
+                     <br>
+                     <input class="inputText" type="text" id="nameDeckNew" aria-describedby="text" name="nameDeck" required autocomplete="off">
+                     <br><br><br>
+                     <p>Adicionalmente, tendrás que asignarle al menos una tarjeta a cada mazo. Deberás escoger una pregunta que quieras memorizar con su respectiva respuesta.</p>
+                     <br>
+                     <label for="questionFirstCard" style="margin-bottom: 10px;">Pregunta de la Primera Tarjeta:</label>
+                     <br>
+                     <input class="inputText" type="text" id="questionFirstCardNew" aria-describedby="text" name="questionFirstCard" required autocomplete="off">
+                     <br><br>
+                     
+                     <label for="answerFirstCard" style="margin-bottom: 10px;">Respuesta de la Primera Tarjeta:</label>
+                     <br>
+                     <input class="inputText" type="text" id="answerFirstCardNew" aria-describedby="text" name="answerFirstCard" required autocomplete="off">
+                     <br><br>
+                     
+                     <div id="addRemindWindowButtons">
+                        <button id="formButtonAccept" type="submit">ACEPTAR</button>
+                     </div>
+                  </form>
+               </div>
+            </div>
+         </div>
+         
+         <!-- Add card -->
+         
+         <div class="addCardWindow" id="addCardWindow">
+            <div id="addCardForm">
+               <div id="formBody">
+                  <form action="/cardAdd" method="POST">
+                     <h2 id="firstDeckTitle">Agrega una nueva tarjeta</h2>
+                     <br>
+                     <label for="questionFirstCard" style="margin-bottom: 10px;" id = "labelFirstQuestion">Pregunta de la Tarjeta:</label>
+                     <br>
+                     <input class="inputText" type="text" id="questionFirstCard" aria-describedby="text" name="questionCard" required autocomplete="off">
+                     <br><br>
+                     
+                     <label for="answerFirstCard" style="margin-bottom: 10px;" id = "labelFirstAnswer">Respuesta de la Tarjeta:</label>
+                     <br>
+                     <input class="inputText" type="text" id="answerFirstCard" aria-describedby="text" name="answerCard" required autocomplete="off">
+                     
+                     <br><br>
+                     <input type="hidden" name="nameDeckAdd" id="nameDeckAdd">
+                     <div id="addRemindWindowButtons">
+                        <button id="formButtonAccept" type="submit">ACEPTAR</button>
+                        <button id="formButtonDecline" type="button" onclick="ocultarVentana('addCardWindow')">CANCELAR</button>
+                     </div>
+                  </form>
+
+               </div>
+            </div>
+         </div>
+         
+         <div class="editDeckWindow" id="editDeckWindow">
+            <div id="editDeckForm">
+               
+            </div>
+         </div>
+         
+         
+
+
+         <!-- ZONA DE SCRIPTS DE CARGA DE BASES DE DATOS -->
+         
+         <script>
+            
+            var totalFlashcards = JSON.parse('{{ flashcards | tojson | safe }}');
+            //IMPORTANTE
+            
+            //CON ESTO, QUEDAN CARGADAS TODAS LAS FLASHCARDS DEL USUARIO EN FORMA DE LISTA. CADA LISTA LLEVA ESTE FORMATO:
+            //lista[0] = nombreMazo
+            //lista[1] = pregunta
+            //lista[2] = respuesta
+            //lista[3] = dia
+            //lista[4] = mes
+            //lista[5] = año
+            
+            
+            
+            //CARGAR EL CONTENIDO DEL PRIMER MAZO EN LA INTERFAZ
+            document.addEventListener("DOMContentLoaded", function () 
+            {
+               if (totalFlashcards.length != 0)
+               {
+                  
+                  var nombreMazo = document.getElementById("nombreMazo");
+                  var numeroTarjetas = document.getElementById("numeroTarjetas");
+                  var fechaEstudio = document.getElementById("dateText");
+                  
+                  
+                  nombreMazo.textContent = totalFlashcards[0][0];
+                  
+                  var contador = 0;
+                  for (var i = 0; i < totalFlashcards.length; i++)
+                  {
+
+                     if (totalFlashcards[i][0] == nombreMazo.textContent)
+                     {
+                        contador ++;
+                     }
+
+                  }
+
+                  numeroTarjetas.textContent = contador + " Tarjetas";
+
+                  if (totalFlashcards[0][3]== 0)
+                  {
+
+                     fechaEstudio.textContent = "Nunca"
+
+                  }
+                  else
+                  {
+
+                     fechaEstudio.textContent = totalFlashcards[0][3] + "/" + totalFlashcards[0][4] + "/" + totalFlashcards[0][5] 
+
+                  }
+               }
+               else
+               {
+
+                  //Esta función se ejecutará si el usuario no tiene ningún mazo creado, con lo cual se verá forzado a crear uno nuevo.
+                  var ventanaEmergente = document.getElementById("firstDeckWindow");
+                  ventanaEmergente.style.display = "flex";
+
+
+               }
+
+               const selector = document.getElementById("deckSelect");
+               var listaMazosRepetidos = [];
+
+               for (var i = 0; i < totalFlashcards.length; i++)
+               {
+
+                  listaMazosRepetidos.push(totalFlashcards[i][0]);
+
+               }
+
+               
+               var setMazos = new Set(listaMazosRepetidos);
+               var listaMazos = Array.from(setMazos);
+               for (var i = 0; i < listaMazos.length; i++)
+               {
+
+                  var option = document.createElement("option");
+                  option.text = listaMazos[i];
+                  
+                  selector.add(option);
+
+               }
+
+               var option = document.createElement("option");
+               option.text = "CREAR UN NUEVO MAZO...";
+               selector.add(option);
+
+               cargarTarjetas(totalFlashcards);
+
+               
+
+            });
+
+
+         </script>
+
+   </body> 

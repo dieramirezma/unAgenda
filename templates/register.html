@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Registrarse</h1>
+<form class="formControl" action="/register" method="POST" >
+   <input type="text" id="txtNombre" aria-describedby="text" name="txtNombre" placeholder="Nombre / usuario" required>
+   <input type="email" id="exampleInputEmail1" aria-describedby="emailHelp"  name="txtEmail" placeholder="Correo electrónico" required="required" />
+   <input type="password" id="exampleInputPassword1" name="txtPassword" placeholder="Contraseña" required="required" />
+   {% if error_message %}
+   <div class="alert alert-danger" role="alert">
+       {{ error_message }}
+   </div>
+   {% endif %}
+   <button type="submit" class="btn btn-primary btn-block btn-large">Registrarse</button>
+</form>
+<div>
+   <a class="recuper" for="emailHelp" href="/recuperacion">Recuperar contraseña</a> |
+   <a class="registerNew" for="exampleRegister" href="/">Iniciar sesión</a>
+</div>
+    {% endblock %}

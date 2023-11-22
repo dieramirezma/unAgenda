@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Recuperar Contraseña</title>
+    <link rel="icon" href="{{url_for('static', filename='img/unAgenda1.ico')}}">
+</head>
+<body>
+    <h1>Recuperación de Contraseña</h1>
+    <p>Por favor, introduzca su dirección de correo electrónico para recuperar su contraseña.</p>
+    
+    <form method="POST" action="/generate_reset_link">
+        <label for="recipient">Correo Electrónico:</label>
+        <input type="email" id="recipient" name="recipient" required>
+        <br><br>
+        <input type="submit" value="Enviar enlace de recuperación">
+    </form>
+
+    <br>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li class="{{ message_category }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+</body>
+</html>
