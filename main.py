@@ -744,9 +744,24 @@ def calculator():
                 ),
             )
             mysql.connection.commit()
+            
             for i in range(int(delete_group) + 1, int(lengthUl)):
                 db.execute(
                     f'UPDATE grupoNotas set numGrupo = {i - 1} WHERE numGrupo = {i} AND idUsuario = {session["idUsuario"]}'
+                )
+                mysql.connection.commit()
+                #traza registro
+                now = datetime.now(colombia_zona_horaria)
+                formatted_date = now.strftime("%Y-%m-%d %H:%M:%S")
+        
+
+                cur = mysql.connection.cursor()
+        
+
+                # Agregar traza a la base de datos
+                cur.execute(
+                "INSERT INTO Traza (id_Usuario,nombre,descripcion, hora, servicio) VALUES (%s, %s, %s, %s,%s)",
+                (session["idUsuario"],session["nombre"], "Ha eliminado notas", formatted_date, "Calculadora"),
                 )
                 mysql.connection.commit()
             if int(delete_group) <= int(id_updt):
@@ -823,9 +838,12 @@ def calculator():
                 f'UPDATE grupoNotas set nota = {note} WHERE idNota = {id_nota} AND idUsuario = {session["idUsuario"]}'
             )
             mysql.connection.commit()
+
+            
             print(
                 "--------------------- Actualizado con éxito -----------------------------"
             )
+            
         elif li_id != None and new_perc != None:
             db.execute(
                 f'INSERT INTO grupoNotas (idUsuario, numGrupo, porcentaje, nota) VALUES ({session["idUsuario"]}, {id_group}, {percentage}, {note})'
@@ -839,6 +857,20 @@ def calculator():
             print(
                 "--------------------- Actualizado e insertado con éxito -----------------------------"
             )
+            #traza registro
+            now = datetime.now(colombia_zona_horaria)
+            formatted_date = now.strftime("%Y-%m-%d %H:%M:%S")
+        
+
+            cur = mysql.connection.cursor()
+        
+
+            # Agregar traza a la base de datos
+            cur.execute(
+            "INSERT INTO Traza (id_Usuario,nombre,descripcion, hora, servicio) VALUES (%s, %s, %s, %s,%s)",
+            (session["idUsuario"],session["nombre"], "Ha actualizado notas", formatted_date, "Calculadora"),
+            )
+            mysql.connection.commit()
         else:
             db.execute(
                 f'INSERT INTO grupoNotas (idUsuario, numGrupo, porcentaje, nota) VALUES ({session["idUsuario"]}, {id_group}, {percentage}, {note})'
@@ -847,6 +879,7 @@ def calculator():
             print(
                 "--------------------- Insertado con éxito -----------------------------"
             )
+
         # repeated = uuid
     elif percs != None and id_groups != None:
         percs = percs.split(",")
@@ -1150,6 +1183,21 @@ def addRemind():
             (session["idUsuario"], _nameRemind, _dateRemind[0], _dateRemind[1], _dateRemind[2], _timeRemind[0], _timeRemind[1]),
         )
         mysql.connection.commit()
+
+        #traza recordatorio
+        now = datetime.now(colombia_zona_horaria)
+        formatted_date = now.strftime("%Y-%m-%d %H:%M:%S")
+        
+
+        cur = mysql.connection.cursor()
+        
+
+       # Agregar traza a la base de datos
+        cur.execute(
+        "INSERT INTO Traza (id_Usuario,nombre,descripcion, hora, servicio) VALUES (%s, %s, %s, %s,%s)",
+        (session["idUsuario"],session["nombre"], "Ha añadido un recordatorio", formatted_date, "Recordatorio"),
+         )
+        mysql.connection.commit()
         
         return redirect(url_for('admin'))
 
@@ -1177,6 +1225,21 @@ def removeRemind():
             minuteSTR,
             _idUsuarioActual,
         ),
+    )
+    mysql.connection.commit()
+
+    #traza registro
+    now = datetime.now(colombia_zona_horaria)
+    formatted_date = now.strftime("%Y-%m-%d %H:%M:%S")
+        
+
+    cur = mysql.connection.cursor()
+        
+
+    # Agregar traza a la base de datos
+    cur.execute(
+    "INSERT INTO Traza (id_Usuario,nombre,descripcion, hora, servicio) VALUES (%s, %s, %s, %s,%s)",
+    (session["idUsuario"],session["nombre"], "Ha Eliminado un recordatorio", formatted_date, "Recordatorio"),
     )
     mysql.connection.commit()
 
@@ -1247,11 +1310,27 @@ def editRemind():
         )
 
         mysql.connection.commit()
+
+        #traza Recordatorio
+        now = datetime.now(colombia_zona_horaria)
+        formatted_date = now.strftime("%Y-%m-%d %H:%M:%S")
+        
+
+        cur = mysql.connection.cursor()
+        
+
+        # Agregar traza a la base de datos
+        cur.execute(
+        "INSERT INTO Traza (id_Usuario,nombre,descripcion, hora, servicio) VALUES (%s, %s, %s, %s,%s)",
+        (session["idUsuario"],session["nombre"], "Ha editado un recordatorio", formatted_date, "Recordatorio"),
+         )
+        mysql.connection.commit()
         
         return redirect(url_for('admin'))
     
 #Interfaz Flashcards
 @app.route("/flashcards", methods=["GET", "POST"])
+@login_required
 def flashcards():
 
     _idUsuarioActual = session["idUsuario"]
