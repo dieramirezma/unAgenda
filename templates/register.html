@@ -1,14 +1,69 @@
 {% extends "base.html" %}
 
 {% block content %}
+<style>
+   .info-icon {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      background-color: #ccc;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 20px;
+      cursor: pointer;
+      position: relative;
+   }
+
+   .info-icon:hover {
+      background-color: #ddd;
+      /* Cambia el color de fondo al pasar el ratón sobre el icono */
+   }
+
+   .tooltip {
+      visibility: hidden;
+      width: 120px;
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      border-radius: 6px;
+      padding: 5px;
+      position: absolute;
+      z-index: 1;
+      bottom: 125%;
+      left: 50%;
+      margin-left: -60px;
+      opacity: 0;
+      transition: opacity 0.3s;
+   }
+
+   .info-icon:hover .tooltip {
+      visibility: visible;
+      opacity: 1;
+   }
+
+   /* Estilos adicionales según sea necesario */
+</style>
 <h1>Registrarse</h1>
-<form class="formControl" action="/register" method="POST" >
+<form class="formControl" action="/register" method="POST">
    <input type="text" id="txtNombre" aria-describedby="text" name="txtNombre" placeholder="Nombre / usuario" required>
-   <input type="email" id="exampleInputEmail1" aria-describedby="emailHelp"  name="txtEmail" placeholder="Correo electrónico" required="required" />
+   <span class="info-icon">
+      i
+      <span class="tooltip">Este nombre nos servirá para identificarte. Ejemplo de nombre/usuario: Juan</span>
+   </span>
+   <input type="email" id="exampleInputEmail1" aria-describedby="emailHelp" name="txtEmail"
+      placeholder="Correo electrónico" required="required" />
+   <span class="info-icon">
+      i
+      <span class="tooltip">Correo necesario en caso de que olvides la contraseña</span>
+   </span>
    <input type="password" id="exampleInputPassword1" name="txtPassword" placeholder="Contraseña" required="required" />
+   <span class="info-icon">
+      i
+      <span class="tooltip">Debe contener al menos 8 caracteres. Recuerda no usar secuencias comunes como: 'password'</span>
+   </span>
    {% if error_message %}
    <div class="alert alert-danger" role="alert">
-       {{ error_message }}
+      {{ error_message }}
    </div>
    {% endif %}
    <button type="submit" class="btn btn-primary btn-block btn-large">Registrarse</button>
@@ -17,4 +72,4 @@
    <a class="recuper" for="emailHelp" href="/recuperacion">Recuperar contraseña</a> |
    <a class="registerNew" for="exampleRegister" href="/">Iniciar sesión</a>
 </div>
-    {% endblock %}
+{% endblock %}

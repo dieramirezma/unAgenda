@@ -56,27 +56,40 @@
             
             <!-- AQUÍ VA EL CONTENIDO DE LA INTERFAZ COMO TAL -->
             <div class = "cardContainer" id="cardContainer">
+               <div style="text-align: left;">
+                  <span class="info-icon">
+                     i
+                     <span class="tooltip">Esta es la sección de Tarjetas Didácticas. Aquí podrás crear mazos de tarjetas para tu estudio. La idea es que cada tarjeta contenga una pregunta y una respuesta para que posteriormente las puedas estudiar</span>
+                  </span>
+               </div>
 
-                <p>NOMBRE DEL MAZO</p>
-                <h1 id = "nombreMazo">NAME PLACEHOLDER</h1>
-                <br>
-                <p>NÚMERO DE TARJETAS</p>
-                <h2 id = "numeroTarjetas">NUMBER PLACEHOLDER</h2>
-                <br><br>
-                <p class="dateSentence">ÚLTIMA VEZ ESTUDIADO EN: </p><p id="dateText" class="dateSentence"> dd/mm/aa</p>
-                
-                <br><br>
+               <p>NOMBRE DEL MAZO</p>
+               <h1 id = "nombreMazo">NAME PLACEHOLDER</h1>
+               <br>
+               <p>NÚMERO DE TARJETAS</p>
+               <h2 id = "numeroTarjetas">NUMBER PLACEHOLDER</h2>
+               <br><br>
+               <p class="dateSentence">ÚLTIMA VEZ ESTUDIADO EN: </p><p id="dateText" class="dateSentence"> dd/mm/aa</p>
+               
+               <br><br>
 
-                <button id="addCardButton" onclick="mostrarVentanaAddCard('addCardWindow')">AGREGAR TARJETA</button>
-                <br>
-                <button id="editDeckButton" onclick="mostrarVentana('editDeckWindow')">EDITAR MAZO</button>
-                <br><br><br>
-                <button id="studyDeckButton" onclick="sendStudyDate(), ocultarVentana('cardContainer'), ocultarVentana('deckSelect'), mostrarVentanaSimple('studyDeckContainer', 'block'), updateCurrentDeck()">ESTUDIAR ESTE MAZO</button>
+               <button id="addCardButton" onclick="mostrarVentanaAddCard('addCardWindow')">AGREGAR TARJETA</button>
+               <br>
+               <button id="editDeckButton" onclick="mostrarVentana('editDeckWindow')">EDITAR MAZO</button>
+               <br><br><br>
+               <button id="studyDeckButton" onclick="sendStudyDate(), ocultarVentana('cardContainer'), ocultarVentana('deckSelect'), mostrarVentanaSimple('studyDeckContainer', 'block'), updateCurrentDeck()">ESTUDIAR ESTE MAZO</button>
 
             </div>
 
             <!-- STUDY DECK CONTAINER  -->
             <div class="studyDeckContainer" id="studyDeckContainer" style="display: none;">
+               <div style="text-align: left;">
+                  <span class="info-icon">
+                     i
+                     <span class="tooltip">Estás en la zona de estudio. Te mostraremos las tarjetas de tu mazo en un orden aleatorio. Las respuestas no serán visibles a menos que pulses en Ver Respuesta. Si la respuesta que tenías en mente es la correcta marcarás en "La tuve bien 😁". Esta tarjeta se sacará del mazo. Si fallaste, marcarás "La tuve mal 🥲". En este caso la tarjeta se te mostrará nuevamente al final del estudio para que tengas la oportunidad de responderla bien. La idea con todo esto es fortalecer tu retentiva, recordando las respuestas vistas. Valoramos tu honestidad 😊 
+                     </span>
+                  </span>
+               </div>
                <h2 id="studyZone">ZONA DE ESTUDIO</h2>
                <div class="card-container">
                   <div class="card" id="card">

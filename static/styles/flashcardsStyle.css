@@ -115,6 +115,10 @@
 
 }
 
+#cardContainer .info-icon {
+    margin-left: auto;
+}
+
 .studyDeckContainer {
     margin-top: 5rem;
 }
@@ -550,4 +554,68 @@
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 1;
+}
+
+
+/* Tooltip */
+.info-icon {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background-color: #ccc;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 20px;
+    cursor: pointer;
+    position: relative;
+}
+
+.info-icon:hover {
+    background-color: #ddd;
+    /* Cambia el color de fondo al pasar el ratón sobre el icono */
+}
+
+.tooltip {
+    visibility: hidden;
+    width: 200px;
+    background-color: #e6e6fa;
+    color: #000;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -60px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.tooltip2 {
+    visibility: hidden;
+    background-color: #e6e6fa;
+    color: #000;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    position: relative;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -60px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.info-icon:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
+}
+.iconBox:hover .tooltip2{
+    visibility: visible;
+    opacity: 1;
+
 }

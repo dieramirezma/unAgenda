@@ -566,31 +566,51 @@
     /* border: 10px black; */
     background-color: rgb(114, 218, 157);
 }
-/* Estilo para el tooltip */
-#nameRemind:hover+.tooltip-text {
-    opacity: 1;
-    pointer-events: auto;
-}
-#fecha:hover+.tooltip-text {
-    opacity: 1;
-    pointer-events: auto;
-}
-#hora:hover+.tooltip-text {
-    opacity: 1;
-    pointer-events: auto;
+
+/* Tooltip */
+.info-icon, .info-icon2 {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background-color: #ccc;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 20px;
+    cursor: pointer;
+    position: relative;
 }
 
-.tooltip-text {
-    opacity: 0;
-    pointer-events: none;
-    position: absolute;
+.info-icon:hover, .info-icon2:hover {
+    background-color: #ddd;
+    /* Cambia el color de fondo al pasar el ratón sobre el icono */
+}
+
+.tooltip, .tooltip2 {
+    visibility: hidden;
+    width: 120px;
     background-color: #333;
     color: #fff;
+    text-align: center;
+    border-radius: 6px;
     padding: 5px;
-    border-radius: 5px;
-    margin-top: 20px;
-    width: 20%;
+    position: absolute;
+    z-index: 9999;
+    top: 100%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    margin-left: -60px;
+    opacity: 0;
     transition: opacity 0.3s;
 }
+.tooltip2 {
+    width: 150px;
+}
+
+.info-icon:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
+}
+.info-icon2:hover .tooltip2 {
+    visibility: visible;
+    opacity: 1;
+}
+

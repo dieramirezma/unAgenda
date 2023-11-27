@@ -71,14 +71,18 @@
                            <a class="btn" id="deleteAlert" onclick="mostrarVentana('deleteEventsWindow')" style="background: rgb(204, 137, 132)"><i class="far fa-trash-alt me-2" aria-hidden="true"></i>Borrar</a> 
                         </div>
                      </div>
+                  
                   </div>
                </div>
                <div class="card-body p-3">
                   <div class="row" id="eventRow" style="max-height: 130px; overflow-y: auto;">
-               <h6 id ="instructionLabel2">Estos son los eventos que tienes programados esta semana: </h6>
-                        
+                     <h6 id ="instructionLabel2">Estos son los eventos que tienes programados esta semana: <span class="info-icon2">
+                        i
+                        <span class="tooltip2">Acá se muestran los recordatorios más próximos a vencerse (menos de 7 días)</span>
+                     </span></h6>
                   </div>
                </div>
+               
                <script>
                      function createRemindElements(remindersList, displayDiv, type) {
                          var j = 0;
@@ -161,13 +165,25 @@
                            <br>
                            <label for="nameRemind" style="margin-bottom: 10px;">Nombre del Recordatorio:</label>
                            <br>
-                           <input class="inputText" type="text" id="nameRemind" aria-describedby="text" name="nameRemind" required>
+                           <input class="inputText" type="text" id="nameRemind" aria-describedby="text" name="nameRemind" required title=" " autocomplete="off" >
+                           <span class="info-icon">
+                              i
+                              <span class="tooltip">Ejemplo: Review Sprint</span>
+                           </span>
                            <br><br><br>
                            <label for="dateRemind" style="margin-bottom: 10px;">Fecha:</label>
-                           <input class="selector" type="date" id="fecha" class="selector" name="dateRemind" min="{{ currentTimeList[0]}}-{{currentTimeList[1]}}-{{currentTimeList[2] }}" required />
+                           <input class="selector" type="date" id="fecha" class="selector" name="dateRemind" min="{{ currentTimeList[0]}}-{{currentTimeList[1]}}-{{currentTimeList[2] }}" required title=" " />
+                           <span class="info-icon">
+                              i
+                              <span class="tooltip">Solo se permiten fechas mayores o iguales a la actual</span>
+                           </span>
                            <br><br>
                            <label for="timeRemind" style="margin-bottom: 10px;">Hora:</label>
-                           <input class="selector" type="time" id="hora" class="selector" name="timeRemind" min="{{ currentTimeList[3] }}:{{ currentTimeList[4] }}"  required />
+                           <input class="selector" type="time" id="hora" class="selector" name="timeRemind" min="{{ currentTimeList[3] }}:{{ currentTimeList[4] }}"  required title=" "/>
+                           <span class="info-icon">
+                              i
+                              <span class="tooltip">Si la fecha es la actual, solo se permiten horas posteriores a la actual</span>
+                           </span>
                            <br><br>
                            <div id="addRemindWindowButtons">
                               <button id="formButtonAccept" type="submit">ACEPTAR</button>
@@ -186,15 +202,27 @@
                            <br>
                            <label for="nameRemind" style="margin-bottom: 10px;">Nombre del Recordatorio:</label>
                            <br>
-                           <input class="inputText" type="text" id="nameRemindEdit" aria-describedby="text" name="nameRemind" required>
+                           <input class="inputText" type="text" id="nameRemindEdit" aria-describedby="text" name="nameRemind" required autocomplete="off">
+                           <span class="info-icon">
+                              i
+                              <span class="tooltip">Ejemplo: Review Sprint</span>
+                           </span>
                            <br><br><br>
                            <label for="dateRemind" style="margin-bottom: 10px;">Fecha:</label>
                            <input class="selector" type="date" id="fechaEdit" class="selector" name="dateRemind"
                               min="{{ currentTimeList[0]}}-{{currentTimeList[1]}}-{{currentTimeList[2] }}" required />
+                           <span class="info-icon">
+                              i
+                              <span class="tooltip">Solo se permiten fechas mayores o iguales a la actual</span>
+                           </span>
                            <br><br>
                            <label for="timeRemind" style="margin-bottom: 10px;">Hora:</label>
                            <input class="selector" type="time" id="horaEdit" class="selector" name="timeRemind"
                               required />
+                           <span class="info-icon">
+                              i
+                              <span class="tooltip">Si la fecha es la actual, solo se permiten horas posteriores a la actual</span>
+                           </span>
                            <br><br>
                            <input type="hidden" name="yearSTR" id="yearSTR">
                            <input type="hidden" name="monthSTR" id="monthSTR">
