@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>unAgenda</title>
+    <link rel="icon" href="{{url_for('static', filename='img/unAgenda1.ico')}}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{url_for('static', filename='styles/menuStyle.css')}}">
+    <script src="static/js/gestorMainMenu.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
+</head>
+<style>
+.header {
+    text-align: center; /* Centra los elementos de bloque internos horizontalmente */
+    background-color: #f2f2f2;
+    padding: 10px;
+    color: #fff;
+}
+
+.header h1 {
+    margin: 0; /* Elimina el margen predeterminado del h1 */
+    margin-top: 20px;
+}
+
+.header-item {
+    display: inline-block; /* Centra los elementos en línea */
+    margin: 0 10px; /* Agrega márgenes entre los elementos si es necesario */
+}
+
+/* Estilo del contenedor del selector de opciones */
+.dropdown {
+   position: relative;
+   display: inline-block;
+   
+}
+
+/* Estilo del botón del selector de opciones */
+.dropbtn {
+   padding: 10px;
+   font-size: 16px;
+   border: none;
+   cursor: pointer;
+   color: #000;
+   border-radius: 10px;
+   margin-top: 10px;
+}
+
+/* Estilo del contenido del selector de opciones (las opciones) */
+.dropdown-content {
+   display: none;
+   position: absolute;
+   background-color: #555;
+   min-width: 160px;
+   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+   z-index: 1;
+   left: 50%; /* Centra horizontalmente con respecto al botón */
+   transform: translateX(-50%); /* Ajusta la posición horizontal */    
+}
+
+/* Estilo de las opciones dentro del contenido del selector de opciones */
+.dropdown-content a {
+   padding: 12px 16px;
+   text-decoration: none;
+   display: block;
+   cursor: pointer;
+   color: #fff;
+}
+
+/* Cambia el color del enlace cuando se pasa el cursor sobre él */
+.dropdown-content a:hover {
+   background-color: #777;
+}
+
+/* Muestra el contenido del selector de opciones cuando se pasa el cursor sobre el botón */
+.dropdown:hover .dropdown-content {
+   display: block;
+}
+
+.table-container {
+    max-height: 70%;
+    max-width: 80%;
+    overflow-y: auto;
+    display: block; /* Cambiado a display: block; */
+    margin: 0 auto; /* Centra horizontalmente */
+}
+
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 10px; /* Espacio entre el dropdown y la tabla */
+    border-radius: 10px; /* Border radius para la tabla */
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 10px; /* Aumento del relleno */
+    text-align: left;
+    color: #fff;
+    background-color: #333; /* Color de texto blanco */
+}
+
+th {
+    background-color: #444; /* Fondo oscuro */
+    position: sticky;
+    top: 0;
+}
+</style>
+<body>
+    <div class="header">
+        <!-- Login
+            Cuaderno
+            Horario
+            Tarjetas Didacticas
+            Recordatorio
+            Calculadora 
+        -->
+        
+        <h1>TRAZA DE ACTIVIDAD</h1>
+        <div class="dropdown">
+            <button class="dropbtn" id="dropdownButton">Seleccionar el servicio del cual quieres ver la traza</button>
+            <div class="dropdown-content">
+                <a href="#" data-value="Login">Login</a>
+                <a href="#" data-value="Cuaderno">Cuaderno</a>
+                <a href="#" data-value="Horario">Horario</a>
+                <a href="#" data-value="Tarjetas Didácticas">Tarjetas Didácticas</a>
+                <a href="#" data-value="Recordatorio">Recordatorio</a>
+                <a href="#" data-value="Calculadora">Calculadora</a>
+            </div>
+        </div>
+        <div class="table-container">
+
+            <table id="trazaTable">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Descripción</th>
+                        <th>Hora</th>
+                        <th>Servicio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Los datos se agregarán aquí dinámicamente usando JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Obtener el botón y las opciones
+        var dropdownButton = document.getElementById("dropdownButton");
+        var dropdownOptions = document.querySelectorAll(".dropdown-content a");
+        var resultTableBody = document.querySelector("#trazaTable tbody");
+
+        // Agregar un escuchador de clic al botón
+        dropdownButton.addEventListener("click", function () {
+            // Mostrar o ocultar las opciones cuando se hace clic en el botón
+            document.querySelector(".dropdown-content").classList.toggle("show");
+        });
+
+        // Agregar escuchadores de clic a las opciones
+        dropdownOptions.forEach(function (option) {
+            option.addEventListener("click", function (event) {
+                // Evitar que el enlace se comporte como un enlace normal
+                event.preventDefault();
+
+                // Obtener el valor asociado al hacer clic en la opción
+                var serviceSelected = option.getAttribute("data-value");
+
+                // Enviar la solicitud POST a Flask con el valor seleccionado
+                fetch('/trazaSelect', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ serviceSelected: serviceSelected })
+                })
+                    .then(response => response.text())
+                    .then(data => {
+                        const trazaList = JSON.parse(data)
+                        // Limpiar el cuerpo de la tabla antes de agregar nuevos resultados
+                        resultTableBody.innerHTML = '';
+                        // Agregar resultados al cuerpo de la tabla
+                        for (let i = 0; i < trazaList.length; i++) {
+                            var newRow = resultTableBody.insertRow();
+                            newRow.insertCell(0).textContent = trazaList[i][0];
+                            newRow.insertCell(1).textContent = trazaList[i][1];
+                            newRow.insertCell(2).textContent = trazaList[i][2];
+                            newRow.insertCell(3).textContent = trazaList[i][3];
+                        }
+                        
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+
+                // Ocultar las opciones después de seleccionar una
+                document.querySelector(".dropdown-content").classList.remove("show");
+            });
+        });
+
+        // Ocultar las opciones cuando se hace clic fuera de ellas
+        window.addEventListener("click", function (event) {
+            if (!event.target.matches("#dropdownButton")) {
+                var dropdownContent = document.querySelector(".dropdown-content");
+                if (dropdownContent.classList.contains("show")) {
+                    dropdownContent.classList.remove("show");
+                }
+            }
+        });
+    });
+
+    </script>
+
+</body>
+
+</html>
