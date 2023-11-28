@@ -663,14 +663,7 @@ def register():
         
 
         cur = mysql.connection.cursor()
-        
-
-        # Agregar traza a la base de datos
-        cur.execute(
-        "INSERT INTO Traza (id_Usuario,nombre,descripcion, hora, servicio) VALUES (%s, %s, %s, %s,%s)",
-        (session["idUsuario"],_nombre, "Se ha Registrado Exitosamente", formatted_date, "Login"),
-         )
-        mysql.connection.commit()
+    
 
         cur.execute(
             "SELECT * FROM usuario WHERE correo = %s AND contrasena = %s",
@@ -681,6 +674,13 @@ def register():
         session["logueado"] = True
         session["idUsuario"] = new_user["idUsuario"]
         session["nombre"] = new_user["nombre"]
+        
+        # Agregar traza a la base de datos
+        cur.execute(
+        "INSERT INTO Traza (id_Usuario,nombre,descripcion, hora, servicio) VALUES (%s, %s, %s, %s,%s)",
+        (new_user["idUsuario"],_nombre, "Se ha Registrado Exitosamente", formatted_date, "Login"),
+         )
+        mysql.connection.commit()
 
         return redirect("/")  # Redirigir al usuario al index
 
