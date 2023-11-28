@@ -654,6 +654,10 @@ def register():
             error_message = "El correo ya está en uso"
             return render_template("register.html", error_message=error_message)
 
+        if len(_contrasena) < 8:
+            error_message = "La contraseña debe tener al menos 8 caracteres"
+            return render_template("register.html", error_message=error_message)
+            
         password_hash = generate_password_hash(_contrasena)
         cur.execute(
             "INSERT INTO usuario (nombre, correo, contrasena) VALUES (%s, %s, %s)",
