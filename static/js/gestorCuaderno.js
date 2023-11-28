@@ -7,6 +7,7 @@ const id_cuaderno = document.querySelector("#id-cuaderno");
 const info_user = document.querySelector("#info-user");
 
 
+
 let globalContent;
 
 let identificador = setInterval(save_notebook, 60000)
@@ -48,6 +49,7 @@ async function save_notebook() {
             }, 3000);
         }
 
+
     } catch (error) {
         console.error("Error: ", error);
     }
@@ -71,6 +73,7 @@ function ocultarVentana(elementId)
     var ventanaEmergente = document.getElementById(elementId);
     ventanaEmergente.style.display = "none";
 }
+
 
 function desplegar_menu() {
     if (menu_desplegable.style.display === 'block') {
@@ -130,4 +133,5 @@ function ocultarMenuDesplegable() {
 btn_save.addEventListener('click', save_notebook);
 btn_delete.addEventListener('click', desplegar_menu);
 // btn_change.addEventListener('click', change_notebook);
+
 // window.addEventListener('beforeunload', save_notebook)

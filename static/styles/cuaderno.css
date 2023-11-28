@@ -200,10 +200,12 @@ form {
     border: rgb(89, 236, 108) solid 2px;
 }
 
+
 .btn-eliminar {
     color: red;
     border: red solid 2px;
 }
+
 
 .btn-cambiar:hover {
     background-color: rgb(64, 109, 192);
@@ -220,10 +222,12 @@ form {
     color: white;
 }
 
+
 .btn-eliminar:hover {
     background-color: red;
     color: white;
 }
+
 
 .justify {
     display: flex;

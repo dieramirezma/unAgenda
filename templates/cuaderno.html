@@ -67,11 +67,13 @@
                     <img class="iconImage" src="{{url_for('static', filename='img/notebookmini.png')}}" width="100" />
                 </div>
             </a>
+
             <a href="flashcards">
                 <div class="iconBox">
                     <img class="iconImage" src="{{url_for('static', filename='img/flashcardsmini.png')}}" width="100" />
                 </div>
             </a>
+
         </div>
         <div class="welcomeText">
             <h1 id="encabezado-nombre">{{cuaderno["nombreCuaderno"]}}</h1>
@@ -85,10 +87,12 @@
             </form>
             <div class="justify">
                 <div class="buttons">
+
                     <div class="info" id="info-user">Cuadro de dialogo</div>
                     <button class="btn btn-nuevo" id="btnNuevoCuaderno" onclick = "mostrarVentana('newNotebookWindow')">Nuevo Cuaderno</button>
                     <button class="btn btn-cambiar" id="btnCambiarCuaderno">Cambiar Cuaderno</button>
                     <button class="btn btn-eliminar">Eliminar cuaderno</button>
+
                     <button class="btn btn-guardar">Guardar Cuaderno</button>
                     <div id="menuDesplegable" class="menu-desplegable">
                         <ul>
@@ -103,6 +107,7 @@
                         i
                         <span class="tooltip">Cambia el tema del cuaderno entre claro y oscuro</span>
                     </span>
+
                 </div>
             </div>
         </div>
@@ -230,8 +235,6 @@
                 tinymce.activeEditor.setContent(contenido);
                 document.querySelector('#encabezado-nombre').textContent = titulo;
                 document.querySelector('#id-cuaderno').textContent = id;
-
-                
                 
             }
 

@@ -560,12 +560,14 @@ def login():
             cur = mysql.connection.cursor()
             _idUsuarioActual = session["idUsuario"]
 
+
             # Agregar traza a la base de datos
             cur.execute(
             "INSERT INTO Traza (id_Usuario,nombre,descripcion, hora, servicio) VALUES (%s, %s, %s, %s,%s)",
             (session["idUsuario"],session["nombre"], "Ha iniciado sesión", formatted_date, "Login"),
             )
             mysql.connection.commit()
+
 
             cur.execute("SELECT nombreRecordatorio FROM recordatorios WHERE idUsuario = %s", (_idUsuarioActual,))
             resultados = cur.fetchall()
@@ -596,7 +598,9 @@ def login():
             otherReminders = []
 
             for i in range(len(year)):
+
                 fecha = colombia_zona_horaria.localize(datetime(int(year[i]), int(month[i]), int(day[i]), int(hour[i]), int(minute[i])))
+
                 if fecha >= now and abs(fecha-now) <= timedelta(days=7):
                     if fecha.day == now.day:
                         todayReminders.append([nombreRecordatorio[i], year[i], month[i], day[i], hour[i], minute[i]])
@@ -1490,8 +1494,5 @@ def saveStudyDate():
     return 'Fecha y mazo recibidos correctamente'
 
 # Configuración de la clave secreta para las sesiones de usuario
-if __name__ == "__main__":
-    app.secret_key = "prFlask"
-# Ejecución de la aplicación Flask
-app.run(debug=True, host="0.0.0.0", port=5000, threaded=True)
+app.secret_key = "prFlask"
 
