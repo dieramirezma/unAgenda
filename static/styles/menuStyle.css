@@ -591,7 +591,7 @@
     /* Cambia el color de fondo al pasar el ratón sobre el icono */
 }
 
-.tooltip, .tooltip2 {
+.tooltip {
     visibility: hidden;
     width: 120px;
     background-color: #333;
@@ -608,9 +608,20 @@
     transition: opacity 0.3s;
 }
 .tooltip2 {
-    width: 150px;
+    visibility: hidden;
+    width: 700px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    z-index: 9999;
+    top: -10%;
+    left: 100%;
+    opacity: 0;
+    transition: opacity 0.3s;
 }
-
 .info-icon:hover .tooltip {
     visibility: visible;
     opacity: 1;
