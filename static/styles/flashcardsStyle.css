@@ -585,7 +585,7 @@
     padding: 5px;
     position: absolute;
     z-index: 1;
-    bottom: 125%;
+    top: 100%;
     left: 50%;
     margin-left: -60px;
     opacity: 0;
