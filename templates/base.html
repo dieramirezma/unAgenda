@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,8 +11,15 @@
       <link rel="stylesheet" href="{{url_for('static', filename = 'styles/style.css')}}">
    </head>
    <body>
+    <div class="mainContainer">
+
+      <div class="header">
+          <img src="static/img/unAgenda2.png" alt="logo">
+      </div>
       <div class="login">
-    {% block content %}{% endblock %}
-</div>
+        {% block content %}{% endblock %}
+      </div>
+    </div>
 </body>
 </html>
+

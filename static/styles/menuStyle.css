@@ -250,40 +250,20 @@
 }
 
 #newAlert
-{
 
-    padding-left: 2rem;
-    color: rgb(192, 192, 192);
-
-    transition: color 0.1s ease;
-    float: left;
-
-}
+{padding-left: 1rem;/* color: rgb(192, 192, 192); */transition: color 0.1s ease;float: left;}
 
 #newAlert:hover
 {
-
     cursor: pointer;
-    color: rgb(105, 163, 90);
-
 }
 
 #deleteAlert
-{
-
-    padding-right: 2rem;
-    color: rgb(192, 192, 192);
-
-    transition: color 0.1s ease;
-    float: right;
-
-}
+{/* padding-right: 2rem; *//* color: rgb(192, 192, 192); */transition: color 0.1s ease;float: right;}
 
 #deleteAlert:hover
 {
-
     cursor: pointer;
-    color: rgb(163, 90, 90);
 
 }
 
@@ -308,39 +288,20 @@
 }
 
 #seeAlerts
-{
 
-    padding-right: 2rem;
-    color: rgb(100, 206, 200);
-
-    transition: color 0.2s ease;
-    float: right;
-
-}
+{/* padding-right: 2rem; *//* color: rgb(100, 206, 200); */transition: color 0.2s ease;float: right;}
 
 #seeAlerts:hover
 {
-
     cursor: pointer;
-    color: rgb(78, 161, 157);
-
 }
 
 
-#editAlerts {
-
-    padding-left: 2rem;
-    color: rgb(206, 183, 100);
-
-    transition: color 0.2s ease;
-    float: left;
-
-}
+#editAlerts {/* padding-left: 2rem; *//* color: rgb(206, 183, 100); */transition: color 0.2s ease;float: left;}
 
 #editAlerts:hover {
 
     cursor: pointer;
-    color: rgb(206, 183, 100);
 
 }
 .seeEventsWindow {
@@ -433,7 +394,8 @@
 }
 
 .spanDiv {
-    text-align: right;
+    text-align: left;
+
 }	
 
 .nearRemind {
@@ -598,4 +560,62 @@
     padding: 20px;
     border-radius: 5px;
     text-align: center;
+
+}
+.btn {
+    /* margin: 1rem; */
+    /* padding-top: 0.5rem; */
+    /* padding-bottom: 0.5rem; */
+    /* padding-left: 1rem; */
+    padding-right: 1rem;
+    border-radius: 10px;
+    /* border: 10px black; */
+    background-color: rgb(114, 218, 157);
+}
+
+/* Tooltip */
+.info-icon, .info-icon2 {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background-color: #ccc;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 20px;
+    cursor: pointer;
+    position: relative;
+}
+
+.info-icon:hover, .info-icon2:hover {
+    background-color: #ddd;
+    /* Cambia el color de fondo al pasar el ratón sobre el icono */
+}
+
+.tooltip, .tooltip2 {
+    visibility: hidden;
+    width: 120px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    z-index: 9999;
+    top: 100%;
+    left: 50%;
+    margin-left: -60px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+.tooltip2 {
+    width: 150px;
+}
+
+.info-icon:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
+}
+.info-icon2:hover .tooltip2 {
+    visibility: visible;
+    opacity: 1;
 }

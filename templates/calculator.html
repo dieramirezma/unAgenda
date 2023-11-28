@@ -39,6 +39,13 @@
                     <img class = "iconImage" src = "{{url_for('static', filename='img/notebookmini.png')}}" width="100"/>
                 </div>
             </a>
+
+            <a href="flashcards">
+                <div class="iconBox">
+                    <img class="iconImage" src="{{url_for('static', filename='img/flashcardsmini.png')}}" width="100" />
+                </div>
+            </a>
+
         </div>
 
 
@@ -47,8 +54,20 @@
         </div> 
         <div id="botones">
             <button id="addGroupNotes"><img class="img-editNote" src="{{url_for('static', filename='img/icons/anadirGrupoNotas.png')}}" alt="Añadir grupo de notas"></button>
+            <span class="info-icon">
+                i
+                <span class="tooltip">Añade un nuevo grupo de notas. Es necesario que los grupos existentes tengan al menos una nota</span>
+            </span>
             <button id="editGroupNotes"><img class="img-editNote" src="{{url_for('static', filename='img/icons/editarGrupo.png')}}" alt="Editar grupo de notas"></button>
+            <span class="info-icon">
+                i
+                <span class="tooltip">Edita el porcentaje de los grupos. La suma de porcentajes de los grupos debe ser exactamente 100%</span>
+            </span>
             <button id="deleteGroupNotes"><img class="img-editNote" src="{{url_for('static', filename='img/icons/borrarNota.png')}}" alt="Eliminar grupo de notas"></button>
+            <span class="info-icon">
+                i
+                <span class="tooltip">Elimina un grupo</span>
+            </span>
         </div>    
         <div style="display: none;" id="group-id">
             {% if len_group == 0 %}
