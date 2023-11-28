@@ -1493,6 +1493,29 @@ def saveStudyDate():
     
     return 'Fecha y mazo recibidos correctamente'
 
+@app.route("/traza")
+def traza():
+    return render_template("traza.html")
+
+
+@app.route('/trazaSelect', methods=['POST'])
+def trazaSelect():
+    data = request.json
+    serviceSelected = data.get('serviceSelected')
+    print(serviceSelected)
+
+    cur = mysql.connection.cursor()
+
+
+    # Select from Traza where Servicio=serviceSelected
+    cur.execute(
+        "SELECT Nombre,Descripcion,Hora,Servicio FROM Traza WHERE Servicio = %s", (serviceSelected,)
+    )
+    
+    resultados = cur.fetchall()
+    lista_de_listas = [list(fila.values()) for fila in resultados]
+    mysql.connection.commit()
+    return lista_de_listas
 # Configuración de la clave secreta para las sesiones de usuario
 app.secret_key = "prFlask"
 
